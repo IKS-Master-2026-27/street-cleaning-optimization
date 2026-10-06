@@ -1,0 +1,10 @@
+{
+  "fully_connected": true,
+  "island_sizes": [],
+  "junctions": 30278,
+  "main_component_junctions": 30278,
+  "roads": 34104,
+  "roads_outside_main": 0,
+  "strong_components": 1,
+  "weak_components": 1
+}
