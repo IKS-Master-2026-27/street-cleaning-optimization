@@ -1,0 +1,4160 @@
+[
+  {
+    "district": "district-0000",
+    "local": {
+      "coverage": 0.19882138429340476,
+      "efficiency": 1.0,
+      "score": 0.5994106921467024,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1782,
+        "depot": 7676,
+        "mandatoryStreetCount": 1937,
+        "nodes": 9408,
+        "optionalStreetCount": 7965,
+        "streets": 11684,
+        "timeLimit": 328050,
+        "vehicles": 87
+      },
+      "score": 0.5994106921467024,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1937,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.19882138429340476,
+        "distinctCleanedLength": 169669.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5994106921467024,
+        "lMax": 853374.0,
+        "totalWaste": 0.0,
+        "wMax": 8691.360000000032
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0001",
+    "local": {
+      "coverage": 0.19086011521683538,
+      "efficiency": 1.0,
+      "score": 0.5954300576084177,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2055,
+        "depot": 6956,
+        "mandatoryStreetCount": 1980,
+        "nodes": 9473,
+        "optionalStreetCount": 7923,
+        "streets": 11958,
+        "timeLimit": 328050,
+        "vehicles": 75
+      },
+      "score": 0.5954300576084177,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1980,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.19086011521683538,
+        "distinctCleanedLength": 179866.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5954300576084177,
+        "lMax": 942397.0,
+        "totalWaste": 0.0,
+        "wMax": 9882.879999999996
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0002",
+    "local": {
+      "coverage": 0.19021751866554806,
+      "efficiency": 1.0,
+      "score": 0.5951087593327741,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2782,
+        "depot": 5496,
+        "mandatoryStreetCount": 964,
+        "nodes": 6572,
+        "optionalStreetCount": 3987,
+        "streets": 7733,
+        "timeLimit": 145800,
+        "vehicles": 86
+      },
+      "score": 0.5951087593327741,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 964,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.19021751866554806,
+        "distinctCleanedLength": 81170.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5951087593327741,
+        "lMax": 426722.0,
+        "totalWaste": 0.0,
+        "wMax": 4323.799999999998
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0003",
+    "local": {
+      "coverage": 0.21483820504649614,
+      "efficiency": 1.0,
+      "score": 0.607419102523248,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2349,
+        "depot": 5501,
+        "mandatoryStreetCount": 982,
+        "nodes": 6330,
+        "optionalStreetCount": 3969,
+        "streets": 7300,
+        "timeLimit": 145800,
+        "vehicles": 67
+      },
+      "score": 0.607419102523248,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 982,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.21483820504649614,
+        "distinctCleanedLength": 81576.0,
+        "efficiency": 1.0,
+        "finalScore": 0.607419102523248,
+        "lMax": 379709.0,
+        "totalWaste": 0.0,
+        "wMax": 3769.3900000000094
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0004",
+    "local": {
+      "coverage": 0.2064345265799219,
+      "efficiency": 1.0,
+      "score": 0.603217263289961,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2119,
+        "depot": 4525,
+        "mandatoryStreetCount": 991,
+        "nodes": 5913,
+        "optionalStreetCount": 3960,
+        "streets": 7070,
+        "timeLimit": 97200,
+        "vehicles": 82
+      },
+      "score": 0.603217263289961,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 991,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.2064345265799219,
+        "distinctCleanedLength": 81611.0,
+        "efficiency": 1.0,
+        "finalScore": 0.603217263289961,
+        "lMax": 395336.0,
+        "totalWaste": 0.0,
+        "wMax": 3982.230000000005
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0005",
+    "local": {
+      "coverage": 0.19416427593238636,
+      "efficiency": 1.0,
+      "score": 0.5970821379661931,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2148,
+        "depot": 4920,
+        "mandatoryStreetCount": 974,
+        "nodes": 6051,
+        "optionalStreetCount": 3978,
+        "streets": 7100,
+        "timeLimit": 97200,
+        "vehicles": 67
+      },
+      "score": 0.5970821379661931,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 974,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.19416427593238636,
+        "distinctCleanedLength": 77696.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5970821379661931,
+        "lMax": 400156.0,
+        "totalWaste": 0.0,
+        "wMax": 4052.2800000000016
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0006",
+    "local": {
+      "coverage": 0.1991598354677791,
+      "efficiency": 1.0,
+      "score": 0.5995799177338895,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1596,
+        "depot": 4230,
+        "mandatoryStreetCount": 975,
+        "nodes": 5610,
+        "optionalStreetCount": 3976,
+        "streets": 6547,
+        "timeLimit": 145800,
+        "vehicles": 76
+      },
+      "score": 0.5995799177338895,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 975,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.1991598354677791,
+        "distinctCleanedLength": 122886.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5995799177338895,
+        "lMax": 617022.0,
+        "totalWaste": 0.0,
+        "wMax": 6149.279999999996
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0007",
+    "local": {
+      "coverage": 0.21594843537974423,
+      "efficiency": 1.0,
+      "score": 0.6079742176898721,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1622,
+        "depot": 4047,
+        "mandatoryStreetCount": 1051,
+        "nodes": 5540,
+        "optionalStreetCount": 3900,
+        "streets": 6573,
+        "timeLimit": 97200,
+        "vehicles": 81
+      },
+      "score": 0.6079742176898721,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1051,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.21594843537974423,
+        "distinctCleanedLength": 105033.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6079742176898721,
+        "lMax": 486380.0,
+        "totalWaste": 0.0,
+        "wMax": 4795.6399999999985
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0008",
+    "local": {
+      "coverage": 0.2031797780407744,
+      "efficiency": 1.0,
+      "score": 0.6015898890203872,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1139,
+        "depot": 4186,
+        "mandatoryStreetCount": 1018,
+        "nodes": 5054,
+        "optionalStreetCount": 3933,
+        "streets": 6090,
+        "timeLimit": 64800,
+        "vehicles": 90
+      },
+      "score": 0.6015898890203872,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1018,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.2031797780407744,
+        "distinctCleanedLength": 81891.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6015898890203872,
+        "lMax": 403047.0,
+        "totalWaste": 0.0,
+        "wMax": 4062.5300000000107
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0009",
+    "local": {
+      "coverage": 0.21188492367876044,
+      "efficiency": 1.0,
+      "score": 0.6059424618393803,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1117,
+        "depot": 4229,
+        "mandatoryStreetCount": 1001,
+        "nodes": 5009,
+        "optionalStreetCount": 3951,
+        "streets": 6069,
+        "timeLimit": 64800,
+        "vehicles": 72
+      },
+      "score": 0.6059424618393803,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1001,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.21188492367876044,
+        "distinctCleanedLength": 88395.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6059424618393803,
+        "lMax": 417184.0,
+        "totalWaste": 0.0,
+        "wMax": 4268.990000000009
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0010",
+    "local": {
+      "coverage": 0.19869957476298578,
+      "efficiency": 1.0,
+      "score": 0.5993497873814929,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 736,
+        "depot": 6803,
+        "mandatoryStreetCount": 2019,
+        "nodes": 8431,
+        "optionalStreetCount": 7884,
+        "streets": 10639,
+        "timeLimit": 97200,
+        "vehicles": 78
+      },
+      "score": 0.5993497873814929,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 2019,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.19869957476298578,
+        "distinctCleanedLength": 155974.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5993497873814929,
+        "lMax": 784974.0,
+        "totalWaste": 0.0,
+        "wMax": 7748.250000000014
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0011",
+    "local": {
+      "coverage": 0.19957234497505347,
+      "efficiency": 1.0,
+      "score": 0.5997861724875267,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 628,
+        "depot": 6693,
+        "mandatoryStreetCount": 1965,
+        "nodes": 8425,
+        "optionalStreetCount": 7938,
+        "streets": 10531,
+        "timeLimit": 43200,
+        "vehicles": 87
+      },
+      "score": 0.5997861724875267,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1965,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.19957234497505347,
+        "distinctCleanedLength": 161840.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5997861724875267,
+        "lMax": 810934.0,
+        "totalWaste": 0.0,
+        "wMax": 8031.019999999993
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0012",
+    "local": {
+      "coverage": 0.21483548135681288,
+      "efficiency": 1.0,
+      "score": 0.6074177406784065,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 865,
+        "depot": 2857,
+        "mandatoryStreetCount": 1039,
+        "nodes": 4991,
+        "optionalStreetCount": 3912,
+        "streets": 5816,
+        "timeLimit": 363860,
+        "vehicles": 80
+      },
+      "score": 0.6074177406784065,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1039,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.21483548135681288,
+        "distinctCleanedLength": 95098.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6074177406784065,
+        "lMax": 442655.0,
+        "totalWaste": 0.0,
+        "wMax": 4317.929999999998
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0013",
+    "local": {
+      "coverage": 0.20319767184330123,
+      "efficiency": 1.0,
+      "score": 0.6015988359216506,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1573,
+        "depot": 3390,
+        "mandatoryStreetCount": 989,
+        "nodes": 5865,
+        "optionalStreetCount": 3962,
+        "streets": 6524,
+        "timeLimit": 218700,
+        "vehicles": 76
+      },
+      "score": 0.6015988359216506,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 989,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.20319767184330123,
+        "distinctCleanedLength": 91747.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6015988359216506,
+        "lMax": 451516.0,
+        "totalWaste": 0.0,
+        "wMax": 4459.469999999997
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0014",
+    "local": {
+      "coverage": 0.17608550027403935,
+      "efficiency": 1.0,
+      "score": 0.5880427501370197,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1109,
+        "depot": 3712,
+        "mandatoryStreetCount": 935,
+        "nodes": 5044,
+        "optionalStreetCount": 4016,
+        "streets": 6060,
+        "timeLimit": 145800,
+        "vehicles": 77
+      },
+      "score": 0.5880427501370197,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 935,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.17608550027403935,
+        "distinctCleanedLength": 57830.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5880427501370197,
+        "lMax": 328420.0,
+        "totalWaste": 0.0,
+        "wMax": 3268.17
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0015",
+    "local": {
+      "coverage": 0.1942953409778426,
+      "efficiency": 1.0,
+      "score": 0.5971476704889213,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2180,
+        "depot": 4803,
+        "mandatoryStreetCount": 1029,
+        "nodes": 6279,
+        "optionalStreetCount": 3923,
+        "streets": 7132,
+        "timeLimit": 145800,
+        "vehicles": 97
+      },
+      "score": 0.5971476704889213,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1029,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.1942953409778426,
+        "distinctCleanedLength": 95379.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5971476704889213,
+        "lMax": 490897.0,
+        "totalWaste": 0.0,
+        "wMax": 4920.789999999997
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0016",
+    "local": {
+      "coverage": 0.20115764035287464,
+      "efficiency": 1.0,
+      "score": 0.6005788201764373,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 876,
+        "depot": 6087,
+        "mandatoryStreetCount": 1997,
+        "nodes": 8756,
+        "optionalStreetCount": 7906,
+        "streets": 10779,
+        "timeLimit": 218700,
+        "vehicles": 82
+      },
+      "score": 0.6005788201764373,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1997,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.20115764035287464,
+        "distinctCleanedLength": 136927.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6005788201764373,
+        "lMax": 680695.0,
+        "totalWaste": 0.0,
+        "wMax": 6807.190000000036
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0017",
+    "local": {
+      "coverage": 0.1830495184076741,
+      "efficiency": 1.0,
+      "score": 0.5915247592038371,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2084,
+        "depot": 4650,
+        "mandatoryStreetCount": 962,
+        "nodes": 5936,
+        "optionalStreetCount": 3989,
+        "streets": 7035,
+        "timeLimit": 145800,
+        "vehicles": 71
+      },
+      "score": 0.5915247592038371,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 962,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.1830495184076741,
+        "distinctCleanedLength": 70032.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5915247592038371,
+        "lMax": 382585.0,
+        "totalWaste": 0.0,
+        "wMax": 3772.2799999999866
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0018",
+    "local": {
+      "coverage": 0.19948741031977144,
+      "efficiency": 1.0,
+      "score": 0.5997437051598857,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1679,
+        "depot": 4373,
+        "mandatoryStreetCount": 974,
+        "nodes": 5734,
+        "optionalStreetCount": 3978,
+        "streets": 6631,
+        "timeLimit": 145800,
+        "vehicles": 94
+      },
+      "score": 0.5997437051598857,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 974,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.19948741031977144,
+        "distinctCleanedLength": 130296.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5997437051598857,
+        "lMax": 653154.0,
+        "totalWaste": 0.0,
+        "wMax": 6491.090000000011
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0019",
+    "local": {
+      "coverage": 0.1984262896591982,
+      "efficiency": 1.0,
+      "score": 0.5992131448295991,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1232,
+        "depot": 3857,
+        "mandatoryStreetCount": 989,
+        "nodes": 5316,
+        "optionalStreetCount": 3962,
+        "streets": 6183,
+        "timeLimit": 97200,
+        "vehicles": 73
+      },
+      "score": 0.5992131448295991,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 989,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.1984262896591982,
+        "distinctCleanedLength": 66625.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5992131448295991,
+        "lMax": 335767.0,
+        "totalWaste": 0.0,
+        "wMax": 3312.539999999994
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0020",
+    "local": {
+      "coverage": 0.1851250451050601,
+      "efficiency": 1.0,
+      "score": 0.5925625225525301,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1103,
+        "depot": 4483,
+        "mandatoryStreetCount": 956,
+        "nodes": 5153,
+        "optionalStreetCount": 3995,
+        "streets": 6054,
+        "timeLimit": 64800,
+        "vehicles": 89
+      },
+      "score": 0.5925625225525301,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 956,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.1851250451050601,
+        "distinctCleanedLength": 66695.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5925625225525301,
+        "lMax": 360270.0,
+        "totalWaste": 0.0,
+        "wMax": 3547.9199999999887
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0021",
+    "local": {
+      "coverage": 0.20008532746307314,
+      "efficiency": 1.0,
+      "score": 0.6000426637315366,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1349,
+        "depot": 4385,
+        "mandatoryStreetCount": 987,
+        "nodes": 5179,
+        "optionalStreetCount": 3964,
+        "streets": 6300,
+        "timeLimit": 64800,
+        "vehicles": 76
+      },
+      "score": 0.6000426637315366,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 987,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.20008532746307314,
+        "distinctCleanedLength": 79258.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6000426637315366,
+        "lMax": 396121.0,
+        "totalWaste": 0.0,
+        "wMax": 4080.22000000001
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0022",
+    "local": {
+      "coverage": 0.19323854644269278,
+      "efficiency": 1.0,
+      "score": 0.5966192732213464,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1187,
+        "depot": 4304,
+        "mandatoryStreetCount": 1006,
+        "nodes": 5231,
+        "optionalStreetCount": 3946,
+        "streets": 6139,
+        "timeLimit": 64800,
+        "vehicles": 74
+      },
+      "score": 0.5966192732213464,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1006,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.19323854644269278,
+        "distinctCleanedLength": 75947.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5966192732213464,
+        "lMax": 393022.0,
+        "totalWaste": 0.0,
+        "wMax": 3896.659999999996
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0023",
+    "local": {
+      "coverage": 0.2010314503662029,
+      "efficiency": 1.0,
+      "score": 0.6005157251831015,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1798,
+        "depot": 4396,
+        "mandatoryStreetCount": 994,
+        "nodes": 5628,
+        "optionalStreetCount": 3957,
+        "streets": 6749,
+        "timeLimit": 97200,
+        "vehicles": 83
+      },
+      "score": 0.6005157251831015,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 994,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.2010314503662029,
+        "distinctCleanedLength": 63460.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6005157251831015,
+        "lMax": 315672.0,
+        "totalWaste": 0.0,
+        "wMax": 3208.859999999997
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0024",
+    "local": {
+      "coverage": 0.20565991197805691,
+      "efficiency": 1.0,
+      "score": 0.6028299559890284,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1710,
+        "depot": 4789,
+        "mandatoryStreetCount": 1002,
+        "nodes": 5640,
+        "optionalStreetCount": 3950,
+        "streets": 6662,
+        "timeLimit": 97200,
+        "vehicles": 70
+      },
+      "score": 0.6028299559890284,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1002,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.20565991197805691,
+        "distinctCleanedLength": 69206.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6028299559890284,
+        "lMax": 336507.0,
+        "totalWaste": 0.0,
+        "wMax": 3312.529999999999
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0025",
+    "local": {
+      "coverage": 0.21676234866139943,
+      "efficiency": 1.0,
+      "score": 0.6083811743306997,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2361,
+        "depot": 4599,
+        "mandatoryStreetCount": 986,
+        "nodes": 5933,
+        "optionalStreetCount": 3965,
+        "streets": 7312,
+        "timeLimit": 97200,
+        "vehicles": 87
+      },
+      "score": 0.6083811743306997,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 986,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.21676234866139943,
+        "distinctCleanedLength": 91524.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6083811743306997,
+        "lMax": 422232.0,
+        "totalWaste": 0.0,
+        "wMax": 4195.809999999986
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0026",
+    "local": {
+      "coverage": 0.17462246807297138,
+      "efficiency": 1.0,
+      "score": 0.5873112340364857,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2018,
+        "depot": 4590,
+        "mandatoryStreetCount": 967,
+        "nodes": 5914,
+        "optionalStreetCount": 3985,
+        "streets": 6970,
+        "timeLimit": 145800,
+        "vehicles": 81
+      },
+      "score": 0.5873112340364857,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 967,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.17462246807297138,
+        "distinctCleanedLength": 149411.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5873112340364857,
+        "lMax": 855623.0,
+        "totalWaste": 0.0,
+        "wMax": 8443.489999999996
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0027",
+    "local": {
+      "coverage": 0.20489662052911023,
+      "efficiency": 1.0,
+      "score": 0.6024483102645551,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1573,
+        "depot": 4466,
+        "mandatoryStreetCount": 988,
+        "nodes": 5574,
+        "optionalStreetCount": 3963,
+        "streets": 6524,
+        "timeLimit": 145800,
+        "vehicles": 89
+      },
+      "score": 0.6024483102645551,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 988,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.20489662052911023,
+        "distinctCleanedLength": 89338.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6024483102645551,
+        "lMax": 436015.0,
+        "totalWaste": 0.0,
+        "wMax": 4369.82000000001
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0028",
+    "local": {
+      "coverage": 0.21466243744535188,
+      "efficiency": 1.0,
+      "score": 0.6073312187226759,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2171,
+        "depot": 5162,
+        "mandatoryStreetCount": 1022,
+        "nodes": 6279,
+        "optionalStreetCount": 3929,
+        "streets": 7122,
+        "timeLimit": 145800,
+        "vehicles": 75
+      },
+      "score": 0.6073312187226759,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1022,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.21466243744535188,
+        "distinctCleanedLength": 92310.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6073312187226759,
+        "lMax": 430024.0,
+        "totalWaste": 0.0,
+        "wMax": 4353.720000000011
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0029",
+    "local": {
+      "coverage": 0.1967668544766519,
+      "efficiency": 1.0,
+      "score": 0.5983834272383259,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1511,
+        "depot": 4146,
+        "mandatoryStreetCount": 992,
+        "nodes": 5407,
+        "optionalStreetCount": 3959,
+        "streets": 6462,
+        "timeLimit": 64800,
+        "vehicles": 100
+      },
+      "score": 0.5983834272383259,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 992,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.1967668544766519,
+        "distinctCleanedLength": 68065.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5983834272383259,
+        "lMax": 345917.0,
+        "totalWaste": 0.0,
+        "wMax": 3462.009999999992
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0030",
+    "local": {
+      "coverage": 0.19472735016220707,
+      "efficiency": 1.0,
+      "score": 0.5973636750811036,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2351,
+        "depot": 4719,
+        "mandatoryStreetCount": 983,
+        "nodes": 6133,
+        "optionalStreetCount": 3969,
+        "streets": 7303,
+        "timeLimit": 97200,
+        "vehicles": 78
+      },
+      "score": 0.5973636750811036,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 983,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.19472735016220707,
+        "distinctCleanedLength": 74070.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5973636750811036,
+        "lMax": 380378.0,
+        "totalWaste": 0.0,
+        "wMax": 3747.269999999985
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0031",
+    "local": {
+      "coverage": 0.21563878111448953,
+      "efficiency": 1.0,
+      "score": 0.6078193905572448,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1607,
+        "depot": 4532,
+        "mandatoryStreetCount": 994,
+        "nodes": 5552,
+        "optionalStreetCount": 3957,
+        "streets": 6558,
+        "timeLimit": 145800,
+        "vehicles": 90
+      },
+      "score": 0.6078193905572448,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 994,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.21563878111448953,
+        "distinctCleanedLength": 87870.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6078193905572448,
+        "lMax": 407487.0,
+        "totalWaste": 0.0,
+        "wMax": 4089.1699999999905
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0032",
+    "local": {
+      "coverage": 0.20070356126641029,
+      "efficiency": 1.0,
+      "score": 0.6003517806332052,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2479,
+        "depot": 5149,
+        "mandatoryStreetCount": 1011,
+        "nodes": 6154,
+        "optionalStreetCount": 3940,
+        "streets": 7430,
+        "timeLimit": 145800,
+        "vehicles": 75
+      },
+      "score": 0.6003517806332052,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1011,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.20070356126641029,
+        "distinctCleanedLength": 73428.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6003517806332052,
+        "lMax": 365853.0,
+        "totalWaste": 0.0,
+        "wMax": 3675.0399999999927
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0033",
+    "local": {
+      "coverage": 0.18396996365282456,
+      "efficiency": 1.0,
+      "score": 0.5919849818264122,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2879,
+        "depot": 5573,
+        "mandatoryStreetCount": 962,
+        "nodes": 6616,
+        "optionalStreetCount": 3989,
+        "streets": 7830,
+        "timeLimit": 97200,
+        "vehicles": 94
+      },
+      "score": 0.5919849818264122,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 962,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.18396996365282456,
+        "distinctCleanedLength": 69089.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5919849818264122,
+        "lMax": 375545.0,
+        "totalWaste": 0.0,
+        "wMax": 3710.9099999999853
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0034",
+    "local": {
+      "coverage": 0.2156290018561418,
+      "efficiency": 1.0,
+      "score": 0.6078145009280709,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1517,
+        "depot": 4487,
+        "mandatoryStreetCount": 1029,
+        "nodes": 5267,
+        "optionalStreetCount": 3923,
+        "streets": 6469,
+        "timeLimit": 145800,
+        "vehicles": 80
+      },
+      "score": 0.6078145009280709,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1029,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.2156290018561418,
+        "distinctCleanedLength": 74930.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6078145009280709,
+        "lMax": 347495.0,
+        "totalWaste": 0.0,
+        "wMax": 3477.5500000000025
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0035",
+    "local": {
+      "coverage": 0.1977852162014907,
+      "efficiency": 1.0,
+      "score": 0.5988926081007453,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1371,
+        "depot": 7584,
+        "mandatoryStreetCount": 1929,
+        "nodes": 9003,
+        "optionalStreetCount": 7973,
+        "streets": 11273,
+        "timeLimit": 97200,
+        "vehicles": 95
+      },
+      "score": 0.5988926081007453,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1929,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.1977852162014907,
+        "distinctCleanedLength": 144116.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5988926081007453,
+        "lMax": 728649.0,
+        "totalWaste": 0.0,
+        "wMax": 7336.94000000002
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0036",
+    "local": {
+      "coverage": 0.1881669479194924,
+      "efficiency": 1.0,
+      "score": 0.5940834739597463,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1665,
+        "depot": 5067,
+        "mandatoryStreetCount": 954,
+        "nodes": 5588,
+        "optionalStreetCount": 3997,
+        "streets": 6616,
+        "timeLimit": 64800,
+        "vehicles": 98
+      },
+      "score": 0.5940834739597463,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 954,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.1881669479194924,
+        "distinctCleanedLength": 53411.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5940834739597463,
+        "lMax": 283849.0,
+        "totalWaste": 0.0,
+        "wMax": 2843.74999999999
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0037",
+    "local": {
+      "coverage": 0.19181309121207665,
+      "efficiency": 1.0,
+      "score": 0.5959065456060383,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1973,
+        "depot": 5124,
+        "mandatoryStreetCount": 985,
+        "nodes": 5854,
+        "optionalStreetCount": 3967,
+        "streets": 6925,
+        "timeLimit": 97200,
+        "vehicles": 76
+      },
+      "score": 0.5959065456060383,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 985,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.19181309121207665,
+        "distinctCleanedLength": 62617.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5959065456060383,
+        "lMax": 326448.0,
+        "totalWaste": 0.0,
+        "wMax": 3204.2199999999825
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0038",
+    "local": {
+      "coverage": 0.2115470523129442,
+      "efficiency": 1.0,
+      "score": 0.6057735261564721,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2340,
+        "depot": 8289,
+        "mandatoryStreetCount": 2048,
+        "nodes": 9879,
+        "optionalStreetCount": 7855,
+        "streets": 12243,
+        "timeLimit": 218700,
+        "vehicles": 84
+      },
+      "score": 0.6057735261564721,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 2048,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.2115470523129442,
+        "distinctCleanedLength": 126913.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6057735261564721,
+        "lMax": 599928.0,
+        "totalWaste": 0.0,
+        "wMax": 6101.609999999992
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0039",
+    "local": {
+      "coverage": 0.19999508953416048,
+      "efficiency": 1.0,
+      "score": 0.5999975447670802,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2298,
+        "depot": 7941,
+        "mandatoryStreetCount": 2010,
+        "nodes": 9975,
+        "optionalStreetCount": 7893,
+        "streets": 12201,
+        "timeLimit": 218700,
+        "vehicles": 100
+      },
+      "score": 0.5999975447670802,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 2010,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.19999508953416048,
+        "distinctCleanedLength": 122185.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5999975447670802,
+        "lMax": 610940.0,
+        "totalWaste": 0.0,
+        "wMax": 6112.510000000028
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0040",
+    "local": {
+      "coverage": 0.20226825670027046,
+      "efficiency": 1.0,
+      "score": 0.6011341283501352,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 834,
+        "depot": 6824,
+        "mandatoryStreetCount": 2093,
+        "nodes": 8570,
+        "optionalStreetCount": 7809,
+        "streets": 10736,
+        "timeLimit": 64800,
+        "vehicles": 84
+      },
+      "score": 0.6011341283501352,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 2093,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.20226825670027046,
+        "distinctCleanedLength": 138201.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6011341283501352,
+        "lMax": 683256.0,
+        "totalWaste": 0.0,
+        "wMax": 6751.939999999979
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0041",
+    "local": {
+      "coverage": 0.19909016690092834,
+      "efficiency": 1.0,
+      "score": 0.5995450834504642,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2056,
+        "depot": 8088,
+        "mandatoryStreetCount": 2007,
+        "nodes": 9686,
+        "optionalStreetCount": 7896,
+        "streets": 11959,
+        "timeLimit": 145800,
+        "vehicles": 73
+      },
+      "score": 0.5995450834504642,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 2007,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.19909016690092834,
+        "distinctCleanedLength": 141927.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5995450834504642,
+        "lMax": 712878.0,
+        "totalWaste": 0.0,
+        "wMax": 7007.350000000027
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0042",
+    "local": {
+      "coverage": 0.20168769467219103,
+      "efficiency": 1.0,
+      "score": 0.6008438473360955,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2145,
+        "depot": 5124,
+        "mandatoryStreetCount": 1016,
+        "nodes": 6053,
+        "optionalStreetCount": 3935,
+        "streets": 7096,
+        "timeLimit": 97200,
+        "vehicles": 88
+      },
+      "score": 0.6008438473360955,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1016,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.20168769467219103,
+        "distinctCleanedLength": 69026.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6008438473360955,
+        "lMax": 342242.0,
+        "totalWaste": 0.0,
+        "wMax": 3442.8999999999965
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0043",
+    "local": {
+      "coverage": 0.20632340346608916,
+      "efficiency": 1.0,
+      "score": 0.6031617017330446,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1724,
+        "depot": 4591,
+        "mandatoryStreetCount": 998,
+        "nodes": 5758,
+        "optionalStreetCount": 3954,
+        "streets": 6676,
+        "timeLimit": 97200,
+        "vehicles": 91
+      },
+      "score": 0.6031617017330446,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 998,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.20632340346608916,
+        "distinctCleanedLength": 75646.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6031617017330446,
+        "lMax": 366638.0,
+        "totalWaste": 0.0,
+        "wMax": 3735.7499999999927
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0044",
+    "local": {
+      "coverage": 0.19545320927590226,
+      "efficiency": 1.0,
+      "score": 0.5977266046379511,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2284,
+        "depot": 5011,
+        "mandatoryStreetCount": 998,
+        "nodes": 6341,
+        "optionalStreetCount": 3953,
+        "streets": 7235,
+        "timeLimit": 145800,
+        "vehicles": 74
+      },
+      "score": 0.5977266046379511,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 998,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.19545320927590226,
+        "distinctCleanedLength": 59176.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5977266046379511,
+        "lMax": 302763.0,
+        "totalWaste": 0.0,
+        "wMax": 3026.109999999983
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0045",
+    "local": {
+      "coverage": 0.20009523168730883,
+      "efficiency": 1.0,
+      "score": 0.6000476158436544,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2485,
+        "depot": 5238,
+        "mandatoryStreetCount": 988,
+        "nodes": 6464,
+        "optionalStreetCount": 3964,
+        "streets": 7437,
+        "timeLimit": 145800,
+        "vehicles": 89
+      },
+      "score": 0.6000476158436544,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 988,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.20009523168730883,
+        "distinctCleanedLength": 77322.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6000476158436544,
+        "lMax": 386426.0,
+        "totalWaste": 0.0,
+        "wMax": 3852.0799999999967
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0046",
+    "local": {
+      "coverage": 0.20605697857774702,
+      "efficiency": 1.0,
+      "score": 0.6030284892888735,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1241,
+        "depot": 4458,
+        "mandatoryStreetCount": 1020,
+        "nodes": 5444,
+        "optionalStreetCount": 3931,
+        "streets": 6192,
+        "timeLimit": 64800,
+        "vehicles": 84
+      },
+      "score": 0.6030284892888735,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1020,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.20605697857774702,
+        "distinctCleanedLength": 85723.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6030284892888735,
+        "lMax": 416016.0,
+        "totalWaste": 0.0,
+        "wMax": 4085.3900000000053
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0047",
+    "local": {
+      "coverage": 0.20440324508661975,
+      "efficiency": 1.0,
+      "score": 0.6022016225433099,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1872,
+        "depot": 4745,
+        "mandatoryStreetCount": 1013,
+        "nodes": 5951,
+        "optionalStreetCount": 3938,
+        "streets": 6823,
+        "timeLimit": 97200,
+        "vehicles": 78
+      },
+      "score": 0.6022016225433099,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1013,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.20440324508661975,
+        "distinctCleanedLength": 80197.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6022016225433099,
+        "lMax": 392347.0,
+        "totalWaste": 0.0,
+        "wMax": 4000.080000000002
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0048",
+    "local": {
+      "coverage": 0.21200073672578015,
+      "efficiency": 1.0,
+      "score": 0.6060003683628901,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1502,
+        "depot": 4836,
+        "mandatoryStreetCount": 1014,
+        "nodes": 5710,
+        "optionalStreetCount": 3937,
+        "streets": 6453,
+        "timeLimit": 145800,
+        "vehicles": 78
+      },
+      "score": 0.6060003683628901,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1014,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.21200073672578015,
+        "distinctCleanedLength": 80573.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6060003683628901,
+        "lMax": 380060.0,
+        "totalWaste": 0.0,
+        "wMax": 3735.769999999995
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0049",
+    "local": {
+      "coverage": 0.1935359390810709,
+      "efficiency": 1.0,
+      "score": 0.5967679695405355,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1461,
+        "depot": 4839,
+        "mandatoryStreetCount": 991,
+        "nodes": 5541,
+        "optionalStreetCount": 3961,
+        "streets": 6413,
+        "timeLimit": 145800,
+        "vehicles": 97
+      },
+      "score": 0.5967679695405355,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 991,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.1935359390810709,
+        "distinctCleanedLength": 67707.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5967679695405355,
+        "lMax": 349842.0,
+        "totalWaste": 0.0,
+        "wMax": 3526.7499999999923
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0050",
+    "local": {
+      "coverage": 0.19845316303295207,
+      "efficiency": 1.0,
+      "score": 0.599226581516476,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1285,
+        "depot": 4726,
+        "mandatoryStreetCount": 1000,
+        "nodes": 5501,
+        "optionalStreetCount": 3951,
+        "streets": 6236,
+        "timeLimit": 97200,
+        "vehicles": 79
+      },
+      "score": 0.599226581516476,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1000,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.19845316303295207,
+        "distinctCleanedLength": 75823.0,
+        "efficiency": 1.0,
+        "finalScore": 0.599226581516476,
+        "lMax": 382070.0,
+        "totalWaste": 0.0,
+        "wMax": 3740.0599999999845
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0051",
+    "local": {
+      "coverage": 0.204390104602545,
+      "efficiency": 1.0,
+      "score": 0.6021950523012725,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1613,
+        "depot": 5008,
+        "mandatoryStreetCount": 1021,
+        "nodes": 5908,
+        "optionalStreetCount": 3931,
+        "streets": 6565,
+        "timeLimit": 145800,
+        "vehicles": 70
+      },
+      "score": 0.6021950523012725,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1021,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.204390104602545,
+        "distinctCleanedLength": 123823.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6021950523012725,
+        "lMax": 605817.0,
+        "totalWaste": 0.0,
+        "wMax": 6103.6900000000005
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0052",
+    "local": {
+      "coverage": 0.18970018243355302,
+      "efficiency": 1.0,
+      "score": 0.5948500912167765,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 2637,
+        "depot": 6062,
+        "mandatoryStreetCount": 972,
+        "nodes": 6810,
+        "optionalStreetCount": 3979,
+        "streets": 7588,
+        "timeLimit": 145800,
+        "vehicles": 93
+      },
+      "score": 0.5948500912167765,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 972,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.18970018243355302,
+        "distinctCleanedLength": 61766.0,
+        "efficiency": 1.0,
+        "finalScore": 0.5948500912167765,
+        "lMax": 325598.0,
+        "totalWaste": 0.0,
+        "wMax": 3235.5599999999918
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0053",
+    "local": {
+      "coverage": 0.22347725670888632,
+      "efficiency": 1.0,
+      "score": 0.6117386283544431,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 1381,
+        "depot": 5046,
+        "mandatoryStreetCount": 994,
+        "nodes": 5687,
+        "optionalStreetCount": 3958,
+        "streets": 6333,
+        "timeLimit": 218700,
+        "vehicles": 77
+      },
+      "score": 0.6117386283544431,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 994,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.22347725670888632,
+        "distinctCleanedLength": 97342.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6117386283544431,
+        "lMax": 435579.0,
+        "totalWaste": 0.0,
+        "wMax": 4531.860000000003
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  }
+]

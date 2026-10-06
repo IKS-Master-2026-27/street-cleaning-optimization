@@ -1,0 +1,152 @@
+{
+  "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
+  "boundary": {
+    "method": "place_identity_and_containment",
+    "osm_id": "relation/19425413",
+    "tags": {
+      "admin_level": "8",
+      "alt_name": "Qyteti i Prishtinës",
+      "boundary": "administrative",
+      "capital": "yes",
+      "name": "Prishtinë",
+      "name:be": "Прышціна",
+      "name:ca": "Pristina",
+      "name:cnr": "Priština",
+      "name:cnr-Cyrl": "Приштина",
+      "name:de": "Pristina",
+      "name:en": "Pristina",
+      "name:fr": "Pristina",
+      "name:it": "Pristina",
+      "name:mk": "Приштина",
+      "name:ml": "പ്രിസ്റ്റീന",
+      "name:sk": "Priština",
+      "name:sl": "Priština",
+      "name:sq": "Prishtinë",
+      "name:sr": "Приштина",
+      "name:sr-Latn": "Priština",
+      "name:tr": "Priştine",
+      "name:zh": "普里什蒂纳 / 普里斯提納",
+      "name:zh-Hans": "普里什蒂纳",
+      "name:zh-Hant": "普里斯提納",
+      "place": "city",
+      "population": "145149",
+      "wikidata": "Q25270",
+      "wikipedia": "sq:Prishtina"
+    }
+  },
+  "boundary_sources": [],
+  "city_id": "node-2885136501",
+  "connectivity": {
+    "after": {
+      "fully_connected": true,
+      "island_sizes": [],
+      "junctions": 7400,
+      "main_component_junctions": 7400,
+      "roads": 8729,
+      "roads_outside_main": 0,
+      "strong_components": 1,
+      "weak_components": 1
+    },
+    "before": {
+      "fully_connected": false,
+      "island_sizes": [
+        62,
+        52,
+        21,
+        14,
+        10,
+        8,
+        8,
+        8,
+        8,
+        6
+      ],
+      "junctions": 7829,
+      "main_component_junctions": 7400,
+      "roads": 9086,
+      "roads_outside_main": 357,
+      "strong_components": 99,
+      "weak_components": 99
+    },
+    "link_meters": 0,
+    "linked": 0,
+    "max_link_m": 750.0,
+    "mode": "remove",
+    "removed_meters": 25236.895859988806,
+    "removed_roads": 357,
+    "unlinkable_components": 98
+  },
+  "country": "XK",
+  "coverage": {
+    "outside_fraction": 0.0,
+    "sources": [
+      {
+        "bytes": 4727,
+        "etag": "\"1277-65c2f36909471\"",
+        "last_modified": "Wed, 23 Sep 2026 23:55:08 GMT",
+        "retrieved_at": "2026-09-29T15:44:14.956980+00:00",
+        "sha256": "b4c60ac384cb1c4fd9925feeb88718a5c95aa0b9c1cd25138cfb0c7f4a034170",
+        "url": "https://download.geofabrik.de/europe/kosovo.poly"
+      }
+    ],
+    "within_coverage": true
+  },
+  "districts": [
+    {
+      "fleet": 72,
+      "name": "district-0000",
+      "nodes": 7400,
+      "score": 0.6062959096648909,
+      "service_streets": 8729,
+      "streets": 8729,
+      "time_limit": 28800
+    }
+  ],
+  "files": {
+    "district-0000.json": "f8d41399a9c8e40d0546fd64a4467e4e313affffea55ccb11b897bfa4952e937",
+    "district-0000.solution.txt": "980fa33273f8e4ad73425fafff5413349d9dc80ade70620628f4036b1fa2153a",
+    "district-0000.txt": "9faaea7de6153965d8bf16abc6db0afedb404c00e0ed5e48e763d0eb5acf8648",
+    "geography.json": "2781d926c397397f9ac9606fb8fa7d31935ec1f3a83401147dd77fe2f6e6e710",
+    "roads.geojson": "aa7ec64be926802268f0473ffa066de33fdd66e8f2c7e7d93b0052a3fa6dcddb"
+  },
+  "identity": "wikidata:Q25270",
+  "limitations": [
+    "OSM turn restrictions are metadata only in the CLIPP junction model.",
+    "Cleaning demand, fleet, and traversal speed are generated scenario assumptions.",
+    "Roads without directed return paths are excluded and reported."
+  ],
+  "name": "Prishtinë",
+  "osm_url": "https://www.openstreetmap.org/node/2885136501",
+  "phase": 1,
+  "run_key": "295f33d1fe710bfcd29c6bad62023fa7c05ee690ad2cef1b9e8662bb8fbcb0a8",
+  "settings": {
+    "alpha": 0.5,
+    "budget": 28800,
+    "connectivity": "remove",
+    "connectivity_policy": "real-roads-main-scc-v1",
+    "seed": 42,
+    "speed": 20.0,
+    "target": 8000
+  },
+  "silos": [],
+  "size_band": "large",
+  "source": {
+    "bytes": 30769283,
+    "etag": "\"1d58083-65c97222b901b\"",
+    "last_modified": "Tue, 29 Sep 2026 03:54:03 GMT",
+    "osm_timestamp": "2026-09-28T20:23:05Z",
+    "retrieved_at": "2026-09-29T15:12:14.057874+00:00",
+    "sha256": "58267af9c9686af6487443cbeb998de015cd044617a5232869bac97f334902f5",
+    "url": "https://download.geofabrik.de/europe/kosovo-latest.osm.pbf"
+  },
+  "split": "test",
+  "stats": {
+    "excluded_meters": 255002.0066747693,
+    "included_meters": 575693.3353348449,
+    "junctions": 7400,
+    "routable_streets": 8729,
+    "streets": 9182
+  },
+  "supplemental_sources": [],
+  "validator_revision": "a6ee8325cf96255215f6074dc17f332a4fb2d7d8"
+}

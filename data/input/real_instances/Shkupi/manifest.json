@@ -1,0 +1,170 @@
+{
+  "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
+  "boundary": {
+    "method": "place_identity_and_containment",
+    "osm_id": "relation/6966465",
+    "tags": {
+      "admin_level": "8",
+      "alt_name:ar": "سكوبيه;سكوبجي",
+      "alt_name:es": "Escopia",
+      "alt_name:fa": "اسکوپیا",
+      "alt_name:vi": "Xcốp-pi-ê",
+      "boundary": "administrative",
+      "int_name": "Skopje",
+      "name": "Скопје",
+      "name:ar": "إسكوبية",
+      "name:azb": "ایسکوپیه",
+      "name:de": "Skopje",
+      "name:el": "Σκόπια",
+      "name:en": "Skopje",
+      "name:eo": "Skopjo",
+      "name:es": "Skopie",
+      "name:fa": "اسکوپیه",
+      "name:fr": "Skopje",
+      "name:grc": "Σκοῦποι",
+      "name:hr": "Skoplje",
+      "name:it": "Skopje",
+      "name:pt": "Escópia",
+      "name:sq": "Shkup",
+      "name:sr": "Скопље",
+      "name:ur": "اسکوپیہ",
+      "name:vi": "Skopje",
+      "name:zh-Hans": "斯科普里",
+      "name:zh-Hant": "史高比耶",
+      "place": "city",
+      "population": "422540",
+      "population:date": "2021",
+      "source": "Cadastre",
+      "source:population": "https://www.stat.gov.mk/Aktivnosti.aspx?rbra=331",
+      "wikidata": "Q384",
+      "wikipedia": "mk:Скопје"
+    }
+  },
+  "boundary_sources": [],
+  "city_id": "node-170792214",
+  "connectivity": {
+    "after": {
+      "fully_connected": true,
+      "island_sizes": [],
+      "junctions": 13771,
+      "main_component_junctions": 13771,
+      "roads": 16658,
+      "roads_outside_main": 0,
+      "strong_components": 1,
+      "weak_components": 1
+    },
+    "before": {
+      "fully_connected": false,
+      "island_sizes": [
+        271,
+        56,
+        54,
+        6,
+        6,
+        6,
+        5,
+        4,
+        4,
+        4
+      ],
+      "junctions": 14351,
+      "main_component_junctions": 13771,
+      "roads": 17247,
+      "roads_outside_main": 589,
+      "strong_components": 86,
+      "weak_components": 86
+    },
+    "link_meters": 0,
+    "linked": 0,
+    "max_link_m": 750.0,
+    "mode": "remove",
+    "removed_meters": 48713.473470954625,
+    "removed_roads": 589,
+    "unlinkable_components": 85
+  },
+  "country": "MK",
+  "coverage": {
+    "outside_fraction": 0.0,
+    "sources": [
+      {
+        "bytes": 5626,
+        "etag": "\"15fa-65cf8bed78c89\"",
+        "last_modified": "Sun, 04 Oct 2026 00:21:23 GMT",
+        "retrieved_at": "2026-10-05T18:03:23.382643+00:00",
+        "sha256": "61883f3033f775e176d8bbbfd2f9874b5c9876b8182c9737c11d6f588964a60f",
+        "url": "https://download.geofabrik.de/europe/macedonia.poly"
+      }
+    ],
+    "within_coverage": true
+  },
+  "districts": [
+    {
+      "fleet": 96,
+      "name": "district-0000",
+      "nodes": 7227,
+      "score": 0.600441220322079,
+      "service_streets": 8329,
+      "streets": 8689,
+      "time_limit": 28800
+    },
+    {
+      "fleet": 68,
+      "name": "district-0001",
+      "nodes": 7170,
+      "score": 0.6028881293190216,
+      "service_streets": 8329,
+      "streets": 8626,
+      "time_limit": 43200
+    }
+  ],
+  "files": {
+    "district-0000.json": "f703078282666da6bd22e70665b9ba9d422b4e11d02cc546eecc7e4248c28f86",
+    "district-0000.solution.txt": "0a37ab66309b1bbed2741ad071b71b275cafe695833410912a30f5a5c84899e8",
+    "district-0000.txt": "6c1ef2c7b0f2658849497d38ee5823c4aaec15cbcc4e5fd91980a8746fe84668",
+    "district-0001.json": "612fbf717046100f7d4d835f0793bc5ea287fb4b4b14322e84f8175379a49874",
+    "district-0001.solution.txt": "c88222cbe25fca4a93543fe1ac84ebc1ed4b175f220b468875a19839347e6b1d",
+    "district-0001.txt": "33433ed41ac47399b485185fcae69351397c823a0dc1d0264f4b1dcc904d5e6e",
+    "geography.json": "40fdaa9a7b00ad508f8caac98d7bb4358ebd73de84472a26133201f6f4804cc7",
+    "roads.geojson": "fb6673beaefa5f154ff9ef28bc5c6a0ccb9a7d381707bd67777e59b9e891e344"
+  },
+  "identity": "wikidata:Q384",
+  "limitations": [
+    "OSM turn restrictions are metadata only in the CLIPP junction model.",
+    "Cleaning demand, fleet, and traversal speed are generated scenario assumptions.",
+    "Roads without directed return paths are excluded and reported."
+  ],
+  "name": "Skopje",
+  "osm_url": "https://www.openstreetmap.org/node/170792214",
+  "phase": 2,
+  "run_key": "b00499fb661c0e52b6d2520c5bd0ccf9d7cf1326fa2bcca39bd448d8ea5e2139",
+  "settings": {
+    "alpha": 0.5,
+    "budget": 28800,
+    "connectivity": "remove",
+    "connectivity_policy": "real-roads-main-scc-v1",
+    "seed": 42,
+    "speed": 20.0,
+    "target": 8000
+  },
+  "silos": [],
+  "size_band": "metropolis",
+  "source": {
+    "bytes": 29784160,
+    "etag": "\"1c67860-65d18c9e14f59\"",
+    "last_modified": "Mon, 05 Oct 2026 14:35:07 GMT",
+    "osm_timestamp": "2026-10-04T20:20:21Z",
+    "retrieved_at": "2026-10-05T18:02:15.876957+00:00",
+    "sha256": "bac1b56c9594d0b45364dd63acbfd82ca06df9bb5d0f886cf388040c82206fa0",
+    "url": "https://download.geofabrik.de/europe/macedonia-latest.osm.pbf"
+  },
+  "split": "train",
+  "stats": {
+    "excluded_meters": 622778.9677309371,
+    "included_meters": 1185752.3528654147,
+    "junctions": 13771,
+    "routable_streets": 16658,
+    "streets": 17390
+  },
+  "supplemental_sources": [],
+  "validator_revision": "a6ee8325cf96255215f6074dc17f332a4fb2d7d8"
+}

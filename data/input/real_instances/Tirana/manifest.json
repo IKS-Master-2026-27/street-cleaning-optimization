@@ -1,0 +1,183 @@
+{
+  "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
+  "boundary": {
+    "method": "place_identity_and_containment",
+    "osm_id": "relation/1250106",
+    "tags": {
+      "admin_level": "8",
+      "alt_name:mk": "Трнава",
+      "boundary": "administrative",
+      "email": "info@tirana.al",
+      "name": "Tiranë",
+      "name:ckb": "تیرانا",
+      "name:da": "Tirana",
+      "name:en": "Tirana",
+      "name:eo": "Tirano",
+      "name:fr": "Tirana",
+      "name:ku": "Tîrana",
+      "name:mk": "Тирана",
+      "name:nl": "Tirana",
+      "name:pl": "Tirana",
+      "name:ru": "Тирана",
+      "name:sk": "Tirana",
+      "phone": "08000888",
+      "population": "557422",
+      "population:date": "2018",
+      "postal_code": "1001-1028",
+      "website": "https://tirana.al/",
+      "wikidata": "Q19689",
+      "wikipedia": "en:Tirana"
+    }
+  },
+  "boundary_sources": [],
+  "city_id": "node-1835254686",
+  "connectivity": {
+    "after": {
+      "fully_connected": true,
+      "island_sizes": [],
+      "junctions": 16951,
+      "main_component_junctions": 16951,
+      "roads": 19175,
+      "roads_outside_main": 0,
+      "strong_components": 1,
+      "weak_components": 1
+    },
+    "before": {
+      "fully_connected": false,
+      "island_sizes": [
+        44,
+        25,
+        22,
+        19,
+        16,
+        15,
+        14,
+        14,
+        13,
+        12
+      ],
+      "junctions": 17726,
+      "main_component_junctions": 16951,
+      "roads": 19742,
+      "roads_outside_main": 567,
+      "strong_components": 217,
+      "weak_components": 217
+    },
+    "link_meters": 0,
+    "linked": 0,
+    "max_link_m": 750.0,
+    "mode": "remove",
+    "removed_meters": 21267.438867072906,
+    "removed_roads": 567,
+    "unlinkable_components": 216
+  },
+  "country": "AL",
+  "coverage": {
+    "outside_fraction": 0.0,
+    "sources": [
+      {
+        "bytes": 9780,
+        "etag": "\"2634-65c92ea5b5fa6\"",
+        "last_modified": "Mon, 28 Sep 2026 22:52:07 GMT",
+        "retrieved_at": "2026-09-29T15:44:16.316233+00:00",
+        "sha256": "2902604dc74bdfcd918a915223ef35541c11f62e54830e3190126be1dade0162",
+        "url": "https://download.geofabrik.de/europe/albania.poly"
+      }
+    ],
+    "within_coverage": true
+  },
+  "districts": [
+    {
+      "fleet": 45,
+      "name": "district-0000",
+      "nodes": 4484,
+      "score": 0.6013369449069357,
+      "service_streets": 4793,
+      "streets": 5157,
+      "time_limit": 28800
+    },
+    {
+      "fleet": 40,
+      "name": "district-0001",
+      "nodes": 4499,
+      "score": 0.5934240051694454,
+      "service_streets": 4794,
+      "streets": 5083,
+      "time_limit": 28800
+    },
+    {
+      "fleet": 40,
+      "name": "district-0002",
+      "nodes": 4665,
+      "score": 0.5907444822383059,
+      "service_streets": 4794,
+      "streets": 5141,
+      "time_limit": 28800
+    },
+    {
+      "fleet": 46,
+      "name": "district-0003",
+      "nodes": 4623,
+      "score": 0.6008594527174764,
+      "service_streets": 4794,
+      "streets": 5192,
+      "time_limit": 28800
+    }
+  ],
+  "files": {
+    "district-0000.json": "87a0f53c267b3dfda7b70ce7d7b3e465922a5a2528284bda183a0f94c50dec24",
+    "district-0000.solution.txt": "aa5e85897f56e68e12208429586ae4fdbe6f1b3923ae9072234d58913d4ff993",
+    "district-0000.txt": "fea003b948a2ad614f8bf7495baed28b5a72612610d3dc7405fe1793ef21f695",
+    "district-0001.json": "9ba12b8ca92ae8a3e0c34c8d9fd7af8b69e787757a35eb6cacfaa72e055fbc43",
+    "district-0001.solution.txt": "6f9a675c2288030d346bcc06f9788ad37e8e7183c1735c8df774b45570fbfac0",
+    "district-0001.txt": "97f91e9c0e963dc69b7c0007431ef91fb0e86f9fc7e1c87503ce64bb9ff7de05",
+    "district-0002.json": "a265aa0d17b6890323769c1cd2c5c9de592847ed977aa715f2e3a81c6b555155",
+    "district-0002.solution.txt": "a123ad524cfe13f5d62252d0113f20cfd79b20721c505569b31ec9046d13db1d",
+    "district-0002.txt": "01434c161df1c70a00381876a18f492fc11606f63a13d25b6de881e143e56d70",
+    "district-0003.json": "2b078425f602943ec707ceb7897907fe6022bb8ffdbad44de155245c9ca04d73",
+    "district-0003.solution.txt": "6e039c2e8a68add67b67b0a7e8ff4ad7f63c5dc714ae1905eb93efdfb1799802",
+    "district-0003.txt": "c07f8b4ef8ddbd8364090adcf4003e09d56ba0228e018b5c66b6ecc29f9d1797",
+    "geography.json": "018f6bf55fb60c28bc1cd6b872e212d38fe2c6065bf589f319d0fe798898b12e",
+    "roads.geojson": "f9cc644957ae019e6c395720c4cf8c9d05147aec80c37c4e7a0d0b37f267bcb1"
+  },
+  "identity": "wikidata:Q19689",
+  "limitations": [
+    "OSM turn restrictions are metadata only in the CLIPP junction model.",
+    "Cleaning demand, fleet, and traversal speed are generated scenario assumptions.",
+    "Roads without directed return paths are excluded and reported."
+  ],
+  "name": "Tirana",
+  "osm_url": "https://www.openstreetmap.org/node/1835254686",
+  "phase": 2,
+  "run_key": "9ab2875482eea0211884400e55d3fef9c018344ce2203d9995825c277bab3bec",
+  "settings": {
+    "alpha": 0.5,
+    "budget": 28800,
+    "connectivity": "remove",
+    "connectivity_policy": "real-roads-main-scc-v1",
+    "seed": 42,
+    "speed": 20.0,
+    "target": 8000
+  },
+  "silos": [],
+  "size_band": "metropolis",
+  "source": {
+    "bytes": 54144640,
+    "etag": "\"33a2e80-65c96e0e2e2a4\"",
+    "last_modified": "Tue, 29 Sep 2026 03:35:48 GMT",
+    "osm_timestamp": "2026-09-28T20:23:05Z",
+    "retrieved_at": "2026-09-29T15:21:59.627688+00:00",
+    "sha256": "f4133e83edb9739aa71df882c186555bd374ed0194b2ac7069adc1d3385b5db6",
+    "url": "https://download.geofabrik.de/europe/albania-latest.osm.pbf"
+  },
+  "split": "test",
+  "stats": {
+    "excluded_meters": 405796.60760551493,
+    "included_meters": 820750.7383682647,
+    "junctions": 16951,
+    "routable_streets": 19175,
+    "streets": 20031
+  },
+  "supplemental_sources": [],
+  "validator_revision": "a6ee8325cf96255215f6074dc17f332a4fb2d7d8"
+}

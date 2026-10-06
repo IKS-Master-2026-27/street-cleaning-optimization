@@ -1,0 +1,138 @@
+{
+  "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
+  "boundary": {
+    "method": "explicit_requested_settlement_boundary",
+    "osm_id": "relation/6654047",
+    "tags": {
+      "admin_level": "9",
+      "boundary": "administrative",
+      "name": "Прешево",
+      "name:en": "Presevo",
+      "name:sq": "Preshevë",
+      "name:sr": "Прешево",
+      "name:sr-Latn": "Preševo",
+      "population": "14219",
+      "population:census:2022": "14219",
+      "population:date": "2022",
+      "ref:RS:naselje": "733857",
+      "source:population": "RZS",
+      "wikidata": "Q145871",
+      "wikipedia": "sr:Прешево"
+    }
+  },
+  "boundary_sources": [],
+  "city_id": "relation-6654047",
+  "connectivity": {
+    "after": {
+      "fully_connected": true,
+      "island_sizes": [],
+      "junctions": 744,
+      "main_component_junctions": 744,
+      "roads": 838,
+      "roads_outside_main": 0,
+      "strong_components": 1,
+      "weak_components": 1
+    },
+    "before": {
+      "fully_connected": false,
+      "island_sizes": [
+        4,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "junctions": 777,
+      "main_component_junctions": 744,
+      "roads": 856,
+      "roads_outside_main": 18,
+      "strong_components": 16,
+      "weak_components": 16
+    },
+    "link_meters": 0,
+    "linked": 0,
+    "max_link_m": 750.0,
+    "mode": "remove",
+    "removed_meters": 1657.0854217979013,
+    "removed_roads": 18,
+    "unlinkable_components": 15
+  },
+  "country": "RS",
+  "coverage": {
+    "outside_fraction": 0.0,
+    "sources": [
+      {
+        "bytes": 14802,
+        "etag": "\"39d2-65cf85824d92a\"",
+        "last_modified": "Sat, 03 Oct 2026 23:52:40 GMT",
+        "retrieved_at": "2026-10-05T18:05:53.378429+00:00",
+        "sha256": "ede8bc9e71f1e69c6b2f728f1614f0434cfcb1dd4d14832910d67f09718672be",
+        "url": "https://download.geofabrik.de/europe/serbia.poly"
+      }
+    ],
+    "within_coverage": true
+  },
+  "districts": [
+    {
+      "fleet": 6,
+      "name": "district-0000",
+      "nodes": 744,
+      "score": 0.6063605406106025,
+      "service_streets": 838,
+      "streets": 838,
+      "time_limit": 28800
+    }
+  ],
+  "files": {
+    "district-0000.json": "ca447ae6035f73dc7d70f90c49ce3458ecc5dabd8d3a7ad231e7796f2105ec77",
+    "district-0000.solution.txt": "6b643d6cf11ba65b43f437c7af69ddb7d7e8f76b23b1240e3c683481ac329996",
+    "district-0000.txt": "06023dcf21ae6c6be0dfe5170bef682f43569956b47954fbe6804bf769854b94",
+    "geography.json": "a3756ead523a89f5739a338d8f8834aee0ac9abddddbdcb3ab9d876d387dd6ce",
+    "roads.geojson": "670456f6622728a61323dc6328c63a2af9842a8d87e127ff360b2a11eb6d90b5"
+  },
+  "identity": "wikidata:Q145871",
+  "limitations": [
+    "OSM turn restrictions are metadata only in the CLIPP junction model.",
+    "Cleaning demand, fleet, and traversal speed are generated scenario assumptions.",
+    "Roads without directed return paths are excluded and reported."
+  ],
+  "name": "Presevo",
+  "osm_url": "https://www.openstreetmap.org/relation/6654047",
+  "phase": 2,
+  "run_key": "51d3d0d9375d9719770e5f18cd93b025768dfa36d75f92e220e23cb01bb25212",
+  "settings": {
+    "alpha": 0.5,
+    "budget": 28800,
+    "connectivity": "remove",
+    "connectivity_policy": "real-roads-main-scc-v1",
+    "seed": 42,
+    "speed": 20.0,
+    "target": 8000
+  },
+  "silos": [],
+  "size_band": "small",
+  "source": {
+    "bytes": 240523511,
+    "etag": "\"e5618f7-65d18e1c0fcd4\"",
+    "last_modified": "Mon, 05 Oct 2026 14:41:48 GMT",
+    "osm_timestamp": "2026-10-04T20:20:21Z",
+    "retrieved_at": "2026-10-05T18:03:32.897109+00:00",
+    "sha256": "1c66caf0c13355c6b5fd8df5bbb9871aaff756bbf3fce88bd2822ecf9479dda3",
+    "url": "https://download.geofabrik.de/europe/serbia-latest.osm.pbf"
+  },
+  "split": "test",
+  "stats": {
+    "excluded_meters": 23607.702938134495,
+    "included_meters": 84868.91324704244,
+    "junctions": 744,
+    "routable_streets": 838,
+    "streets": 856
+  },
+  "supplemental_sources": [],
+  "validator_revision": "a6ee8325cf96255215f6074dc17f332a4fb2d7d8"
+}

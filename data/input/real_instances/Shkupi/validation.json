@@ -1,0 +1,156 @@
+[
+  {
+    "district": "district-0000",
+    "local": {
+      "coverage": 0.20088244064415808,
+      "efficiency": 1.0,
+      "score": 0.600441220322079,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 360,
+        "depot": 6026,
+        "mandatoryStreetCount": 1704,
+        "nodes": 7227,
+        "optionalStreetCount": 6625,
+        "streets": 8689,
+        "timeLimit": 28800,
+        "vehicles": 96
+      },
+      "score": 0.600441220322079,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1704,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.20088244064415808,
+        "distinctCleanedLength": 119240.0,
+        "efficiency": 1.0,
+        "finalScore": 0.600441220322079,
+        "lMax": 593581.0,
+        "totalWaste": 0.0,
+        "wMax": 5743.619999999996
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  },
+  {
+    "district": "district-0001",
+    "local": {
+      "coverage": 0.2057762586380432,
+      "efficiency": 1.0,
+      "score": 0.6028881293190216,
+      "valid": true
+    },
+    "official": {
+      "diagnostics": [
+        {
+          "code": "VALIDATION_OK",
+          "context": "",
+          "message": "Submission passed semantic validation and scoring.",
+          "severity": "info"
+        }
+      ],
+      "parsedSummary": {
+        "alpha": 0.5,
+        "connectorStreetCount": 297,
+        "depot": 5754,
+        "mandatoryStreetCount": 1694,
+        "nodes": 7170,
+        "optionalStreetCount": 6635,
+        "streets": 8626,
+        "timeLimit": 43200,
+        "vehicles": 68
+      },
+      "score": 0.6028881293190216,
+      "scoreBreakdown": {
+        "alpha": 0.5,
+        "cleanedMandatoryCount": 1694,
+        "cleanedOptionalCount": 0,
+        "coverage": 0.2057762586380432,
+        "distinctCleanedLength": 121850.0,
+        "efficiency": 1.0,
+        "finalScore": 0.6028881293190216,
+        "lMax": 592148.0,
+        "totalWaste": 0.0,
+        "wMax": 5898.220000000012
+      },
+      "status": "VALID",
+      "steps": [
+        {
+          "details": "Instance parsed successfully.",
+          "name": "Parse instance",
+          "success": true
+        },
+        {
+          "details": "All instance-level checks passed.",
+          "name": "Validate instance",
+          "success": true
+        },
+        {
+          "details": "Submission parsed successfully.",
+          "name": "Parse submission",
+          "success": true
+        },
+        {
+          "details": "Submission format is valid.",
+          "name": "Validate submission format",
+          "success": true
+        },
+        {
+          "details": "All semantic checks passed.",
+          "name": "Validate submission semantics",
+          "success": true
+        },
+        {
+          "details": "Score computed successfully.",
+          "name": "Compute score",
+          "success": true
+        }
+      ],
+      "summary": "Submission is valid."
+    }
+  }
+]
