@@ -1,79 +1,77 @@
-[
-  {
-    "district": "district-0000",
-    "local": {
-      "coverage": 0.21259181932978186,
-      "efficiency": 1.0,
-      "score": 0.6062959096648909,
-      "valid": true
+{
+  "local_size_bounds_lifted": {
+    "coverage": 0.21259181932978186,
+    "efficiency": 1.0,
+    "score": 0.6062959096648909,
+    "size_bounds_lifted": true,
+    "valid": true
+  },
+  "official": {
+    "diagnostics": [
+      {
+        "code": "VALIDATION_OK",
+        "context": "",
+        "message": "Submission passed semantic validation and scoring.",
+        "severity": "info"
+      }
+    ],
+    "parsedSummary": {
+      "alpha": 0.5,
+      "connectorStreetCount": 0,
+      "depot": 5555,
+      "mandatoryStreetCount": 1797,
+      "nodes": 7400,
+      "optionalStreetCount": 6932,
+      "streets": 8729,
+      "timeLimit": 28800,
+      "vehicles": 72
     },
-    "official": {
-      "diagnostics": [
-        {
-          "code": "VALIDATION_OK",
-          "context": "",
-          "message": "Submission passed semantic validation and scoring.",
-          "severity": "info"
-        }
-      ],
-      "parsedSummary": {
-        "alpha": 0.5,
-        "connectorStreetCount": 0,
-        "depot": 5555,
-        "mandatoryStreetCount": 1797,
-        "nodes": 7400,
-        "optionalStreetCount": 6932,
-        "streets": 8729,
-        "timeLimit": 28800,
-        "vehicles": 72
+    "score": 0.6062959096648909,
+    "scoreBreakdown": {
+      "alpha": 0.5,
+      "cleanedMandatoryCount": 1797,
+      "cleanedOptionalCount": 0,
+      "coverage": 0.21259181932978186,
+      "distinctCleanedLength": 122394.0,
+      "efficiency": 1.0,
+      "finalScore": 0.6062959096648909,
+      "lMax": 575723.0,
+      "totalWaste": 0.0,
+      "wMax": 5848.969999999991
+    },
+    "status": "VALID",
+    "steps": [
+      {
+        "details": "Instance parsed successfully.",
+        "name": "Parse instance",
+        "success": true
       },
-      "score": 0.6062959096648909,
-      "scoreBreakdown": {
-        "alpha": 0.5,
-        "cleanedMandatoryCount": 1797,
-        "cleanedOptionalCount": 0,
-        "coverage": 0.21259181932978186,
-        "distinctCleanedLength": 122394.0,
-        "efficiency": 1.0,
-        "finalScore": 0.6062959096648909,
-        "lMax": 575723.0,
-        "totalWaste": 0.0,
-        "wMax": 5848.969999999991
+      {
+        "details": "All instance-level checks passed.",
+        "name": "Validate instance",
+        "success": true
       },
-      "status": "VALID",
-      "steps": [
-        {
-          "details": "Instance parsed successfully.",
-          "name": "Parse instance",
-          "success": true
-        },
-        {
-          "details": "All instance-level checks passed.",
-          "name": "Validate instance",
-          "success": true
-        },
-        {
-          "details": "Submission parsed successfully.",
-          "name": "Parse submission",
-          "success": true
-        },
-        {
-          "details": "Submission format is valid.",
-          "name": "Validate submission format",
-          "success": true
-        },
-        {
-          "details": "All semantic checks passed.",
-          "name": "Validate submission semantics",
-          "success": true
-        },
-        {
-          "details": "Score computed successfully.",
-          "name": "Compute score",
-          "success": true
-        }
-      ],
-      "summary": "Submission is valid."
-    }
+      {
+        "details": "Submission parsed successfully.",
+        "name": "Parse submission",
+        "success": true
+      },
+      {
+        "details": "Submission format is valid.",
+        "name": "Validate submission format",
+        "success": true
+      },
+      {
+        "details": "All semantic checks passed.",
+        "name": "Validate submission semantics",
+        "success": true
+      },
+      {
+        "details": "Score computed successfully.",
+        "name": "Compute score",
+        "success": true
+      }
+    ],
+    "summary": "Submission is valid."
   }
-]
+}

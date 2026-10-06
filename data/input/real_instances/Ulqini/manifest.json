@@ -1,123 +1,27 @@
 {
   "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
-  "boundary": {
-    "method": "place_identity_and_containment",
-    "osm_id": "relation/2319538",
-    "tags": {
-      "ISO3166-2": "ME-20",
-      "admin_level": "6",
-      "boundary": "administrative",
-      "name": "Opština Ulcinj - Komuna e Ulqinit",
-      "name:bg": "Община Ульцинь",
-      "name:bs": "Općina Ulcinj",
-      "name:cnr": "Opština Ulcinj",
-      "name:cnr-Cyrl": "Општина Улцињ",
-      "name:cs": "Občina Ulcinj",
-      "name:de": "Gemeinde Ulcinj",
-      "name:en": "Ulcinj Municipality",
-      "name:es": "Municipio de Ulcinj",
-      "name:fr": "Municipalité d'Ulcinj",
-      "name:hr": "Općina Ulcinj",
-      "name:it": "Dulcigno",
-      "name:lt": "Ulcinio savivaldybė",
-      "name:mk": "Општина Улцињ",
-      "name:ro": "Comuna Ulcinj",
-      "name:ru": "Община Ульцинь",
-      "name:sh": "Opština Ulcinj",
-      "name:sk": "Obec Ulcinj",
-      "name:sl": "Občina Ulcinj",
-      "name:sq": "Komuna e Ulqinit",
-      "name:sr": "Општина Улцињ",
-      "name:sr-Latn": "Opština Ulcinj",
-      "vehicle_plate_code": "UL",
-      "wikidata": "Q3305169"
-    }
-  },
-  "boundary_sources": [],
+  "baseline_score": 0.605023658957237,
   "city_id": "node-192271967",
-  "connectivity": {
-    "after": {
-      "fully_connected": true,
-      "island_sizes": [],
-      "junctions": 4610,
-      "main_component_junctions": 4610,
-      "roads": 5074,
-      "roads_outside_main": 0,
-      "strong_components": 1,
-      "weak_components": 1
-    },
-    "before": {
-      "fully_connected": false,
-      "island_sizes": [
-        27,
-        21,
-        6,
-        4,
-        4,
-        2,
-        2,
-        2,
-        2,
-        2
-      ],
-      "junctions": 4702,
-      "main_component_junctions": 4610,
-      "roads": 5148,
-      "roads_outside_main": 74,
-      "strong_components": 21,
-      "weak_components": 21
-    },
-    "link_meters": 0,
-    "linked": 0,
-    "max_link_m": 750.0,
-    "mode": "remove",
-    "removed_meters": 14214.89717895846,
-    "removed_roads": 74,
-    "unlinkable_components": 20
-  },
   "country": "ME",
-  "coverage": {
-    "outside_fraction": 0.0,
-    "sources": [
-      {
-        "bytes": 5099,
-        "etag": "\"13eb-65c7f53146266\"",
-        "last_modified": "Sun, 27 Sep 2026 23:29:44 GMT",
-        "retrieved_at": "2026-09-29T15:44:16.559397+00:00",
-        "sha256": "5b8871aa68125e4918b9e9676e5f1d7578b88e6c0aa26971c1fbf162fabad92e",
-        "url": "https://download.geofabrik.de/europe/montenegro.poly"
-      }
-    ],
-    "within_coverage": true
-  },
-  "districts": [
-    {
-      "fleet": 92,
-      "name": "district-0000",
-      "nodes": 4610,
-      "score": 0.605023658957237,
-      "service_streets": 5074,
-      "streets": 5074,
-      "time_limit": 43200
-    }
-  ],
+  "directory": "Ulqini",
   "files": {
-    "district-0000.json": "bf027b89a7f912f1c35d599379395fb6cc1e042881064c5a9a8d9031639f3659",
-    "district-0000.solution.txt": "6a47e7338cfa31eeb44281611db70cf6c562c5a81cb749ea86c040e788b56451",
-    "district-0000.txt": "2122f9e4901035ea5a9e34aa110a601da499571077d34f51c943bc92a89131b2",
-    "geography.json": "3b20da43694627baca355c6a9aa8a3c7b167873dc1ae997437645e5cfebe7a55",
-    "roads.geojson": "823466008fb29b172dab98c1a321e7c11da55498d602ec76e8812c96249492bd"
+    "geography.json": "75aa371864dc32b8c1670f6cc7aedceb2d16654b177597b698ae949a7833d4e8",
+    "instance.json": "9313f9e044a407f3512e482708bb749029d44e965af1324d2c6c1176eb90ea3e",
+    "instance.solution.txt": "6a47e7338cfa31eeb44281611db70cf6c562c5a81cb749ea86c040e788b56451",
+    "instance.txt": "2122f9e4901035ea5a9e34aa110a601da499571077d34f51c943bc92a89131b2",
+    "roads.geojson": "64d6c2a6ce3700ba834ed3e3316ebfe672326eabaccd3c2404b9388c3161bc59",
+    "validation.json": "2ebc461bf1a7767d8ded7fbbe6860b4485d7b585c4f257ff7c595d451a6fe5aa"
   },
-  "identity": "wikidata:Q189969",
-  "limitations": [
-    "OSM turn restrictions are metadata only in the CLIPP junction model.",
-    "Cleaning demand, fleet, and traversal speed are generated scenario assumptions.",
-    "Roads without directed return paths are excluded and reported."
-  ],
-  "name": "Ulcinj - Ulqin",
+  "instance_bytes": 114417,
+  "mandatory_streets": 1054,
+  "nodes": 4610,
+  "official_status": "VALID",
+  "osm_name": "Ulcinj - Ulqin",
   "osm_url": "https://www.openstreetmap.org/node/192271967",
-  "phase": 2,
-  "run_key": "c9ea89c9551e08c80b8e62f0f6b13c0bd62dab1bbeedf126042975530f802819",
+  "requested_name": "Ulqini",
+  "scope": "whole city",
+  "seconds_to_build": 1,
+  "service_streets": 5074,
   "settings": {
     "alpha": 0.5,
     "budget": 28800,
@@ -127,8 +31,7 @@
     "speed": 20.0,
     "target": 8000
   },
-  "silos": [],
-  "size_band": "medium",
+  "solution_bytes": 800086,
   "source": {
     "bytes": 34457648,
     "etag": "\"20dc830-65c96f3015072\"",
@@ -138,14 +41,8 @@
     "sha256": "1bbf121a7e298e01b568bb5263da485352df5fab350c6fe53a82242e383a1709",
     "url": "https://download.geofabrik.de/europe/montenegro-latest.osm.pbf"
   },
-  "split": "test",
-  "stats": {
-    "excluded_meters": 360466.9401219075,
-    "included_meters": 565327.8669793349,
-    "junctions": 4610,
-    "routable_streets": 5074,
-    "streets": 5150
-  },
-  "supplemental_sources": [],
-  "validator_revision": "a6ee8325cf96255215f6074dc17f332a4fb2d7d8"
+  "streets": 5074,
+  "time_limit": 43200,
+  "vehicles": 92,
+  "within_official_limits": true
 }
