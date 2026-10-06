@@ -2,3 +2,4 @@ requested-city-data/**/roads.geojson filter=lfs diff=lfs merge=lfs -text
 requested-city-data/**/geography.json filter=lfs diff=lfs merge=lfs -text
 data/input/real_instances/**/roads.geojson filter=lfs diff=lfs merge=lfs -text
 data/input/real_instances/**/geography.json filter=lfs diff=lfs merge=lfs -text
+data/input/real_instances/**/instance.solution.txt filter=lfs diff=lfs merge=lfs -text

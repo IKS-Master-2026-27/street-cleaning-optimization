@@ -1,147 +1,27 @@
 {
   "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
-  "boundary": {
-    "method": "place_identity_and_containment",
-    "osm_id": "relation/1675898",
-    "tags": {
-      "ISO3166-2": "SI-061",
-      "admin_level": "8",
-      "alt_name:de": "Laibach",
-      "boundary": "administrative",
-      "name": "Ljubljana",
-      "name:de": "Laibach",
-      "name:es": "Liubliana",
-      "name:gl": "Liubliana",
-      "name:ko": "류블랴나",
-      "name:ru": "Любляна",
-      "name:sk": "Ľubľana",
-      "place": "municipality",
-      "ref": "61",
-      "wikidata": "Q3434113",
-      "wikipedia": "sl:Mestna občina Ljubljana"
-    }
-  },
-  "boundary_sources": [],
+  "baseline_score": 0.6013750064107581,
   "city_id": "node-6968827",
-  "connectivity": {
-    "after": {
-      "fully_connected": true,
-      "island_sizes": [],
-      "junctions": 30278,
-      "main_component_junctions": 30278,
-      "roads": 34104,
-      "roads_outside_main": 0,
-      "strong_components": 1,
-      "weak_components": 1
-    },
-    "before": {
-      "fully_connected": false,
-      "island_sizes": [
-        19,
-        14,
-        11,
-        8,
-        8,
-        8,
-        8,
-        7,
-        7,
-        6
-      ],
-      "junctions": 30847,
-      "main_component_junctions": 30278,
-      "roads": 34473,
-      "roads_outside_main": 369,
-      "strong_components": 207,
-      "weak_components": 207
-    },
-    "link_meters": 0,
-    "linked": 0,
-    "max_link_m": 750.0,
-    "mode": "remove",
-    "removed_meters": 18350.279068382904,
-    "removed_roads": 369,
-    "unlinkable_components": 206
-  },
   "country": "SI",
-  "coverage": {
-    "outside_fraction": 0.0,
-    "sources": [
-      {
-        "bytes": 10462,
-        "etag": "\"28de-65c1aa258e65e\"",
-        "last_modified": "Tue, 22 Sep 2026 23:22:02 GMT",
-        "retrieved_at": "2026-09-29T15:44:14.601903+00:00",
-        "sha256": "f5813a8cda35bb54b0d3123e62701165e10068f532b0aa0fda70926f2d7ddc32",
-        "url": "https://download.geofabrik.de/europe/slovenia.poly"
-      }
-    ],
-    "within_coverage": true
-  },
-  "districts": [
-    {
-      "fleet": 73,
-      "name": "district-0000",
-      "nodes": 8325,
-      "score": 0.5984787888483297,
-      "service_streets": 8526,
-      "streets": 9216,
-      "time_limit": 43200
-    },
-    {
-      "fleet": 83,
-      "name": "district-0001",
-      "nodes": 7922,
-      "score": 0.6030304993421185,
-      "service_streets": 8526,
-      "streets": 8979,
-      "time_limit": 43200
-    },
-    {
-      "fleet": 73,
-      "name": "district-0002",
-      "nodes": 8163,
-      "score": 0.6015570693730016,
-      "service_streets": 8526,
-      "streets": 9267,
-      "time_limit": 28800
-    },
-    {
-      "fleet": 77,
-      "name": "district-0003",
-      "nodes": 8555,
-      "score": 0.602020592806771,
-      "service_streets": 8526,
-      "streets": 9418,
-      "time_limit": 64800
-    }
-  ],
+  "directory": "Ljubljana",
   "files": {
-    "district-0000.json": "c01165717fef692ea0dc87fbafec9375d3f8ebee23cc44b83f54e2252443ae1d",
-    "district-0000.solution.txt": "d3d8e84c6195b1506909fe1c6d605e73f0ef634028f7e9af1ba570d4c22a8059",
-    "district-0000.txt": "adbf2c0350e9c4bc006b7b269c115c3d4d9c7d6146bedabf39cd5d1908619d4f",
-    "district-0001.json": "1db4b78f441bd23d870963357e24055c203184d329aa24dfc86e4171c35ef656",
-    "district-0001.solution.txt": "09a054cc5ab3e355314f1d6182326e5056b469b91ef80edc1b2e8306f79b4181",
-    "district-0001.txt": "564c0ed5ccf972df84bf3d0ba7f23064b92e6ece258ff73b18f70c44e76f8e85",
-    "district-0002.json": "16617cb8558f34c915224b7d6576345d2630fc4e3a0608ca71775624043b212e",
-    "district-0002.solution.txt": "84cf613bf32344d399bd47e9cfd0b846d35c7f5d97b08c6089609380f458f29b",
-    "district-0002.txt": "38820deea17c339a7e4920faf8d27960711b90592fd4fde4e32d234604234311",
-    "district-0003.json": "81afce273870ddf6f401f110bc10a0cda26a8ea73e4a106314726c76b99ee402",
-    "district-0003.solution.txt": "476a90baf0b3f561dcf130ed9769d83717db40512388e669fe9cc6038f60293a",
-    "district-0003.txt": "213a676d584d8b4f5b5efeb55e2fcacfa67b8e907ecb72f9b1fc274c8b0b2d32",
-    "geography.json": "f69ed51c68a3d1f265a1d6cdae2e6071799e6229a03aa3cc2fcf97c23e3786fa",
-    "roads.geojson": "1dc753eceb4d83621539c4bcf0534a075f4a2eb551be5430ec5f2198048acce4"
+    "geography.json": "d13d0759668c04701ef2ca52663a05b81cb5a4d2b80d0b0d5fcf0074ad4851d8",
+    "instance.json": "6c9965f0c38a1ba2543e8dcddae3ffe8fef2ef43d5716dc373f6400e60388c84",
+    "instance.solution.txt": "725421bc1bcd4c59676dda0aee8fcb19286d0635579bdab655a6893220c6e4a9",
+    "instance.txt": "2eafb1aadd5e21621ab37b0ee0dae9df17c4381b2ddbae1025d3f5742473b0c6",
+    "roads.geojson": "c6eaccddbed909fc8e819be5901f428a36c2bf2b52063eb8a6ff520a2fd59196",
+    "validation.json": "5e5742485ae3f76c10113d131b866b728987d643ce8b20e23a973a0b9b72c4e6"
   },
-  "identity": "wikidata:Q437",
-  "limitations": [
-    "OSM turn restrictions are metadata only in the CLIPP junction model.",
-    "Cleaning demand, fleet, and traversal speed are generated scenario assumptions.",
-    "Roads without directed return paths are excluded and reported."
-  ],
-  "name": "Ljubljana",
+  "instance_bytes": 805459,
+  "mandatory_streets": 6722,
+  "nodes": 30278,
+  "official_status": "not run",
+  "osm_name": "Ljubljana",
   "osm_url": "https://www.openstreetmap.org/node/6968827",
-  "phase": 2,
-  "run_key": "c6d481f6f0c7ef0d0772f51fa12b5c2b4cd9e775862de3ec336a88e2b0c519cf",
+  "requested_name": "Ljubljana",
+  "scope": "whole city",
+  "seconds_to_build": 5,
+  "service_streets": 34104,
   "settings": {
     "alpha": 0.5,
     "budget": 28800,
@@ -151,8 +31,7 @@
     "speed": 20.0,
     "target": 8000
   },
-  "silos": [],
-  "size_band": "metropolis",
+  "solution_bytes": 8129551,
   "source": {
     "bytes": 313335209,
     "etag": "\"12ad1da9-65c967bd3f51b\"",
@@ -162,14 +41,8 @@
     "sha256": "f6185c40c0e114664228cf87b1fa9bb810fec5d0921f5aa69274de090a3159f0",
     "url": "https://download.geofabrik.de/europe/slovenia-latest.osm.pbf"
   },
-  "split": "test",
-  "stats": {
-    "excluded_meters": 2333137.16971029,
-    "included_meters": 1852353.527803023,
-    "junctions": 30278,
-    "routable_streets": 34104,
-    "streets": 34636
-  },
-  "supplemental_sources": [],
-  "validator_revision": "a6ee8325cf96255215f6074dc17f332a4fb2d7d8"
+  "streets": 34104,
+  "time_limit": 145800,
+  "vehicles": 94,
+  "within_official_limits": false
 }

@@ -1,79 +1,77 @@
-[
-  {
-    "district": "district-0000",
-    "local": {
-      "coverage": 0.21004731791447398,
-      "efficiency": 1.0,
-      "score": 0.605023658957237,
-      "valid": true
+{
+  "local_size_bounds_lifted": {
+    "coverage": 0.21004731791447398,
+    "efficiency": 1.0,
+    "score": 0.605023658957237,
+    "size_bounds_lifted": true,
+    "valid": true
+  },
+  "official": {
+    "diagnostics": [
+      {
+        "code": "VALIDATION_OK",
+        "context": "",
+        "message": "Submission passed semantic validation and scoring.",
+        "severity": "info"
+      }
+    ],
+    "parsedSummary": {
+      "alpha": 0.5,
+      "connectorStreetCount": 0,
+      "depot": 737,
+      "mandatoryStreetCount": 1054,
+      "nodes": 4610,
+      "optionalStreetCount": 4020,
+      "streets": 5074,
+      "timeLimit": 43200,
+      "vehicles": 92
     },
-    "official": {
-      "diagnostics": [
-        {
-          "code": "VALIDATION_OK",
-          "context": "",
-          "message": "Submission passed semantic validation and scoring.",
-          "severity": "info"
-        }
-      ],
-      "parsedSummary": {
-        "alpha": 0.5,
-        "connectorStreetCount": 0,
-        "depot": 737,
-        "mandatoryStreetCount": 1054,
-        "nodes": 4610,
-        "optionalStreetCount": 4020,
-        "streets": 5074,
-        "timeLimit": 43200,
-        "vehicles": 92
+    "score": 0.605023658957237,
+    "scoreBreakdown": {
+      "alpha": 0.5,
+      "cleanedMandatoryCount": 1054,
+      "cleanedOptionalCount": 0,
+      "coverage": 0.21004731791447398,
+      "distinctCleanedLength": 118745.0,
+      "efficiency": 1.0,
+      "finalScore": 0.605023658957237,
+      "lMax": 565325.0,
+      "totalWaste": 0.0,
+      "wMax": 5478.739999999996
+    },
+    "status": "VALID",
+    "steps": [
+      {
+        "details": "Instance parsed successfully.",
+        "name": "Parse instance",
+        "success": true
       },
-      "score": 0.605023658957237,
-      "scoreBreakdown": {
-        "alpha": 0.5,
-        "cleanedMandatoryCount": 1054,
-        "cleanedOptionalCount": 0,
-        "coverage": 0.21004731791447398,
-        "distinctCleanedLength": 118745.0,
-        "efficiency": 1.0,
-        "finalScore": 0.605023658957237,
-        "lMax": 565325.0,
-        "totalWaste": 0.0,
-        "wMax": 5478.739999999996
+      {
+        "details": "All instance-level checks passed.",
+        "name": "Validate instance",
+        "success": true
       },
-      "status": "VALID",
-      "steps": [
-        {
-          "details": "Instance parsed successfully.",
-          "name": "Parse instance",
-          "success": true
-        },
-        {
-          "details": "All instance-level checks passed.",
-          "name": "Validate instance",
-          "success": true
-        },
-        {
-          "details": "Submission parsed successfully.",
-          "name": "Parse submission",
-          "success": true
-        },
-        {
-          "details": "Submission format is valid.",
-          "name": "Validate submission format",
-          "success": true
-        },
-        {
-          "details": "All semantic checks passed.",
-          "name": "Validate submission semantics",
-          "success": true
-        },
-        {
-          "details": "Score computed successfully.",
-          "name": "Compute score",
-          "success": true
-        }
-      ],
-      "summary": "Submission is valid."
-    }
+      {
+        "details": "Submission parsed successfully.",
+        "name": "Parse submission",
+        "success": true
+      },
+      {
+        "details": "Submission format is valid.",
+        "name": "Validate submission format",
+        "success": true
+      },
+      {
+        "details": "All semantic checks passed.",
+        "name": "Validate submission semantics",
+        "success": true
+      },
+      {
+        "details": "Score computed successfully.",
+        "name": "Compute score",
+        "success": true
+      }
+    ],
+    "summary": "Submission is valid."
   }
-]
+}
