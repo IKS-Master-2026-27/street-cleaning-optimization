@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CLIPP 3D Replay</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 rx=%273%27 fill=%27%2343d36b%27/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./src/ui/style.css">
+</head>
+<body>
+  <canvas id="view"></canvas>
+
+  <aside id="panel">
+    <header>
+      <h1>CLIPP 3D Replay</h1>
+      <p class="muted">Street-cleaning routes on real OpenStreetMap cities</p>
+    </header>
+
+    <section>
+      <label for="city">City</label>
+      <select id="city"></select>
+      <p id="city-info" class="muted small"></p>
+    </section>
+
+    <section>
+      <label for="solution">Solution</label>
+      <div class="row">
+        <select id="solution"></select>
+        <label class="button" title="Load a solution file in the validator format">
+          Upload<input id="upload" type="file" accept=".txt,text/plain" hidden>
+        </label>
+      </div>
+      <p id="solution-info" class="muted small"></p>
+    </section>
+
+    <section>
+      <h2>Live statistics</h2>
+      <div class="stats">
+        <div><span>Mandatory</span><b id="st-mandatory">–</b></div>
+        <div><span>Optional</span><b id="st-optional">–</b></div>
+        <div><span>Cleaned length</span><b id="st-length">–</b></div>
+        <div><span>Coverage</span><b id="st-coverage">–</b></div>
+        <div><span>Efficiency</span><b id="st-efficiency">–</b></div>
+        <div><span>Score now</span><b id="st-score">–</b></div>
+        <div><span>Trucks out</span><b id="st-active">–</b></div>
+        <div><span>Final score</span><b id="st-final">–</b></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Show</h2>
+      <div class="segmented compact" role="radiogroup" aria-label="Colour streets by">
+        <input type="radio" name="color-mode" id="color-type" value="type" checked>
+        <label for="color-type" title="Red mandatory, blue optional, grey connector; green once cleaned (shining while still wet)">Type &amp; cleaning</label>
+        <input type="radio" name="color-mode" id="color-heat" value="heat">
+        <label for="color-heat" title="How many times the trucks drive each street in this solution; streets driven often are where a better algorithm could save work">Times driven</label>
+      </div>
+      <p id="heat-legend" class="muted small legend" hidden></p>
+      <div class="filters">
+        <label><input type="checkbox" data-street="0" checked><i class="sw" style="background:#e53935"></i>Mandatory</label>
+        <label><input type="checkbox" data-street="1" checked><i class="sw" style="background:#1e88e5"></i>Optional</label>
+        <label><input type="checkbox" data-street="2" checked><i class="sw" style="background:#8a8f98"></i>Connector</label>
+        <label title="Footprints from Microsoft's open dataset; heights are estimated"><input type="checkbox" id="show-buildings" checked><i class="sw" style="background:#56606e"></i>Buildings</label>
+        <label><input type="checkbox" data-vehicle="S" checked><i class="sw" style="background:#4dd0e1"></i>S trucks</label>
+        <label><input type="checkbox" data-vehicle="M" checked><i class="sw" style="background:#ff9800"></i>M trucks</label>
+        <label><input type="checkbox" data-vehicle="L" checked><i class="sw" style="background:#e040fb"></i>L trucks</label>
+        <label title="Water spray from trucks while they clean"><input type="checkbox" id="show-spray" checked><i class="sw" style="background:#bdefff"></i>Water spray</label>
+        <label title="Sun, sky and shadows follow the shift clock; the shift is assumed to start at 06:00"><input type="checkbox" id="show-daylight" checked><i class="sw" style="background:#ffb27a"></i>Time of day</label>
+      </div>
+      <div class="slider">
+        <label for="truck-size">Truck size</label>
+        <input id="truck-size" type="range" min="1" max="12" step="0.5" value="4">
+        <output id="truck-size-value" for="truck-size">×4</output>
+      </div>
+      <div class="slider">
+        <label for="road-width">Road width</label>
+        <input id="road-width" type="range" min="1" max="6" step="0.5" value="2">
+        <output id="road-width-value" for="road-width">×2</output>
+      </div>
+      <p id="type-legend" class="muted small legend"><i class="sw" style="background:#43d36b"></i>cleaned
+        <i class="sw" style="background:#fdd835"></i>depot · trucks are bright while cleaning, dim while driving</p>
+    </section>
+
+    <section class="grow">
+      <h2>Trucks <span id="truck-count" class="muted"></span></h2>
+      <div class="truck-head"><span>#</span><span>Type</span><span>Route</span><span>of T</span></div>
+      <div id="trucks" class="truck-list"></div>
+    </section>
+  </aside>
+
+  <div id="details" hidden>
+    <button id="details-close" class="close" aria-label="Close">×</button>
+    <div id="details-body"></div>
+    <div id="details-actions" class="actions"></div>
+  </div>
+
+  <div id="timebar">
+    <button id="play" class="play" aria-label="Play">▶</button>
+    <span id="clock" class="clock">00:00:00</span>
+    <span id="daytime" class="daytime" title="Assumed time of day: the shift starts at 06:00"></span>
+    <div class="track">
+      <input id="time" type="range" min="0" max="28800" step="1" value="0">
+      <div id="limit-mark" class="limit-mark" title="Time limit T"></div>
+    </div>
+    <span id="duration" class="clock muted">08:00:00</span>
+    <button id="analysis-toggle" title="Efficiency numbers and a timeline of every truck (A)">Analysis</button>
+    <select id="speed" aria-label="Playback speed">
+      <option value="1">×1</option>
+      <option value="10">×10</option>
+      <option value="60">×60</option>
+      <option value="300" selected>×300</option>
+      <option value="1000">×1000</option>
+      <option value="3000">×3000</option>
+      <option value="10000">×10000</option>
+    </select>
+  </div>
+
+  <div id="analysis" hidden>
+    <div class="analysis-head">
+      <h2>Analysis</h2>
+      <span class="muted small">how this solution uses the trucks</span>
+      <button id="analysis-close" class="close" aria-label="Close analysis">×</button>
+    </div>
+    <div class="analysis-body">
+      <div id="kpis" class="kpis"></div>
+      <div class="gantt">
+        <div class="gantt-legend">
+          <span><i style="background:#22a65a"></i>Cleaning</span>
+          <span><i class="thin" style="background:#3987e5"></i>Driving, not cleaning</span>
+          <span><i style="background:#1d232c"></i>At the depot</span>
+          <span><i class="line" style="background:#ffffff"></i>Now</span>
+        </div>
+        <canvas id="gantt-axis" height="18"></canvas>
+        <div id="gantt-scroll" class="gantt-scroll">
+          <canvas id="gantt"></canvas>
+          <canvas id="gantt-overlay"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="gantt-tip" class="gantt-tip" hidden></div>
+  <div id="tooltip" hidden></div>
+  <div id="drop" hidden>Drop a solution file to replay it</div>
+  <div id="loading">Loading…</div>
+  <div id="attribution"></div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
