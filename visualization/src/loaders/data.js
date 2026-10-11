@@ -52,7 +52,21 @@ export async function loadSolution(city, id) {
   const root = `${city.root}solutions/`;
   const meta = await fetchJSON(`${root}${encodeURIComponent(id)}.json`);
   const exact = exactTrack(openBuffers(await fetchBuffer(root + meta.file), meta.buffers), meta.vehicles);
-  return { meta, exact };
+  return { meta, exact, sumo: null };
+}
+
+// The realistic (SUMO) timeline of a solution, loaded on first use: the trucks
+// in fleet order, then the background cars.
+export async function loadSumoTrack(city, solution) {
+  const info = solution.meta.sumo;
+  if (!info) return null;
+  if (!solution.sumo) {
+    const arrays = openBuffers(await fetchBuffer(`${city.root}solutions/${info.file}`), info.buffers);
+    const trucks = solution.meta.vehicles.length;
+    const types = Array.from({ length: arrays.end.length }, (_, v) => (v < trucks ? city.fleet[v] : 'car'));
+    solution.sumo = { ...arrays, types };
+  }
+  return solution.sumo;
 }
 
 // Same rules as pipeline/timeline.py: map junction pairs to streets, add street
@@ -115,7 +129,7 @@ export function parseSolutionText(text, city, label) {
     offsets: Uint32Array.from(offsets), street: Uint32Array.from(street),
     enter: Float32Array.from(enter), flags: Uint8Array.from(flags),
   };
-  return { meta, exact: exactTrack(arrays, vehicles) };
+  return { meta, exact: exactTrack(arrays, vehicles), sumo: null };
 }
 
 // The CLIPP score (same as clipp/scoring.py and the external validator).

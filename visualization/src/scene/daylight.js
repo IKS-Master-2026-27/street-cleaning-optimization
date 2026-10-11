@@ -9,16 +9,16 @@ const START_HOUR = 6;
 // sky: background and fog; hemi/sun: light intensities; land: ground brightness;
 // street: brightness of the street colours (they are not lit by the lights)
 const KEYS = [
-  [0, { sky: 0x080b11, sunColor: 0x9fb4ff, hemi: 0.7, sun: 0, land: 0.5, street: 0.62 }],
-  [5, { sky: 0x0c1018, sunColor: 0x9fb4ff, hemi: 0.8, sun: 0, land: 0.55, street: 0.66 }],
-  [6.5, { sky: 0x2b2337, sunColor: 0xffb27a, hemi: 1.4, sun: 0.9, land: 0.8, street: 0.85 }],
-  [9, { sky: 0x1c2431, sunColor: 0xfff4e0, hemi: 2.1, sun: 1.9, land: 1, street: 1 }],
-  [16, { sky: 0x1c2431, sunColor: 0xfff4e0, hemi: 2.1, sun: 1.9, land: 1, street: 1 }],
-  [18.5, { sky: 0x34232e, sunColor: 0xff9a5a, hemi: 1.4, sun: 0.9, land: 0.8, street: 0.85 }],
-  [20, { sky: 0x0c1018, sunColor: 0x9fb4ff, hemi: 0.8, sun: 0, land: 0.55, street: 0.66 }],
-  [24, { sky: 0x080b11, sunColor: 0x9fb4ff, hemi: 0.7, sun: 0, land: 0.5, street: 0.62 }],
+  [0, { sky: 0x0d1320, sunColor: 0x9fb4ff, hemi: 0.6, sun: 0, land: 0.3, street: 0.55 }],
+  [4.5, { sky: 0x121a2a, sunColor: 0x9fb4ff, hemi: 0.7, sun: 0, land: 0.34, street: 0.58 }],
+  [5.5, { sky: 0xc2b7bb, sunColor: 0xffc08f, hemi: 1.6, sun: 1.3, land: 0.78, street: 0.85 }],  // summer sunrise
+  [7.5, { sky: 0xd6dbe1, sunColor: 0xfff4e0, hemi: 1.8, sun: 2.2, land: 1, street: 1 }],
+  [17, { sky: 0xd6dbe1, sunColor: 0xfff4e0, hemi: 1.8, sun: 2.2, land: 1, street: 1 }],
+  [19.5, { sky: 0xc9b6ae, sunColor: 0xffa66a, hemi: 1.6, sun: 1.3, land: 0.78, street: 0.85 }],
+  [21, { sky: 0x121a2a, sunColor: 0x9fb4ff, hemi: 0.7, sun: 0, land: 0.34, street: 0.58 }],
+  [24, { sky: 0x0d1320, sunColor: 0x9fb4ff, hemi: 0.6, sun: 0, land: 0.3, street: 0.55 }],
 ];
-const FIXED = { sky: 0x1a1f27, sunColor: 0xffffff, hemi: 2.2, sun: 1.6, land: 1, street: 1 };
+const FIXED = { sky: 0xd6dbe1, sunColor: 0xffffff, hemi: 1.8, sun: 2.0, land: 1, street: 1 };
 
 const ca = new THREE.Color(), cb = new THREE.Color();
 
@@ -41,7 +41,7 @@ export class Daylight {
     const { scene, renderer } = world;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    this.hemi = new THREE.HemisphereLight(0xdde6ff, 0x20242c, FIXED.hemi);
+    this.hemi = new THREE.HemisphereLight(0xeef3ff, 0x9aa3ad, FIXED.hemi);
     this.sun = new THREE.DirectionalLight(0xffffff, FIXED.sun);
     this.sun.castShadow = true;
     this.sun.shadow.mapSize.set(2048, 2048);
@@ -63,7 +63,7 @@ export class Daylight {
     const [x0, y0, x1, y1] = city.bounds;
     const plane = new THREE.Mesh(
       new THREE.PlaneGeometry(x1 - x0 + 400, y1 - y0 + 400).rotateX(-Math.PI / 2),
-      new THREE.ShadowMaterial({ opacity: 0.38, depthWrite: false }),
+      new THREE.ShadowMaterial({ opacity: 0.22, depthWrite: false }),
     );
     plane.position.set((x0 + x1) / 2, 0.05, -(y0 + y1) / 2);
     plane.receiveShadow = true;

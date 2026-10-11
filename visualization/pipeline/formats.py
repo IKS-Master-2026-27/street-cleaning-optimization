@@ -144,6 +144,7 @@ class Roads:
         wanted = set(wanted)
         self.index = {}  # road id -> position
         self.u, self.v, self.names, self.highways = [], [], [], []
+        self.maxspeed, self.lanes = [], []  # raw OSM tags, used by the SUMO network (sumo_run.py)
         self.direction = array("b")
         self.seconds = array("l")
         self.meters = array("d")
@@ -159,6 +160,8 @@ class Roads:
             self.v.append(p["v"])
             self.names.append(tags.get("name"))
             self.highways.append(str(tags.get("highway", "road")))
+            self.maxspeed.append(tags.get("maxspeed"))
+            self.lanes.append(tags.get("lanes"))
             self.direction.append(int(p["direction"]))
             self.seconds.append(p["seconds"])
             self.meters.append(p["meters"])

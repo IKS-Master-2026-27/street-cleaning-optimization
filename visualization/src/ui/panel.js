@@ -16,15 +16,25 @@ export function hms(seconds) {
 
 export const percent = (x, digits = 1) => `${(x * 100).toFixed(digits)} %`;
 
+const signed = (x) => `${x >= 0 ? '+' : ''}${(x * 100).toFixed(1)} %`;
+
 export function renderTruckList(container, app, onSelect) {
-  const { city, replay } = app;
+  const { city, replay, solution } = app;
   const limit = city.timeLimit;
+  const sumo = solution.meta.sumo;
   const rows = [];
   for (let v = 0; v < city.fleet.length; v++) {
     const end = replay.track.end[v];
+    // Δ SUMO: how much longer the truck takes in SUMO than in the solver's timing
+    let delay = '';
+    if (sumo) {
+      const exactEnd = solution.meta.vehicles[v].end, t = sumo.trucks[v];
+      delay = t.steps && exactEnd ? `<span class="${t.end > limit ? 'late' : ''}">${signed(t.end / exactEnd - 1)}</span>` : '–';
+    }
     rows.push(
       `<div class="truck-row" data-v="${v}"><span>${v}</span><span>${city.fleet[v]}</span>` +
-      `<span>${hms(end)}</span><span class="${end > limit ? 'late' : ''}">${((end / limit) * 100).toFixed(0)} %</span></div>`,
+      `<span>${hms(end)}</span><span class="${end > limit ? 'late' : ''}">${((end / limit) * 100).toFixed(0)} %</span>` +
+      `<span>${delay}</span></div>`,
     );
   }
   container.innerHTML = rows.join('');
@@ -95,6 +105,7 @@ export function renderDetails(app, selection, typeNames) {
   return `<h3>Truck #${v} · ${type}</h3>${progress}<dl>
     <dt>Capacity</dt><dd>${CAPACITY[type]}</dd>
     <dt>Route time</dt><dd class="${end > city.timeLimit ? 'late' : ''}">${hms(end)} · ${((end / city.timeLimit) * 100).toFixed(1)} % of T</dd>
+    ${sumoRows(app, v)}
     <dt>Now</dt><dd>${doing}</dd>
     ${step}
     </dl>`;
@@ -112,6 +123,16 @@ export function renderActions(app, selection) {
   const v = selection.id;
   const steps = t.offsets[v + 1] - t.offsets[v];
   return `<button id="follow">${app.follow ? 'Stop following' : 'Follow (F)'}</button>` +
-    `<button id="driver">${app.driver ? 'Leave driver view' : 'Driver view (V)'}</button>` +
     (steps ? `<button id="jump-start" data-t="${t.enter[t.offsets[v]]}">Go to departure</button>` : '');
+}
+
+// In the details card: the other timing of the same truck (SUMO or the solver's).
+function sumoRows(app, v) {
+  const { meta } = app.solution;
+  const sumo = meta.sumo?.trucks[v];
+  if (!sumo || !sumo.steps) return '';
+  const exactEnd = meta.vehicles[v].end;
+  if (app.mode === 'sumo') return `<dt>Solver time</dt><dd>${hms(exactEnd)}</dd>`;
+  return `<dt>SUMO time</dt><dd class="${sumo.end > app.city.timeLimit ? 'late' : ''}">${hms(sumo.end)} (${signed(sumo.end / exactEnd - 1)})</dd>` +
+    (sumo.complete ? '' : '<dt></dt><dd class="late">did not finish its route in SUMO</dd>');
 }

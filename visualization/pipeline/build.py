@@ -10,7 +10,9 @@ Usage (from the repository root):
    solution with clipp's validator; the solution is kept in the validator's format
    at data/output/<algorithm>/<City>_instance_solution.txt,
 3. with --buildings, downloads the city's 3D buildings once (see buildings.py),
-4. exports the city and the solution for the 3D app (see convert.py).
+4. exports the city and the solution for the 3D app (see convert.py),
+5. with --sumo, drives the solution in Eclipse SUMO for the app's realistic mode
+   (see sumo_run.py; --traffic adds background cars).
 
 Then start the app (cd visualization; npm run dev). New algorithms are added in
 algorithms.py.
@@ -31,6 +33,10 @@ def main(argv=None) -> int:
     parser.add_argument("--buildings", action="store_true",
                         help="also download 3D buildings for the city (see buildings.py; "
                              "a few minutes per city the first time)")
+    parser.add_argument("--sumo", action="store_true",
+                        help="also run the realistic mode in Eclipse SUMO (see sumo_run.py)")
+    parser.add_argument("--traffic", type=float, default=None, metavar="DENSITY",
+                        help="with --sumo: background cars per hour per km of lane; try 1")
     parser.add_argument("--rerun", action="store_true",
                         help="run the algorithm again even if its solution already exists")
     args = parser.parse_args(argv)
@@ -52,7 +58,10 @@ def main(argv=None) -> int:
                 except (OSError, ValueError) as exc:  # buildings are optional; keep going
                     print(f"  buildings skipped: {exc}", file=sys.stderr)
             convert(folder, OUTPUT)
-        except (ValueError, OSError, KeyError) as exc:
+            if args.sumo:
+                from sumo_run import sumo_city  # needs SUMO installed only when asked for
+                sumo_city(folder, OUTPUT, args.algorithm, traffic=args.traffic)
+        except (ValueError, OSError, KeyError, SystemExit) as exc:  # SystemExit: sumo_run.py's errors
             print(f"error: {exc}", file=sys.stderr)
             failed = True
     write_index(OUTPUT, DATASET)

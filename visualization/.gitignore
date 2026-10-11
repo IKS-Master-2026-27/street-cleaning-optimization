@@ -2,3 +2,7 @@ node_modules/
 dist/
 # downloaded building footprints (rebuilt by buildings.py)
 pipeline/cache/
+# SUMO networks, routes and raw outputs (rebuilt by sumo_run.py)
+pipeline/work/
+# Vite's dependency cache (rebuilt by npm run dev)
+.vite/

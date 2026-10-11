@@ -56,6 +56,39 @@ class BuildingsTests(unittest.TestCase):
         self.assertEqual(small, buildings.estimated_height(40, 10, 20))  # stable
 
 
+class SumoTests(unittest.TestCase):
+    """The parts of the realistic mode that do not need SUMO installed."""
+
+    def test_speeds_lanes_and_edge_names(self):
+        import sumo_run
+        self.assertAlmostEqual(sumo_run.speed_limit("primary", "50"), 50 / 3.6)
+        self.assertAlmostEqual(sumo_run.speed_limit("primary", "30 mph"), 30 * 1.609 / 3.6)
+        # never slower than the trucks' 20 km/h, so the plan is not slowed by the map
+        self.assertGreater(sumo_run.speed_limit("living_street", "10"), 20 / 3.6)
+        self.assertEqual(sumo_run.lane_count("4", two_way=True), 2)
+        self.assertEqual(sumo_run.lane_count("2;3", two_way=False), 2)
+        self.assertEqual(sumo_run.lane_count(None, two_way=True), 1)
+        self.assertEqual(sumo_run.edge_id(7, True), "s7_r")
+        self.assertEqual(sumo_run.parse_edge("s7_r"), (7, REVERSE))
+        self.assertIsNone(sumo_run.parse_edge(":j3_0"))  # SUMO's internal junction edge
+
+    def test_missing_turns_keep_all_existing_turns(self):
+        import sumo_run
+        needed = sumo_run.route_turns([[(1, False), (1, True)], [(1, False), (2, False)]])
+        self.assertEqual(needed, {("s1_f", "s1_r"), ("s1_f", "s2_f")})
+        # netconvert built s1_f -> s2_f and s1_f -> s3_f but not the U-turn s1_f -> s1_r
+        built = {"s1_f": {("s2_f", 0, 0), ("s3_f", 0, 0)}}
+        lanes = {"s1_f": 1, "s1_r": 1, "s2_f": 1, "s3_f": 1}
+        with TemporaryDirectory() as folder:
+            path = Path(folder) / "net.con.xml"
+            added = sumo_run.write_missing_turns(needed, built, lanes, path)
+            text = path.read_text()
+        self.assertEqual(added, 1)
+        # the U-turn is added, and the edge's other turns are listed again so none is lost
+        for to in ("s1_r", "s2_f", "s3_f"):
+            self.assertIn(f'from="s1_f" to="{to}" fromLane="0" toLane="0"', text)
+
+
 class TimelineTests(unittest.TestCase):
     INSTANCE = "3 3 100 2 0 0.5\n0 1 2 10 100 M 10\n1 2 1 20 200 O 20\n2 0 1 5 50 C 0\nS L\n"
 

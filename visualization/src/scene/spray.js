@@ -11,9 +11,10 @@ const vertexShader = /* glsl */ `
   uniform float pixels;   // viewport height / (2 tan(fov / 2))
   varying float vAlpha;
   void main() {
-    vAlpha = alpha;
     vec4 mv = modelViewMatrix * vec4(position, 1.0);
-    gl_PointSize = max(size * pixels / -mv.z, 1.5);
+    // drops right in front of the camera would tint the whole view: fade them out
+    vAlpha = alpha * smoothstep(4.0, 25.0, -mv.z);
+    gl_PointSize = clamp(size * pixels / -mv.z, 1.5, 48.0);
     gl_Position = projectionMatrix * mv;
   }`;
 const fragmentShader = /* glsl */ `
@@ -23,6 +24,7 @@ const fragmentShader = /* glsl */ `
     float d = length(gl_PointCoord - 0.5);
     if (d > 0.5) discard;
     gl_FragColor = vec4(color, vAlpha * (1.0 - d * 2.0));
+    #include <colorspace_fragment>
   }`;
 
 export class Spray {
@@ -40,10 +42,10 @@ export class Spray {
     geometry.setAttribute('position', new THREE.BufferAttribute(this.position, 3).setUsage(THREE.DynamicDrawUsage));
     geometry.setAttribute('alpha', new THREE.BufferAttribute(this.alpha, 1).setUsage(THREE.DynamicDrawUsage));
     geometry.setAttribute('size', new THREE.BufferAttribute(this.size, 1).setUsage(THREE.DynamicDrawUsage));
-    this.uniforms = { pixels: { value: 500 }, color: { value: new THREE.Color(0xbdefff) } };
+    this.uniforms = { pixels: { value: 500 }, color: { value: new THREE.Color(0x4fb6f0) } };
     this.points = new THREE.Points(geometry, new THREE.ShaderMaterial({
       uniforms: this.uniforms, vertexShader, fragmentShader,
-      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      transparent: true, depthWrite: false, // normal blending: additive white vanishes on the light ground
     }));
     this.points.frustumCulled = false;
     this.points.renderOrder = 6;
@@ -69,7 +71,7 @@ export class Spray {
     if (this.enabled) {
       for (let v = 0; v < vehicles.types.length; v++) {
         const type = vehicles.types[v];
-        if (vehicles.states[v] === 2 && vehicles.meshes[type].visible) cleaning.push(v);
+        if (vehicles.states[v] === 2 && type !== 'car' && vehicles.meshes[type].visible) cleaning.push(v);
       }
     }
     // share the pool between the cleaning trucks (about 0.9 s of life each)
@@ -106,7 +108,7 @@ export class Spray {
       this.velocity[3 * i + 1] -= gravity * dt;
       for (let a = 0; a < 3; a++) this.position[3 * i + a] += this.velocity[3 * i + a] * dt;
       if (this.position[3 * i + 1] < 0.3) { this.position[3 * i + 1] = 0.3; this.velocity[3 * i + 1] = 0; }
-      this.alpha[i] = Math.max(this.life[i] / this.span[i], 0) * 0.85;
+      this.alpha[i] = Math.max(this.life[i] / this.span[i], 0) * 0.55;
     }
     const attributes = this.points.geometry.attributes;
     attributes.position.needsUpdate = true;

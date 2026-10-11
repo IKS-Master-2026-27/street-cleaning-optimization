@@ -13,8 +13,15 @@ Steps 1 and 2 are one terminal command per city (`build.py`); step 3 is the web
 app. It works the same for every city, from Presheva (744 junctions) up to Sydney
 (255,428 junctions, 697 trucks). Nothing in the code is specific to one city.
 
-Trucks move on the solver's own timeline: each street's time from the instance,
-added from 0 at the depot. This is exactly what the validator scores.
+There are two timings, switched in the app:
+
+- **Exact** (default): trucks move on the solver's own timeline, each street's time
+  from the instance added from 0 at the depot. This is exactly what the validator
+  scores.
+- **Realistic (SUMO)**: the same routes driven in [Eclipse SUMO](https://eclipse.dev/sumo/),
+  a traffic simulator, with acceleration, junction rules and optional background
+  traffic. It shows how much longer each truck would take on real roads and
+  which trucks would miss the time limit.
 
 The work is split into an offline Python pipeline and a browser app. The browser
 only loads the exported files; it never reads the raw dataset or runs an algorithm.
@@ -25,6 +32,7 @@ visualization/
 │   ├── build.py           instance -> algorithm -> files for the browser (the main command)
 │   ├── algorithms.py      the algorithms the tool can run; add new ones here
 │   ├── convert.py         city + its solutions -> files for the browser (used by build.py)
+│   ├── sumo_run.py        realistic mode: drives a solution in Eclipse SUMO (used by build.py --sumo)
 │   ├── buildings.py       3D building footprints for a city (used by build.py)
 │   ├── audit.py           checks a city folder (hashes, ids, geometry)
 │   ├── formats.py         parsers for instance.txt, solutions and the OSM files
@@ -35,7 +43,7 @@ visualization/
 ├── src/                   Three.js app (Vite)
 │   ├── loaders/           city, buildings and solution files; uploaded solutions
 │   ├── playback/          street geometry, vehicle positions, cleaning events, live score, analysis
-│   ├── scene/             ground, streets, buildings, trucks, route, spray, daylight, picking
+│   ├── scene/             ground, streets, buildings, trees, trucks, route, spray, daylight, picking
 │   └── ui/                side panel, details card, analysis drawer, styles
 ├── public/data/           pipeline output (one folder per city + index.json)
 └── index.html
@@ -50,7 +58,10 @@ From the repository root:
 #    and prepare the app; add --buildings for 3D buildings
 python visualization/pipeline/build.py Presheva
 
-# 2. Start the app
+# 2. Optional: the realistic mode in Eclipse SUMO, with background traffic
+python visualization/pipeline/build.py Presheva --sumo --traffic 1
+
+# 3. Start the app
 cd visualization
 npm install
 npm run dev
@@ -65,10 +76,12 @@ example `http://localhost:5173/#Presheva/greedy`.
 validator, and reuses it next time. Use `--rerun` after the algorithm changes.
 
 Requirements: Python 3.10+ and Node.js 16+ (Vite 4). The pipeline uses no
-third-party Python packages.
+third-party Python packages. The realistic mode also needs
+[Eclipse SUMO](https://eclipse.dev/sumo/) with `SUMO_HOME` set (tested with 1.27.1).
 
 Built so far: **all 10 cities**, with the team's greedy solutions
-(`data/output/greedy/<City>_instance_solution.txt`) and without buildings. The
+(`data/output/greedy/<City>_instance_solution.txt`) and without buildings;
+Presheva, Ulqini and Prishtina also have a SUMO run (`--traffic 1`). The
 road files are read one street at a time, so even the largest stay light:
 
 | City | Streets | Route steps | Build time | Peak memory | App data | Loads in browser |
@@ -101,23 +114,31 @@ The app then offers every algorithm that has a solution for the open city in its
 | Jump in time | drag the timeline; for an uploaded solution that runs past the time limit T, a yellow mark shows T |
 | Pan, rotate, zoom | left drag, right drag, mouse wheel |
 | Street or truck details | hover for a tooltip, click for the details card |
-| Focus on a truck | click a truck or a row in the truck list: other trucks fade, its route shows the part already driven (white) and still ahead (faint blue), and the card shows progress bars for its route, its cleaning and its place in the shift |
+| Focus on a truck | click a truck or a row in the truck list: other trucks fade, its route shows the part already driven (dark) and still ahead (faint blue), and the card shows progress bars for its route, its cleaning and its place in the shift |
 | Follow a truck | after selecting it, **Follow** or <kbd>F</kbd>: the camera moves with it and you can still rotate and zoom |
-| Ride along (driver's view) | after selecting it, **Driver view** or <kbd>V</kbd>: the camera sits low behind the truck and turns with it; <kbd>V</kbd> again to get the mouse back |
+| Back to the whole city from above | **Top view** in the time bar or <kbd>R</kbd> |
 | Analyse the solution | **Analysis** in the time bar or <kbd>A</kbd> (see below) |
-| See where trucks drive repeatedly | **Times driven** under **Show** colours every street by how often trucks drive it (almost white = once, then redder up to deep red = 4 times or more, dark grey = never) |
-| Hide street types or truck types | the checkboxes under **Show** |
+| See where trucks drive repeatedly | **Times driven** under **Show** colours every street by how often trucks drive it (pale red = once, then redder up to deep red = 4 times or more, light grey = never) |
+| Exact or realistic timing | the **Exact / Realistic (SUMO)** switch under **Solution** (greyed out for a city without a SUMO run); the line below it gives the median truck delay and how many trucks miss the time limit, and the truck list's **Δ SUMO** column each truck's extra time |
+| Hide street types, truck types or the SUMO background cars | the checkboxes under **Show** |
 | Make trucks bigger or smaller | the **Truck size** slider under **Show**: up close trucks stay near real size, and they grow by this factor as you zoom out (remembered by the browser) |
 | Make roads wider or narrower | the **Road width** slider under **Show** (×2 by default; remembered by the browser) |
-| Hide buildings, water spray or day/night | the **Buildings**, **Water spray** and **Time of day** checkboxes under **Show** |
+| Hide buildings, trees, water spray or day/night | the **Buildings**, **Trees**, **Water spray** and **Time of day** checkboxes under **Show** |
 | Check your own solution | **Upload** (or drop the file on the page) a solution in the validator format for the open city |
 
 Colours follow the course slides: red = mandatory, blue = optional, grey =
 connector, green = cleaned, yellow = depot. Trucks are cyan (S), orange (M) and
-magenta (L); they are bright while cleaning, dimmed while only driving, and grey
-once back at the depot. The selected truck is white and its route is outlined.
-A freshly cleaned street shines pale blue ("wet") for about 15 simulated minutes,
-and trucks spray water from their front corners while they clean.
+magenta (L); they are bright while cleaning, paler while only driving, and grey
+once back at the depot. Selecting a truck turns the other trucks grey, keeps it
+in full colour and outlines its route. A freshly cleaned street shines pale blue
+("wet") for about 15 simulated minutes, and trucks spray water from their front
+corners while they clean.
+
+The scene is styled as a white city model: light ground, white buildings, toy-like
+glossy trucks (cab, water tank, wheels, roof beacon) and bubble cars for the SUMO
+traffic. The trees are decorative: the dataset has none, so they are placed the
+same way every time along both sides of the streets, never on a road or inside a
+building, and hidden when the camera is far away.
 
 With **Time of day** on, the sun, sky and shadows follow the shift clock. The
 instances have no wall-clock time, so the shift is **assumed to start at 06:00**;
@@ -152,12 +173,14 @@ cleaning streets that need a larger capacity, and mandatory streets left unclean
 ### `build.py`
 
 ```text
-python visualization/pipeline/build.py CITY... [--algorithm NAME] [--rerun] [--buildings]
+python visualization/pipeline/build.py CITY... [--algorithm NAME] [--rerun] [--buildings] [--sumo [--traffic DENSITY]]
 ```
 
 Runs the algorithm (default `greedy`) on each city unless its solution file
 already exists, checks the solution with `clipp`'s validator, adds 3D buildings
-when asked (`--buildings`, see below), then calls `convert.py`. A city can be given by name (`Presheva`) or folder.
+when asked (`--buildings`, see below), calls `convert.py`, and with `--sumo` runs
+the realistic mode (see `sumo_run.py`). A city can be given by name (`Presheva`)
+or folder.
 
 ### `convert.py`
 
@@ -184,6 +207,40 @@ streets must be driven by a truck with enough capacity, and every mandatory stre
 must be cleaned. Files of solutions that no longer exist are removed. The
 dataset's own solution (`instance.solution.txt`) is not shown in the app; the tests use it to check the
 timeline rules against the generator's route times and validator score.
+
+### `sumo_run.py`
+
+```text
+python visualization/pipeline/sumo_run.py CITY... [--solution ALGORITHM] [--profile realistic|ideal] [--traffic DENSITY]
+```
+
+Drives an exported solution in Eclipse SUMO (also run by `build.py --sumo`):
+
+| CLIPP | SUMO |
+|---|---|
+| junction i | node `j{i}` at its projected position (`priority`, or `unregulated` for `ideal`) |
+| street k | edge `s{k}_f` (a→b), plus `s{k}_r` (b→a) for a two-way street; the real shape and length, speed from OSM `maxspeed` or the road class (never below the trucks' 20 km/h), lanes from OSM |
+| turns the routes use | netconvert builds the network twice: first with its own turns, then adding only the turns the routes need that it left out (mostly U-turns). Edges that get an added turn keep all their computed turns, lane by lane, so other traffic is not cut off. The run stops if any turn a route needs is still missing |
+| truck v | vehicle `v{v}` of type S, M or L (at most 20 km/h), departing at 0 with its exact list of edges |
+| background traffic | `randomTrips.py --insertion-density DENSITY` (cars per hour per km of lane, so it scales with the city) |
+
+SUMO runs with `--vehroute-output.exit-times`, so only the time each vehicle
+leaves each road is kept, not per-second positions. The result is written as
+`solutions/<id>.sumo.bin` in the same step format as the exact timeline, so the
+app plays both with the same code. A SUMO run is kept when the city is
+re-exported with an unchanged solution file. SUMO's networks and raw outputs
+stay in `pipeline/work/` (git-ignored).
+
+Profiles:
+
+- `realistic` (default): SUMO's default driver model and priority junctions.
+- `ideal`: near-instant acceleration, no internal junction lanes and no turn-speed
+  limit. It shows how close SUMO gets to the solver's timing; trucks come out a
+  few percent *faster*, because SUMO does not round each street time up to a whole
+  second as the instance does.
+
+Results with `--traffic 1` for the greedy solutions: see the app's realistic mode;
+on Presheva, trucks take a median 28 % longer than planned.
 
 ### `buildings.py`
 

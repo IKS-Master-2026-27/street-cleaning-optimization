@@ -2,13 +2,14 @@
 // clock and the side panel together.
 
 import * as THREE from 'three';
-import { CAPACITY, TYPE_LETTERS, loadCity, loadIndex, loadSolution, parseSolutionText } from './loaders/data.js';
+import { CAPACITY, TYPE_LETTERS, loadCity, loadIndex, loadSolution, loadSumoTrack, parseSolutionText } from './loaders/data.js';
 import { StreetGeometry } from './playback/geometry.js';
 import { Replay } from './playback/replay.js';
 import { StreetIndex } from './scene/picking.js';
 import { buildingsMesh } from './scene/buildings.js';
 import { RouteOverlay } from './scene/route.js';
 import { Spray } from './scene/spray.js';
+import { Trees } from './scene/trees.js';
 import { Daylight } from './scene/daylight.js';
 import { HEAT_COLORS, HEAT_LABELS, Streets, polylineOverlay } from './scene/streets.js';
 import { Vehicles } from './scene/vehicles.js';
@@ -41,16 +42,18 @@ const app = {
   speed: 300,
   selection: null,       // { kind: 'street' | 'truck', id }
   follow: false,
-  driver: false,         // driver's view: camera rides behind the selected truck
   overlay: null,         // outline of the selected street
   route: null,           // RouteOverlay of the selected truck
   streetVisible: [true, true, true],
-  vehicleVisible: { S: true, M: true, L: true },
+  vehicleVisible: { S: true, M: true, L: true, car: true },
+  mode: 'exact',         // timing: 'exact' (the solver's, what is scored) or 'sumo' (realistic)
   truckSize: 4,
   roadWidth: 2,          // multiplier on the streets' drawn width, set by the Road width slider
   colorMode: 'type',     // street colours: 'type' (and cleaning) or 'heat' (times driven)
   buildings: null,       // mesh of the 3D buildings, when the city has them
   showBuildings: true,
+  showTrees: true,
+  trees: null,           // decorative trees along the streets
   showSpray: true,
   spray: null,           // water spray particles of cleaning trucks          // multiplier on real vehicle size, set by the Truck size slider
   loadToken: 0,
@@ -118,6 +121,8 @@ async function openCity(directory, solutionId) {
     $('#show-buildings').disabled = !app.buildings;
     app.geometry = new StreetGeometry(city);
     app.streets = new Streets(city, world.cityGroup);
+    app.trees = new Trees(city, world.cityGroup);
+    app.trees.enabled = app.showTrees;
     app.streets.group.renderOrder = 1;
     app.streetVisible.forEach((visible, type) => app.streets.setTypeVisible(type, visible));
     app.streets.setColorMode(app.colorMode);
@@ -167,17 +172,22 @@ async function openSolution(id) {
       `(coverage ${percent(score.coverage, 2)}, efficiency ${percent(score.efficiency, 2)})`;
     if (meta.errors?.length) info += `<br><span class="late">Not valid: ${meta.errors.slice(0, 3).map(escapeHtml).join('; ')}</span>`;
     $('#solution-info').innerHTML = info;
-    startReplay();
+    const sumoAvailable = !!meta.sumo;
+    $('#mode-sumo').disabled = !sumoAvailable;
+    if (!sumoAvailable) app.mode = 'exact';
+    $(`#mode-${app.mode}`).checked = true;
+    await startReplay();
   } catch (error) {
     console.error(error);
     if (token === app.loadToken) setLoading(`Could not load the solution: ${error.message}`, true);
   }
 }
 
-// Build the replay of the open solution and everything drawn from it.
-function startReplay() {
+// Build the replay of the open solution, in the chosen timing, and everything drawn from it.
+async function startReplay() {
   const { solution } = app;
-  const track = solution.exact;
+  const track = app.mode === 'sumo' ? await loadSumoTrack(app.city, solution) : solution.exact;
+  if (!track) return;
   const keepTime = app.time;
   app.replay = new Replay(app.city, track, app.geometry);
   app.vehicles?.dispose();
@@ -186,7 +196,7 @@ function startReplay() {
   app.streets.setReplay(app.replay);
   drawer.setData(app.replay, analyse(app.replay), app.city);
 
-  // an uploaded solution may run past the time limit T; the yellow mark shows T then
+  // SUMO timing, or an uploaded solution, may run past the time limit T: the yellow mark shows T
   const duration = Math.ceil(app.replay.duration);
   $('#time').max = duration;
   $('#duration').textContent = hms(duration);
@@ -194,12 +204,36 @@ function startReplay() {
   mark.style.display = duration > app.city.timeLimit ? 'block' : 'none';
   mark.style.left = `${(app.city.timeLimit / duration) * 100}%`;
 
+  showModeInfo();
+  $('#delay-head').style.visibility = solution.meta.sumo ? 'visible' : 'hidden';
   $('#st-final').textContent = solution.meta.score.value.toFixed(4);
   $('#truck-count').textContent = `(${app.city.fleet.length})`;
   renderTruckList($('#trucks'), app, selectTruck);
   setLoading(null);
   setTime(Math.min(keepTime, duration));
   if (app.selection?.kind === 'truck') selectTruck(app.selection.id, false);
+}
+
+function showModeInfo() {
+  const { meta } = app.solution;
+  const sumo = meta.sumo;
+  if (app.mode === 'sumo' && sumo) {
+    const delays = sumo.trucks
+      .map((t, v) => (t.steps && meta.vehicles[v].end ? t.end / meta.vehicles[v].end - 1 : null))
+      .filter((d) => d !== null)
+      .sort((a, b) => a - b);
+    const median = delays.length ? delays[delays.length >> 1] : 0;
+    $('#mode-info').innerHTML =
+      `${escapeHtml(sumo.sumoVersion?.replace('Eclipse SUMO sumo ', 'SUMO ') ?? 'SUMO')}, ${escapeHtml(sumo.profile)} profile` +
+      `${sumo.cars ? `, ${sumo.cars.toLocaleString()} background cars` : ''}. ` +
+      `Median truck delay <b>${median >= 0 ? '+' : ''}${percent(median, 1)}</b>; ` +
+      `<span class="${sumo.late ? 'late' : 'ok'}">${sumo.late} of ${sumo.trucks.length} trucks over T</span>` +
+      `${sumo.incomplete ? `, ${sumo.incomplete} incomplete` : ''}${sumo.teleports ? `, ${sumo.teleports} teleports` : ''}.`;
+  } else {
+    $('#mode-info').innerHTML = sumo
+      ? "The solver's timing: what the validator scores. Realistic shows the same routes driven in Eclipse SUMO."
+      : "The solver's timing: what the validator scores. Realistic mode: <code>build.py &lt;City&gt; --sumo</code>.";
+  }
 }
 
 // ---------------------------------------------------------------- time
@@ -260,10 +294,6 @@ function clearOverlay() {
 function clearSelection() {
   app.selection = null;
   app.follow = false;
-  if (app.driver) {
-    app.driver = false;
-    world.controls.enabled = true;
-  }
   clearOverlay();
   if (app.vehicles) app.vehicles.selected = -1;
   drawer.setSelected(-1);
@@ -295,7 +325,7 @@ function selectTruck(v, scroll = true) {
 function selectStreet(k) {
   clearSelection();
   app.selection = { kind: 'street', id: k };
-  app.overlay = polylineOverlay(app.city, [k], 0xfdd835, 2);
+  app.overlay = polylineOverlay(app.city, [k], 0xff6a00, 2);
   world.cityGroup.add(app.overlay);
   refreshDetails(true);
 }
@@ -309,16 +339,20 @@ function refreshDetails(withActions = false) {
   $('#details-actions').innerHTML = renderActions(app, sel);
   const followButton = $('#follow');
   if (followButton) followButton.onclick = toggleFollow;
-  const driverButton = $('#driver');
-  if (driverButton) driverButton.onclick = () => setDriver(!app.driver);
   const startButton = $('#jump-start');
   if (startButton) startButton.onclick = () => setTime(Number(startButton.dataset.t));
 }
 
 function toggleFollow() {
-  if (app.driver) setDriver(false);
   app.follow = !app.follow;
   refreshDetails(true);
+}
+
+// Back to the whole city seen from above (stops following a truck).
+function topView() {
+  if (!app.city) return;
+  if (app.follow) toggleFollow();
+  world.frameCity(app.city);
 }
 
 // ---------------------------------------------------------------- picking
@@ -437,7 +471,14 @@ window.addEventListener('drop', (event) => {
 $('#city').addEventListener('change', (event) => openCity(event.target.value));
 $('#solution').addEventListener('change', (event) => openSolution(event.target.value));
 $('#play').addEventListener('click', () => setPlaying(!app.playing));
+document.querySelectorAll('input[name="mode"]').forEach((radio) => {
+  radio.addEventListener('change', () => {
+    app.mode = radio.value;
+    startReplay();
+  });
+});
 $('#analysis-toggle').addEventListener('click', () => drawer.toggle());
+$('#top-view').addEventListener('click', topView);
 $('#analysis-close').addEventListener('click', () => drawer.toggle(false));
 $('#time').addEventListener('input', (event) => setTime(Number(event.target.value), true));
 $('#speed').addEventListener('change', (event) => { app.speed = Number(event.target.value); });
@@ -485,6 +526,10 @@ $('#show-spray').addEventListener('change', (event) => {
   app.showSpray = event.target.checked;
   if (app.spray) app.spray.enabled = app.showSpray;
 });
+$('#show-trees').addEventListener('change', (event) => {
+  app.showTrees = event.target.checked;
+  if (app.trees) app.trees.enabled = app.showTrees;
+});
 $('#show-buildings').addEventListener('change', (event) => {
   app.showBuildings = event.target.checked;
   if (app.buildings) app.buildings.visible = app.showBuildings;
@@ -500,7 +545,7 @@ window.addEventListener('keydown', (event) => {
   if (event.target.tagName === 'SELECT') return;
   if (event.code === 'Space') { event.preventDefault(); if (app.replay) setPlaying(!app.playing); }
   if (event.code === 'Escape') clearSelection();
-  if (event.code === 'KeyV' && app.selection?.kind === 'truck') setDriver(!app.driver);
+  if (event.code === 'KeyR') topView();
   if (event.code === 'KeyA' && app.replay) drawer.toggle();
   if (event.code === 'KeyF' && app.selection?.kind === 'truck') toggleFollow();
 });
@@ -508,34 +553,6 @@ window.addEventListener('keydown', (event) => {
 // ---------------------------------------------------------------- frame loop
 
 const followTarget = new THREE.Vector3();
-// Driver's view: the camera rides low behind the selected truck and turns with it.
-const DRIVER_BACK = 30, DRIVER_UP = 17, DRIVER_AHEAD = 30; // metres; high enough to see over low buildings
-const driverPos = new THREE.Vector3(), driverLook = new THREE.Vector3();
-let driverHeading = null;
-function driverCamera(v, dt) {
-  const p = app.vehicles.positions;
-  const x = p[2 * v], y = p[2 * v + 1];
-  // turn smoothly, the short way round
-  const target = app.vehicles.headings[v];
-  if (driverHeading === null) driverHeading = target;
-  let turn = target - driverHeading;
-  turn = Math.atan2(Math.sin(turn), Math.cos(turn));
-  driverHeading += turn * Math.min(1, dt * 4);
-  const dx = Math.cos(driverHeading), dy = Math.sin(driverHeading);
-  toWorld(x - dx * DRIVER_BACK, y - dy * DRIVER_BACK, DRIVER_UP, driverPos);
-  toWorld(x + dx * DRIVER_AHEAD, y + dy * DRIVER_AHEAD, 2, driverLook);
-  const ease = Math.min(1, dt * 6);
-  world.camera.position.lerp(driverPos, ease);
-  world.controls.target.lerp(driverLook, ease);
-}
-
-function setDriver(on) {
-  app.driver = on && app.selection?.kind === 'truck';
-  world.controls.enabled = !app.driver;   // mouse steering off while riding along
-  driverHeading = null;
-  if (app.driver) app.follow = false;
-  refreshDetails(true);
-}
 let last = performance.now();
 function frame(now) {
   const dt = Math.min((now - last) / 1000, 0.25);
@@ -553,9 +570,7 @@ function frame(now) {
     app.vehicles.update(app.replay, app.time, vehicleScale);
     app.spray.update(dt, app.vehicles, vehicleScale, world.camera, world.renderer.domElement.height);
     world.depot.scale.setScalar(world.zoomScale(700));
-    if (app.driver && app.selection?.kind === 'truck') {
-      driverCamera(app.selection.id, dt);
-    } else if (app.follow && app.selection?.kind === 'truck') {
+    if (app.follow && app.selection?.kind === 'truck') {
       const v = app.selection.id;
       const p = app.vehicles.positions;
       toWorld(p[2 * v], p[2 * v + 1], 0, followTarget);
@@ -566,6 +581,7 @@ function frame(now) {
   }
   world.controls.update();
   world.updateFog();
+  app.trees?.update(world.camera.position.distanceTo(world.controls.target));
   const hour = daylight.update(app.replay ? app.time : 0);
   const clockText = hour === null ? '' : `${String(Math.floor(hour)).padStart(2, '0')}:${String(Math.floor((hour % 1) * 60)).padStart(2, '0')}`;
   if ($('#daytime').textContent !== clockText) $('#daytime').textContent = clockText;

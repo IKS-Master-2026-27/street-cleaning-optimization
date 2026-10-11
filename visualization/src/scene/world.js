@@ -4,11 +4,12 @@
 import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 
+// A light "city model" look: pale ground, white blocks, dark asphalt streets.
 const COLORS = {
-  ground: 0x1a1f27,
-  city: 0x222a35,
-  boundary: 0x56657a,
-  depot: 0xfdd835,
+  ground: 0xd6dbe1,
+  city: 0xeef0f3,
+  boundary: 0xaab2bd,
+  depot: 0xfdb515,
 };
 
 export function toWorld(x, y, height = 0, target = new THREE.Vector3()) {
@@ -19,6 +20,7 @@ export class World {
   constructor(canvas) {
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.toneMapping = THREE.NeutralToneMapping; // soft highlights on the glossy vehicles
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(COLORS.ground); // same as the ground: no visible horizon
     this.scene.fog = new THREE.Fog(COLORS.ground, 1, 2); // range follows the zoom, see updateFog
@@ -59,7 +61,7 @@ export class World {
     const extent = Math.max(x1 - x0, y1 - y0);
     const plane = new THREE.Mesh(
       new THREE.PlaneGeometry(extent * 6, extent * 6).rotateX(-Math.PI / 2),
-      new THREE.MeshBasicMaterial({ color: COLORS.ground, depthWrite: false }),
+      new THREE.MeshBasicMaterial({ color: COLORS.ground, depthWrite: false, toneMapped: false }), // matches the background
     );
     plane.renderOrder = -3;
     plane.position.set((x0 + x1) / 2, -0.6, -(y0 + y1) / 2);
@@ -80,7 +82,7 @@ export class World {
     }
     const area = new THREE.Mesh(
       new THREE.ShapeGeometry(shapes).rotateX(-Math.PI / 2),
-      new THREE.MeshBasicMaterial({ color: COLORS.city, depthWrite: false }),
+      new THREE.MeshBasicMaterial({ color: COLORS.city, depthWrite: false, toneMapped: false }),
     );
     area.renderOrder = -2;
     area.position.y = -0.3;

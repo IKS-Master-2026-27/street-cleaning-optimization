@@ -31,6 +31,13 @@
         </label>
       </div>
       <p id="solution-info" class="muted small"></p>
+      <div class="segmented" role="radiogroup" aria-label="Timing">
+        <input type="radio" name="mode" id="mode-exact" value="exact" checked>
+        <label for="mode-exact" title="The solver's own timing: what the validator scores">Exact</label>
+        <input type="radio" name="mode" id="mode-sumo" value="sumo">
+        <label for="mode-sumo" title="The same routes driven in Eclipse SUMO: junctions, acceleration, background traffic">Realistic (SUMO)</label>
+      </div>
+      <p id="mode-info" class="muted small"></p>
     </section>
 
     <section>
@@ -57,14 +64,16 @@
       </div>
       <p id="heat-legend" class="muted small legend" hidden></p>
       <div class="filters">
-        <label><input type="checkbox" data-street="0" checked><i class="sw" style="background:#e53935"></i>Mandatory</label>
-        <label><input type="checkbox" data-street="1" checked><i class="sw" style="background:#1e88e5"></i>Optional</label>
-        <label><input type="checkbox" data-street="2" checked><i class="sw" style="background:#8a8f98"></i>Connector</label>
-        <label title="Footprints from Microsoft's open dataset; heights are estimated"><input type="checkbox" id="show-buildings" checked><i class="sw" style="background:#56606e"></i>Buildings</label>
+        <label><input type="checkbox" data-street="0" checked><i class="sw" style="background:#e5484d"></i>Mandatory</label>
+        <label><input type="checkbox" data-street="1" checked><i class="sw" style="background:#3d78c2"></i>Optional</label>
+        <label><input type="checkbox" data-street="2" checked><i class="sw" style="background:#a3abb6"></i>Connector</label>
+        <label title="Footprints from Microsoft's open dataset; heights are estimated"><input type="checkbox" id="show-buildings" checked><i class="sw" style="background:#e3e6eb"></i>Buildings</label>
+        <label title="Decorative trees along the streets (not from the dataset)"><input type="checkbox" id="show-trees" checked><i class="sw" style="background:#5aa84a"></i>Trees</label>
         <label><input type="checkbox" data-vehicle="S" checked><i class="sw" style="background:#4dd0e1"></i>S trucks</label>
         <label><input type="checkbox" data-vehicle="M" checked><i class="sw" style="background:#ff9800"></i>M trucks</label>
         <label><input type="checkbox" data-vehicle="L" checked><i class="sw" style="background:#e040fb"></i>L trucks</label>
-        <label title="Water spray from trucks while they clean"><input type="checkbox" id="show-spray" checked><i class="sw" style="background:#bdefff"></i>Water spray</label>
+        <label title="Background traffic of the realistic mode"><input type="checkbox" data-vehicle="car" checked><i class="sw" style="background:#cfd8dc"></i>Cars (SUMO)</label>
+        <label title="Water spray from trucks while they clean"><input type="checkbox" id="show-spray" checked><i class="sw" style="background:#4fb6f0"></i>Water spray</label>
         <label title="Sun, sky and shadows follow the shift clock; the shift is assumed to start at 06:00"><input type="checkbox" id="show-daylight" checked><i class="sw" style="background:#ffb27a"></i>Time of day</label>
       </div>
       <div class="slider">
@@ -77,13 +86,13 @@
         <input id="road-width" type="range" min="1" max="6" step="0.5" value="2">
         <output id="road-width-value" for="road-width">×2</output>
       </div>
-      <p id="type-legend" class="muted small legend"><i class="sw" style="background:#43d36b"></i>cleaned
-        <i class="sw" style="background:#fdd835"></i>depot · trucks are bright while cleaning, dim while driving</p>
+      <p id="type-legend" class="muted small legend"><i class="sw" style="background:#1fb35f"></i>cleaned
+        <i class="sw" style="background:#fdb515"></i>depot · trucks are bright while cleaning, pale while driving</p>
     </section>
 
     <section class="grow">
       <h2>Trucks <span id="truck-count" class="muted"></span></h2>
-      <div class="truck-head"><span>#</span><span>Type</span><span>Route</span><span>of T</span></div>
+      <div class="truck-head"><span>#</span><span>Type</span><span>Route</span><span>of T</span><span id="delay-head" title="Extra time in SUMO compared with the solver's timing">Δ SUMO</span></div>
       <div id="trucks" class="truck-list"></div>
     </section>
   </aside>
@@ -103,6 +112,7 @@
       <div id="limit-mark" class="limit-mark" title="Time limit T"></div>
     </div>
     <span id="duration" class="clock muted">08:00:00</span>
+    <button id="top-view" title="The whole city seen from above (R)">Top view</button>
     <button id="analysis-toggle" title="Efficiency numbers and a timeline of every truck (A)">Analysis</button>
     <select id="speed" aria-label="Playback speed">
       <option value="1">×1</option>
@@ -118,7 +128,7 @@
   <div id="analysis" hidden>
     <div class="analysis-head">
       <h2>Analysis</h2>
-      <span class="muted small">how this solution uses the trucks</span>
+      <span class="muted small">how this solution uses the trucks · follows the selected timing</span>
       <button id="analysis-close" class="close" aria-label="Close analysis">×</button>
     </div>
     <div class="analysis-body">
