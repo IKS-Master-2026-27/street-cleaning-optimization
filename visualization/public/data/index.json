@@ -1,0 +1,105 @@
+{
+ "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
+ "cities": [
+  {
+   "directory": "Presheva",
+   "name": "Presheva",
+   "country": "RS",
+   "nodes": 744,
+   "streets": 838,
+   "vehicles": 6,
+   "timeLimit": 28800,
+   "available": true
+  },
+  {
+   "directory": "Ulqini",
+   "name": "Ulqini",
+   "country": "ME",
+   "nodes": 4610,
+   "streets": 5074,
+   "vehicles": 92,
+   "timeLimit": 43200,
+   "available": true
+  },
+  {
+   "directory": "Prishtina",
+   "name": "Prishtina",
+   "country": "XK",
+   "nodes": 7400,
+   "streets": 8729,
+   "vehicles": 72,
+   "timeLimit": 28800,
+   "available": true
+  },
+  {
+   "directory": "Shkupi",
+   "name": "Shkupi",
+   "country": "MK",
+   "nodes": 13771,
+   "streets": 16658,
+   "vehicles": 87,
+   "timeLimit": 64800,
+   "available": true
+  },
+  {
+   "directory": "Tirana",
+   "name": "Tirana",
+   "country": "AL",
+   "nodes": 16951,
+   "streets": 19175,
+   "vehicles": 75,
+   "timeLimit": 64800,
+   "available": true
+  },
+  {
+   "directory": "Ljubljana",
+   "name": "Ljubljana",
+   "country": "SI",
+   "nodes": 30278,
+   "streets": 34104,
+   "vehicles": 94,
+   "timeLimit": 145800,
+   "available": true
+  },
+  {
+   "directory": "Vienna",
+   "name": "Vienna",
+   "country": "AT",
+   "nodes": 45049,
+   "streets": 56787,
+   "vehicles": 68,
+   "timeLimit": 492075,
+   "available": true
+  },
+  {
+   "directory": "New-York",
+   "name": "New-York",
+   "country": "US",
+   "nodes": 132300,
+   "streets": 182700,
+   "vehicles": 392,
+   "timeLimit": 738113,
+   "available": true
+  },
+  {
+   "directory": "Johannesburg",
+   "name": "Johannesburg",
+   "country": "ZA",
+   "nodes": 157587,
+   "streets": 204280,
+   "vehicles": 379,
+   "timeLimit": 738113,
+   "available": true
+  },
+  {
+   "directory": "Sydney",
+   "name": "Sydney",
+   "country": "AU",
+   "nodes": 255428,
+   "streets": 316886,
+   "vehicles": 697,
+   "timeLimit": 818685,
+   "available": true
+  }
+ ]
+}
