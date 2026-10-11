@@ -1,0 +1,4 @@
+node_modules/
+dist/
+# downloaded building footprints (rebuilt by buildings.py)
+pipeline/cache/
