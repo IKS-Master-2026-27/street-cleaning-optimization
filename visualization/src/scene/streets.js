@@ -9,23 +9,23 @@
 import * as THREE from 'three';
 
 const STREET_COLORS = [
-  new THREE.Color(0xe53935), // M mandatory: red
-  new THREE.Color(0x1e88e5), // O optional: blue
-  new THREE.Color(0x8a8f98), // C connector: grey
+  new THREE.Color(0xe5484d), // M mandatory: red
+  new THREE.Color(0x3d78c2), // O optional: blue
+  new THREE.Color(0xa3abb6), // C connector: light grey
 ];
-const CLEANED_COLOR = new THREE.Color(0x43d36b);
-const WET_COLOR = new THREE.Color(0xc8f7ff);  // fresh water shine, fades into the cleaned green
+const CLEANED_COLOR = new THREE.Color(0x1fb35f);
+const WET_COLOR = new THREE.Color(0x7fd8ff);  // fresh water shine, fades into the cleaned green
 const WET_SECONDS = 900;                      // simulated seconds the shine takes to dry
-// "Times driven" heatmap: one hue (red), from almost white for streets driven
-// once to deep red for streets driven 4 times or more (validated on the city
-// ground, dataviz ordinal check). Index 0 = never driven, a dim grey.
-export const HEAT_COLORS = ['#3a414c', '#fbecea', '#f5a39b', '#e5594f', '#c42a22'];
+// "Times driven" heatmap: one hue (red), from pale for streets driven once to
+// deep red for streets driven 4 times or more, on the light city ground.
+// Index 0 = never driven, a light grey.
+export const HEAT_COLORS = ['#c5cbd3', '#f8c9c3', '#f08a7f', '#dc4a3f', '#a51f18'];
 export const HEAT_LABELS = ['not driven', '1×', '2×', '3×', '4× or more'];
 const HEIGHTS = [0.6, 0.4, 0.2];
 const NEVER = 1e30; // cleanedAt of a street no truck cleans
 
 // Half width in metres by OSM highway class.
-function halfWidth(highway) {
+export function halfWidth(highway) {
   if (highway.startsWith('motorway')) return 6;
   if (highway.startsWith('trunk')) return 5.5;
   if (highway.endsWith('_link')) return 3.5;
@@ -38,12 +38,15 @@ function halfWidth(highway) {
 
 const vertexShader = /* glsl */ `
   attribute vec2 side;
+  attribute float across;      // -1 on one edge of the street, +1 on the other
   attribute float cleanedAt;
   attribute float heat;
   uniform float widthScale;
   varying float vCleanedAt;
   varying float vHeat;
+  varying float vAcross;       // -1 on one edge of the street, +1 on the other
   void main() {
+    vAcross = across;
     vCleanedAt = cleanedAt;
     vHeat = heat;
     vec3 p = position + vec3(side.x, 0.0, side.y) * widthScale;
@@ -60,6 +63,7 @@ const fragmentShader = /* glsl */ `
   uniform vec3 heatColors[5];
   varying float vCleanedAt;
   varying float vHeat;
+  varying float vAcross;
   void main() {
     vec3 color;
     if (mode == 1) {
@@ -68,11 +72,15 @@ const fragmentShader = /* glsl */ `
       for (int i = 1; i < 5; i++) if (i == level) color = heatColors[i];
     } else if (time >= vCleanedAt) {
       float wet = exp(-(time - vCleanedAt) / wetSeconds);
-      color = mix(cleanedColor, wetColor, wet * 0.75);
+      color = mix(cleanedColor, wetColor, wet * 0.6);
     } else {
       color = baseColor;
     }
+    // darker kerbs and a slightly brighter crown give the ribbon a road profile
+    float edge = abs(vAcross);
+    color *= mix(1.06, 0.78, smoothstep(0.7, 1.0, edge));
     gl_FragColor = vec4(color * light, 1.0);
+    #include <colorspace_fragment>
   }`;
 
 export class Streets {
@@ -105,6 +113,7 @@ export class Streets {
       }
       const position = new Float32Array(3 * vertices);
       const side = new Float32Array(2 * vertices);
+      const across = new Float32Array(vertices);
       const index = new Uint32Array(indices);
       let vi = 0, ii = 0;
       for (let k = 0; k < count; k++) {
@@ -132,6 +141,7 @@ export class Streets {
           for (const sign of [1, -1]) {
             position.set([x, HEIGHTS[type], -y], 3 * vi);
             side.set([sign * nx * scale, -sign * ny * scale], 2 * vi);
+            across[vi] = sign;
             vi++;
           }
           if (p < last) {
@@ -144,6 +154,7 @@ export class Streets {
       const geometry = new THREE.BufferGeometry();
       geometry.setAttribute('position', new THREE.BufferAttribute(position, 3));
       geometry.setAttribute('side', new THREE.BufferAttribute(side, 2));
+      geometry.setAttribute('across', new THREE.BufferAttribute(across, 1));
       geometry.setAttribute('cleanedAt', new THREE.BufferAttribute(new Float32Array(vertices).fill(NEVER), 1));
       geometry.setAttribute('heat', new THREE.BufferAttribute(new Float32Array(vertices), 1));
       geometry.setIndex(new THREE.BufferAttribute(index, 1));

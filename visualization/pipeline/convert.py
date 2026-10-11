@@ -157,16 +157,23 @@ def export_solution(city: City, solution_id: str, label: str, path: Path, out: P
             "cleans": len(route.cleaned),
         })
     meta_path = out / "solutions" / f"{solution_id}.json"
+    digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    # keep an earlier SUMO run (sumo_run.py) if it was made from this same solution file
+    previous = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
+    sumo = previous.get("sumo") if previous.get("sourceSha256") == digest else None
+    if sumo and not (out / "solutions" / sumo["file"]).exists():
+        sumo = None
     data = {
         "id": solution_id,
         "label": label,
         "source": display(path),
-        "sourceSha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),  # which file version
+        "sourceSha256": digest,  # which file version
         "steps": len(timeline.street),
         "file": f"{solution_id}.steps.bin",
         "buffers": buffers,
         "vehicles": vehicles,
         "score": score(inst, routes),
+        "sumo": sumo,
     }
     meta_path.write_text(json.dumps(data), encoding="utf-8")
     return data
@@ -236,7 +243,8 @@ def convert(folder: Path, output: Path) -> dict:
         data["solutions"].append({"id": solution_id, "label": label})
         s = sol["score"]
         print(f"  {solution_id}: {sol['steps']:,} steps, score {s['value']:.6f} "
-              f"(coverage {s['coverage']:.4f}, efficiency {s['efficiency']:.4f})")
+              f"(coverage {s['coverage']:.4f}, efficiency {s['efficiency']:.4f})"
+              + (", SUMO run kept" if sol["sumo"] else ""))
     remove_stale(out, {solution_id for solution_id, _, _ in solutions})
     (out / "city.json").write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
     print(f"{city.name}: {city.instance.nodes:,} junctions, {city.instance.streets:,} streets, "

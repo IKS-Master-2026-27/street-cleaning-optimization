@@ -3,8 +3,10 @@
 
 import * as THREE from 'three';
 
-const WALL = new THREE.Color(0x56627a);
-const ROOF = new THREE.Color(0x8794a8);
+// white "city model" blocks; wall bottoms are darker (fake ambient occlusion)
+const WALL = new THREE.Color(0xe3e6eb);
+const ROOF = new THREE.Color(0xfafbfc);
+const GROUND_SHADE = 0.72;  // wall brightness where it meets the ground
 
 export function buildingsMesh(buildings) {
   const { offsets, points, height } = buildings;
@@ -24,16 +26,17 @@ export function buildingsMesh(buildings) {
     }
     if (THREE.ShapeUtils.isClockWise(ring)) ring = ring.reverse(); // counter-clockwise: walls face out
     // a little variation in shade, stable per building
-    const shade = 0.88 + ((Math.sin(b * 12.9898) * 43758.5453) % 1 + 1) % 1 * 0.24;
+    const shade = 0.94 + ((Math.sin(b * 12.9898) * 43758.5453) % 1 + 1) % 1 * 0.06;
     const wall = tint.copy(WALL).multiplyScalar(shade).clone();
+    const foot = wall.clone().multiplyScalar(GROUND_SHADE);
     for (let i = 0; i < ring.length; i++) {
       const a = ring[i], c = ring[(i + 1) % ring.length];
       const dx = c.x - a.x, dy = c.y - a.y;
       const l = Math.hypot(dx, dy) || 1;
       const nx = dy / l, nz = dx / l; // outward normal in world (x, -y) coordinates
       // two triangles per wall, world = (x, height, -y)
-      push(a.x, 0, -a.y, nx, 0, nz, wall); push(c.x, 0, -c.y, nx, 0, nz, wall); push(c.x, h, -c.y, nx, 0, nz, wall);
-      push(a.x, 0, -a.y, nx, 0, nz, wall); push(c.x, h, -c.y, nx, 0, nz, wall); push(a.x, h, -a.y, nx, 0, nz, wall);
+      push(a.x, 0, -a.y, nx, 0, nz, foot); push(c.x, 0, -c.y, nx, 0, nz, foot); push(c.x, h, -c.y, nx, 0, nz, wall);
+      push(a.x, 0, -a.y, nx, 0, nz, foot); push(c.x, h, -c.y, nx, 0, nz, wall); push(a.x, h, -a.y, nx, 0, nz, wall);
     }
     const roof = tint.copy(ROOF).multiplyScalar(shade).clone();
     for (const [i, j, k] of THREE.ShapeUtils.triangulateShape(ring, [])) {
@@ -49,7 +52,7 @@ export function buildingsMesh(buildings) {
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
   geometry.computeBoundingSphere();
   const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({
-    vertexColors: true, roughness: 0.9, metalness: 0,
+    vertexColors: true, roughness: 0.85, metalness: 0,
   }));
   mesh.renderOrder = 0; // before the streets, so streets behind buildings are hidden
   mesh.castShadow = true;

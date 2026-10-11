@@ -1,6 +1,6 @@
 // The selected truck's route as a ribbon. Every vertex carries the time the
 // truck passes it, so the shader splits the route exactly at the truck:
-// bright where it has already driven, faint where it is still going.
+// dark where it has already driven, faint blue where it is still going.
 
 import * as THREE from 'three';
 import { REVERSE } from '../loaders/data.js';
@@ -24,7 +24,8 @@ const fragmentShader = /* glsl */ `
   varying float vStamp;
   void main() {
     bool driven = vStamp <= time;
-    gl_FragColor = driven ? vec4(drivenColor, 0.95) : vec4(aheadColor, 0.45);
+    gl_FragColor = driven ? vec4(drivenColor, 0.6) : vec4(aheadColor, 0.4);
+    #include <colorspace_fragment>
   }`;
 
 export class RouteOverlay {
@@ -67,8 +68,8 @@ export class RouteOverlay {
     this.uniforms = {
       time: { value: 0 },
       widthScale: { value: 1 },
-      drivenColor: { value: new THREE.Color(0xffffff) },
-      aheadColor: { value: new THREE.Color(0x9ec5ff) },
+      drivenColor: { value: new THREE.Color(0x1d2633) },
+      aheadColor: { value: new THREE.Color(0x3d78c2) },
     };
     this.mesh = new THREE.Mesh(shape, new THREE.ShaderMaterial({
       uniforms: this.uniforms, vertexShader, fragmentShader,
