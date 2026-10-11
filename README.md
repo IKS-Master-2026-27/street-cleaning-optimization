@@ -84,6 +84,13 @@ separate; it does not need to be installed to run the Python solver.
 Contains the Three.js application used to visualize the street network and calculated routes.
 
 The visualization is kept separate from the routing and optimization logic.
+It runs an algorithm on a real city's instance and replays the solution in 3D.
+See [visualization/README.md](visualization/README.md):
+
+```powershell
+python visualization/pipeline/build.py Presheva   # prepares the app (runs the greedy only if no solution exists)
+cd visualization; npm install; npm run dev
+```
 
 ```text
 City Data
