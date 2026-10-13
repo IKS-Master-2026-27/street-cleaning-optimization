@@ -152,6 +152,22 @@
   <div id="tooltip" hidden></div>
   <div id="drop" hidden>Drop a solution file to replay it</div>
   <div id="loading">Loading…</div>
+  <div id="zoombar" title="How wide the view is (zoom with the mouse wheel, + and − keys, or these buttons)">
+    <button id="zoom-out" aria-label="Zoom out">−</button>
+    <select id="zoom-width" aria-label="View width">
+      <option id="zoom-current" value="" hidden>≈ 1 km</option>
+      <option value="50">50 m across</option>
+      <option value="100">100 m across</option>
+      <option value="250">250 m across</option>
+      <option value="500">500 m across</option>
+      <option value="1000">1 km across</option>
+      <option value="2000">2 km across</option>
+      <option value="5000">5 km across</option>
+      <option value="10000">10 km across</option>
+      <option value="city">Whole city</option>
+    </select>
+    <button id="zoom-in" aria-label="Zoom in">+</button>
+  </div>
   <div id="attribution"></div>
 
   <script type="module" src="./src/main.js"></script>

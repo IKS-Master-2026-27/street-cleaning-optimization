@@ -1,0 +1,1 @@
+{"count": 23267, "file": "buildings.bin", "buffers": {"offsets": {"type": "uint32", "offset": 0, "length": 23268}, "points": {"type": "float32", "offset": 93072, "length": 248502}, "height": {"type": "float32", "offset": 1087080, "length": 23267}}, "source": "Microsoft Global ML Building Footprints (ODbL)", "heights": "estimated from footprint area"}
