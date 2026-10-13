@@ -126,6 +126,22 @@ export class World {
     this.controls.update();
   }
 
+  // How many metres of ground fit across the screen, at the point the camera looks at.
+  viewWidth() {
+    const distance = this.camera.position.distanceTo(this.controls.target);
+    return 2 * distance * Math.tan(THREE.MathUtils.degToRad(this.camera.fov) / 2) * this.camera.aspect;
+  }
+
+  // Zoom so that `metres` fit across the screen, keeping the viewing angle.
+  setViewWidth(metres) {
+    const perMetre = 2 * Math.tan(THREE.MathUtils.degToRad(this.camera.fov) / 2) * this.camera.aspect;
+    const { minDistance, maxDistance, target } = this.controls;
+    const distance = THREE.MathUtils.clamp(metres / perMetre, minDistance, maxDistance);
+    const direction = this.camera.position.clone().sub(target).normalize();
+    this.camera.position.copy(target).addScaledVector(direction, distance);
+    this.controls.update();
+  }
+
   // Zoomed out, streets and trucks are drawn wider so they stay a few pixels wide.
   zoomScale(metresPerUnit = 3000) {
     const distance = this.camera.position.distanceTo(this.controls.target);

@@ -479,6 +479,21 @@ document.querySelectorAll('input[name="mode"]').forEach((radio) => {
 });
 $('#analysis-toggle').addEventListener('click', () => drawer.toggle());
 $('#top-view').addEventListener('click', topView);
+// Zoom control: the view's width in metres, presets, and - / + (halve or double the width)
+function zoomBy(factor) {
+  if (!app.city) return;
+  world.setViewWidth(world.viewWidth() * factor);
+  showViewWidth(); // right away, not only at the next frame
+}
+$('#zoom-in').addEventListener('click', () => zoomBy(0.5));
+$('#zoom-out').addEventListener('click', () => zoomBy(2));
+$('#zoom-width').addEventListener('change', (event) => {
+  const value = event.target.value;
+  if (value === 'city') topView();
+  else if (value && app.city) world.setViewWidth(Number(value));
+  showViewWidth();
+  event.target.value = ''; // show the current width again
+});
 $('#analysis-close').addEventListener('click', () => drawer.toggle(false));
 $('#time').addEventListener('input', (event) => setTime(Number(event.target.value), true));
 $('#speed').addEventListener('change', (event) => { app.speed = Number(event.target.value); });
@@ -547,6 +562,8 @@ window.addEventListener('keydown', (event) => {
   if (event.code === 'Escape') clearSelection();
   if (event.code === 'KeyR') topView();
   if (event.code === 'KeyA' && app.replay) drawer.toggle();
+  if (event.code === 'Equal' || event.code === 'NumpadAdd') zoomBy(0.5);
+  if (event.code === 'Minus' || event.code === 'NumpadSubtract') zoomBy(2);
   if (event.code === 'KeyF' && app.selection?.kind === 'truck') toggleFollow();
 });
 
@@ -581,6 +598,7 @@ function frame(now) {
   }
   world.controls.update();
   world.updateFog();
+  showViewWidth();
   app.trees?.update(world.camera.position.distanceTo(world.controls.target));
   const hour = daylight.update(app.replay ? app.time : 0);
   const clockText = hour === null ? '' : `${String(Math.floor(hour)).padStart(2, '0')}:${String(Math.floor((hour % 1) * 60)).padStart(2, '0')}`;
@@ -590,6 +608,19 @@ function frame(now) {
 }
 requestAnimationFrame(frame);
 init();
+
+// The current view width, rounded the way a map scale is ("≈ 850 m", "≈ 2.4 km").
+let shownWidth = '';
+function showViewWidth() {
+  const m = world.viewWidth();
+  const text = m < 1000
+    ? `≈ ${m < 100 ? Math.round(m / 5) * 5 : Math.round(m / 10) * 10} m`
+    : `≈ ${m < 10000 ? (m / 1000).toFixed(1) : Math.round(m / 1000)} km`;
+  if (text !== shownWidth) {
+    shownWidth = text;
+    $('#zoom-current').textContent = text;
+  }
+}
 
 // Typing another city or solution after '#' in the address bar switches to it.
 window.addEventListener('hashchange', () => {
