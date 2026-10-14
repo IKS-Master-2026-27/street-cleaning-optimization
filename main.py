@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 
-from clipp import recursive
+from clipp import recursive, recursive_enum
 from clipp.graph import build_graph, shortest_path
 from clipp.output import write_solution
 from clipp.parser import parse_instance
@@ -12,6 +12,7 @@ from clipp.validator import validate_solution
 ALGORITHMS = {
     "greedy": solve,
     "recursive": recursive.solve,
+    "recursive-enum": recursive_enum.solve,
 }
 
 
