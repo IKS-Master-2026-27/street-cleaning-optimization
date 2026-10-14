@@ -1,14 +1,11 @@
 
 from dataclasses import dataclass
 from heapq import heappop, heappush
-from time import monotonic
 
 from .graph import build_graph, shortest_path
 from .parser import Instance, Street
 from .solver import VEHICLE_CAPACITIES, VehicleRoute, depot_return_times
 
-MANDATORY = "mandatory"
-OPTIONAL = "optional"
 ELIGIBLE = frozenset({"M", "O"})
 MAX_CAPACITY = 30
 _INFINITY = float("inf")
@@ -37,13 +34,6 @@ class ScoreModel:
             return coverage
         waste = (capacity - street.requirement) * (street.length / 1000)
         return coverage - (1.0 - self.alpha) * waste / self.w_max
-
-    def break_even_slack(self) -> float:
-        if self.alpha >= 1.0 or self.w_max <= 0:
-            return float("inf")
-        if self.alpha <= 0.0 or self.l_max <= 0:
-            return 0.0
-        return self.alpha * 1000.0 * self.w_max / ((1.0 - self.alpha) * self.l_max)
 
 
 @dataclass(frozen=True)
@@ -86,9 +76,8 @@ class Commit:
 class SearchSpace:
 
     def __init__(self, instance: Instance, model: ScoreModel | None = None,
-                 probe_radius: int | None = None, radius_growth: int = 8,
-                 deadline: float | None = None, tiers: tuple | None = None,
-                 opportunistic: bool = True) -> None:
+                 probe_radius: int | None = None,
+                 radius_growth: int = 8) -> None:
         self.instance = instance
         self.graph = build_graph(instance)
         self.dist_depot = depot_return_times(instance)
@@ -100,19 +89,13 @@ class SearchSpace:
         self.pending_by_capacity = {capacity: 0 for capacity in (10, 20, 30)}
         self.probes = 0
         self.popped = 0
-        self.deadline = deadline
-        self.workload = 0
-        self.budget = instance.num_vehicles * instance.max_time
-        self.forced_tiers = tiers
-        self.opportunistic = opportunistic
-        self._exhausted: set[tuple] = set()
+        self._exhausted: set[int] = set()
 
         times = []
         for street in instance.streets:
             times.append(street.time)
             if street.category not in ELIGIBLE:
                 continue
-            self.workload += street.time
             self._index(street)
             if street.category == "M":
                 self.mandatory_pending.add(street.id)
@@ -150,66 +133,46 @@ class SearchSpace:
                 if not bucket:
                     del self.pending_at[node]
 
-    def _accept(self, street: Street, capacity: int, phase: str,
-                exclude, exact: bool) -> bool:
+    def _accept(self, street: Street, capacity: int, exclude) -> bool:
         if capacity < street.requirement:
-            return False
-        if exact and street.requirement != capacity:
             return False
         if street.id in self.cleaned or street.id in exclude:
             return False
-        if phase == MANDATORY:
-            return street.category == "M"
-        if street.category == "M":
-            return True
-        return self.model.gain(street, capacity) > 0.0
+        return street.category == "M"
 
-    def _value(self, street: Street, capacity: int, phase: str) -> tuple:
-        # Mandatory coverage is a hard constraint, so there one clean is worth
-        # one unit of progress and the score gain only breaks ties.
+    def _value(self, street: Street, capacity: int) -> tuple:
+        # Mandatory coverage is a hard constraint, so one clean is worth one
+        # unit of progress and the score gain only breaks ties.
         gain = self.model.gain(street, capacity)
-        return gain, (1.0 + gain if phase == MANDATORY else gain)
+        return gain, 1.0 + gain
 
-    def expired(self) -> bool:
-        return self.deadline is not None and monotonic() > self.deadline
-
-    def tiers(self) -> tuple:
-        if self.forced_tiers is not None:
-            return self.forced_tiers
-        if self.model.break_even_slack() >= 20.0:
-            return (False,)
-        if self.workload > 0.5 * self.budget:
-            return (False,)
-        return (True, False)
-
-    def probe(self, junction: int, capacity: int, elapsed: int, phase: str,
-              exact: bool, width: int = 1, exclude=frozenset()) -> list:
+    def probe(self, junction: int, capacity: int, elapsed: int,
+              width: int = 1, exclude=frozenset()) -> list:
         if self.pending_by_capacity.get(capacity, 0) <= 0:
             return []
         fresh = junction == self.instance.depot and elapsed == 0
-        if fresh and (capacity, phase, exact) in self._exhausted:
+        if fresh and capacity in self._exhausted:
             return []
-        moves = self._grow(junction, capacity, elapsed, phase, width, exclude,
-                           exact)
+        moves = self._grow(junction, capacity, elapsed, width, exclude)
         if not moves and fresh and not exclude:
-            self._exhausted.add((capacity, phase, exact))
+            self._exhausted.add(capacity)
         return moves
 
-    def _grow(self, junction: int, capacity: int, elapsed: int, phase: str,
-              width: int, exclude, exact: bool) -> list:
+    def _grow(self, junction: int, capacity: int, elapsed: int,
+              width: int, exclude) -> list:
         ceiling = self.instance.max_time - elapsed
         if ceiling <= 0:
             return []
         radius = min(self.probe_radius, ceiling)
         while True:
-            moves = self._dijkstra(junction, capacity, elapsed, phase, width,
-                                   exclude, exact, radius)
+            moves = self._dijkstra(junction, capacity, elapsed, width,
+                                   exclude, radius)
             if moves or radius >= ceiling:
                 return moves
             radius = min(radius * self.radius_growth, ceiling)
 
-    def _dijkstra(self, source: int, capacity: int, elapsed: int, phase: str,
-                  width: int, exclude, exact: bool, radius: int) -> list:
+    def _dijkstra(self, source: int, capacity: int, elapsed: int,
+                  width: int, exclude, radius: int) -> list:
         self.probes += 1
         graph = self.graph
         dist_depot = self.dist_depot
@@ -235,7 +198,7 @@ class SearchSpace:
             if bucket:
                 for street_id in bucket:
                     street = streets[street_id]
-                    if not accept(street, capacity, phase, exclude, exact):
+                    if not accept(street, capacity, exclude):
                         continue
                     end = street.b if street.a == node else street.a
                     home = dist_depot.get(end)
@@ -272,16 +235,16 @@ class SearchSpace:
                 junctions.append(node)
                 street_ids.append(traversed)
             street = streets[street_id]
-            gain, value = self._value(street, capacity, phase)
+            gain, value = self._value(street, capacity)
             moves.append(Move(reach, street, entry, end, gain, value,
                               tuple(reversed(junctions)),
                               tuple(reversed(street_ids))))
         return moves
 
-    def find_moves(self, route: VehicleRoute, phase: str, exact: bool,
-                   width: int = 1, exclude=frozenset()) -> list:
+    def find_moves(self, route: VehicleRoute, width: int = 1,
+                   exclude=frozenset()) -> list:
         return self.probe(route.current_junction, route.capacity,
-                          route.total_time, phase, exact, width, exclude)
+                          route.total_time, width, exclude)
 
     def _clean(self, route: VehicleRoute, street: Street,
                cleaned: list[int]) -> float:
@@ -295,27 +258,7 @@ class SearchSpace:
                 self.pending_by_capacity[capacity] -= 1
         return self.model.gain(street, route.capacity)
 
-    def _opportunistic(self, route: VehicleRoute, street_ids,
-                       cleaned: list[int], exact: bool = False) -> tuple:
-        gain = 0.0
-        forced = False
-        for street_id in street_ids:
-            street = self.streets_by_id[street_id]
-            if street.id in self.cleaned or street.category not in ELIGIBLE:
-                continue
-            if route.capacity < street.requirement:
-                continue
-            if street.category == "M":
-                forced = True
-            elif exact and street.requirement != route.capacity:
-                continue
-            elif self.model.gain(street, route.capacity) <= 0.0:
-                continue
-            gain += self._clean(route, street, cleaned)
-        return gain, forced
-
-    def commit(self, route: VehicleRoute, move: Move,
-               exact: bool = False) -> Commit:
+    def commit(self, route: VehicleRoute, move: Move) -> Commit:
         token_junctions = len(route.junctions)
         token_streets = len(route.street_ids)
         token_time = route.total_time
@@ -329,11 +272,10 @@ class SearchSpace:
         route.total_time += move.time
         route.current_junction = move.exit
 
-        gain, forced = (self._opportunistic(route, move.street_ids, cleaned, exact)
-                        if self.opportunistic else (0.0, False))
+        gain, forced = 0.0, False
         if move.street.id not in self.cleaned:
-            gain += self._clean(route, move.street, cleaned)
-            forced = forced or move.street.category == "M"
+            gain = self._clean(route, move.street, cleaned)
+            forced = move.street.category == "M"
         return Commit(token_junctions, token_streets, token_time, token_current,
                       tuple(cleaned), forced, gain)
 
@@ -366,12 +308,21 @@ class SearchSpace:
         route.street_ids.extend(home.street_ids)
         route.total_time += home.total_time
         route.current_junction = depot
-        if self.opportunistic:
-            self._opportunistic(route, home.street_ids, [])
 
     def sweep_traversed(self, routes) -> None:
+        # After the routes are closed, clean the eligible streets they already
+        # drive over; an optional street only when it raises the score.
         for route in sorted(routes, key=lambda r: (r.capacity, r.vehicle_id)):
-            self._opportunistic(route, sorted(set(route.street_ids)), [])
+            for street_id in sorted(set(route.street_ids)):
+                street = self.streets_by_id[street_id]
+                if street.id in self.cleaned or street.category not in ELIGIBLE:
+                    continue
+                if route.capacity < street.requirement:
+                    continue
+                if (street.category != "M"
+                        and self.model.gain(street, route.capacity) <= 0.0):
+                    continue
+                self._clean(route, street, [])
 
     def repair_mandatory(self, routes) -> list:
         failures = []
@@ -382,7 +333,7 @@ class SearchSpace:
                 if route.capacity < street.requirement:
                     continue
                 moves = self.probe(route.current_junction, route.capacity,
-                                   route.total_time, MANDATORY, False, 1,
+                                   route.total_time, 1,
                                    exclude=frozenset(
                                        self.mandatory_pending - {street_id}))
                 for move in moves:

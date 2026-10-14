@@ -13,11 +13,10 @@ targets, enumerates their continuations lookahead levels deep and commits the
 best value per second; it also enumerates its own budget, so it cannot score
 below the plain recursion.
 
-Mandatory streets come before optional ones, vehicles are driven in increasing
+Routes target mandatory streets only, vehicles are driven in increasing
 capacity, and the depot return is appended last; a repair pass force-assigns
-anything left. The cleaning rules are the baseline's unless enhanced=True, which
-also cleans the streets a route drives over, prefers a requirement equal to the
-capacity and spends leftover vehicle time on optional streets.
+anything left. Afterwards each route cleans the eligible streets it already
+drives over, an optional street only when that raises the score.
 
 Score is alpha * coverage + (1-alpha) * efficiency and is linear in the cleaned
 set, so candidates are ranked by value per second. Both algorithms are
