@@ -1,6 +1,7 @@
 import argparse
 from pathlib import Path
 
+from clipp import recursive
 from clipp.graph import build_graph, shortest_path
 from clipp.output import write_solution
 from clipp.parser import parse_instance
@@ -8,16 +9,22 @@ from clipp.scoring import calculate_score
 from clipp.solver import GreedyAssignmentError, solve
 from clipp.validator import validate_solution
 
+ALGORITHMS = {
+    "greedy": solve,
+    "recursive": recursive.solve,
+}
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("instance", nargs="?", default="data/input/instance_E.txt")
+    parser.add_argument("--algorithm", choices=sorted(ALGORITHMS), default="greedy")
     args = parser.parse_args()
     try:
         instance = parse_instance(args.instance)
         mandatory_count = sum(s.category == "M" for s in instance.streets)
         try:
-            solution = solve(instance)
+            solution = ALGORITHMS[args.algorithm](instance)
         except GreedyAssignmentError as exc:
             print(f"FAILED: {exc}")
             print("No complete solution generated; no solution file or score produced.")
@@ -47,7 +54,13 @@ def main() -> int:
                 print(error)
             return 1
         score = calculate_score(instance, solution)
-        output = Path("data/output") / f"{Path(args.instance).stem}_solution.txt"
+        name = Path(args.instance).stem
+        if name == "instance":
+            name = f"{Path(args.instance).parent.name}_instance"
+        folder = Path("data/output")
+        if args.algorithm != "greedy":
+            folder = folder / args.algorithm.replace("-", "_")
+        output = folder / f"{name}_solution.txt"
         write_solution(solution, output)
         print(f"Score: {score.score} (cleaned length {score.cleaned_length}, "
               f"water waste {score.total_water_waste:g})")
