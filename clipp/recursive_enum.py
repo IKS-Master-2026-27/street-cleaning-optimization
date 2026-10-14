@@ -13,27 +13,24 @@ from .validator import validate_solution
 def ladder(instance: Instance, width: int | None = None,
            lookahead: int | None = None) -> list:
     if width is not None or lookahead is not None:
-        return [(max(1, width or 1), max(1, lookahead or 1), None)]
+        return [(max(1, width or 1), max(1, lookahead or 1))]
     streets = instance.num_streets
     if streets <= 1_500:
-        return [(1, 1, (False,)), (1, 1, (True, False)),
-                (3, 2, None), (5, 3, None)]
+        return [(1, 1), (3, 2), (5, 3)]
     if streets <= 60_000:
-        return [(1, 1, None), (3, 2, None)]
-    return [(1, 1, None), (3, 1, None)]
+        return [(1, 1), (3, 2)]
+    return [(1, 1), (3, 1)]
 
 
 def _lookahead(space: SearchSpace, junction: int, capacity: int, elapsed: int,
-               phase: str, exact: bool, width: int, depth: int,
-               exclude) -> tuple:
+               width: int, depth: int, exclude) -> tuple:
     if depth <= 0:
         return 0.0, 0
     best = (0.0, 0)
     best_density = 0.0
-    for move in space.probe(junction, capacity, elapsed, phase, exact, width,
-                            exclude):
+    for move in space.probe(junction, capacity, elapsed, width, exclude):
         sub_value, sub_time = _lookahead(
-            space, move.exit, capacity, elapsed + move.time, phase, exact,
+            space, move.exit, capacity, elapsed + move.time,
             width, depth - 1, exclude | {move.street.id})
         value = move.value + sub_value
         total = move.time + sub_time
@@ -43,16 +40,15 @@ def _lookahead(space: SearchSpace, junction: int, capacity: int, elapsed: int,
     return best
 
 
-def _enumerated(space: SearchSpace, route, phase: str, exact: bool, width: int,
-                lookahead: int) -> list:
-    moves = space.find_moves(route, phase, exact, width=width)
+def _enumerated(space: SearchSpace, route, width: int, lookahead: int) -> list:
+    moves = space.find_moves(route, width=width)
     if len(moves) <= 1:
         return moves
     ranked = []
     for move in moves:
         sub_value, sub_time = _lookahead(
             space, move.exit, route.capacity, route.total_time + move.time,
-            phase, exact, width, lookahead - 1, frozenset([move.street.id]))
+            width, lookahead - 1, frozenset([move.street.id]))
         value = move.value + sub_value
         total = move.time + sub_time
         density = value / total if total else 0.0
@@ -63,23 +59,17 @@ def _enumerated(space: SearchSpace, route, phase: str, exact: bool, width: int,
 
 def solve(instance: Instance, width: int | None = None,
           lookahead: int | None = None, probe_radius: int | None = None,
-          deadline: float | None = None, enhanced: bool = False,
           **_ignored) -> Solution:
-    # See clipp.recursive.solve for what `enhanced` switches on.
     _raise_recursion_limit(instance)
     best = None
     failures = []
-    for enumerated_width, depth, tiers in ladder(instance, width, lookahead):
-        space = SearchSpace(instance, probe_radius=probe_radius,
-                            deadline=deadline,
-                            tiers=tiers if enhanced else (False,),
-                            opportunistic=enhanced)
+    for enumerated_width, depth in ladder(instance, width, lookahead):
+        space = SearchSpace(instance, probe_radius=probe_radius)
         candidates = partial(_enumerated, width=enumerated_width,
                              lookahead=depth)
-        label = f"width={enumerated_width} lookahead={depth} tiers={tiers}"
+        label = f"width={enumerated_width} lookahead={depth}"
         try:
-            solution = build_solution(space, candidates,
-                                      optional_phase=enhanced)
+            solution = build_solution(space, candidates)
         except ValueError as exc:
             failures.append(f"{label}: {exc}")
             continue

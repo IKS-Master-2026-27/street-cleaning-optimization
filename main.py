@@ -18,7 +18,7 @@ ALGORITHMS = {
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("instance", nargs="?", default="data/input/instance_E.txt")
+    parser.add_argument("instance", nargs="?", default="data/input/syntetic_generated/instance_E.txt")
     parser.add_argument("--algorithm", choices=sorted(ALGORITHMS), default="greedy")
     args = parser.parse_args()
     try:
