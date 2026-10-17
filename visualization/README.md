@@ -97,14 +97,80 @@ weak laptops.
 
 ## Adding a new algorithm
 
-1. Write a function that takes a `clipp.parser.Instance` and returns a
-   `clipp.solver.Solution`, like `clipp.solver.solve`.
-2. Register it in `visualization/pipeline/algorithms.py`:
-   `"better": Algorithm("Better heuristic", "clipp.better", "solve")`.
-3. Run `python visualization/pipeline/build.py Presheva --algorithm better`.
+Every algorithm's solutions live in `data/output/<algorithm>/<City>_instance_solution.txt`,
+in the validator's format (the greedy's are in `data/output/greedy/`). The app
+shows, for the open city, every **registered** algorithm that has such a file.
 
-The app then offers every algorithm that has a solution for the open city in its
-**Solution** list. Solutions already built are kept; nothing else has to change.
+### 1. Write the algorithm
+
+A Python function that takes a `clipp.parser.Instance` and returns a
+`clipp.solver.Solution`, like the greedy's `clipp.solver.solve`:
+
+```python
+# clipp/better.py
+from clipp.parser import Instance
+from clipp.solver import Solution, VehicleRoute
+
+def solve(instance: Instance) -> Solution:
+    ...  # one VehicleRoute per truck, in the order of the fleet line,
+         # starting and ending at the depot
+```
+
+`build.py` checks the result with `clipp/validator.py` and writes it with
+`clipp/output.py`, so an invalid solution is never saved.
+
+### 2. Register it
+
+Add one line to `ALGORITHMS` in `visualization/pipeline/algorithms.py`:
+
+```python
+ALGORITHMS = {
+    "greedy": Algorithm("Greedy", "clipp.solver", "solve"),
+    "better": Algorithm("Better heuristic", "clipp.better", "solve"),  # name shown in the app, module, function
+}
+```
+
+The key (`better`) is the algorithm's id: the folder under `data/output/` and the
+value of `--algorithm`.
+
+### 3. Build it for a city
+
+```powershell
+python visualization/pipeline/build.py Prishtina --algorithm better
+# with its realistic mode too:
+python visualization/pipeline/build.py Prishtina --algorithm better --sumo --traffic 1
+```
+
+This runs the algorithm, saves `data/output/better/Prishtina_instance_solution.txt`,
+and adds **Better heuristic** to the app's **Solution** list next to **Greedy**.
+Refresh the page to see it. Solutions already built (the greedy's, and its SUMO
+run) are kept.
+
+### If the solution file comes from someone else
+
+When another group sends you the solution file instead of the code, the
+algorithm does not need to run:
+
+1. Register the algorithm id in `algorithms.py` as above (the module and function
+   are only used when solving).
+2. Save the file as `data/output/<id>/<City>_instance_solution.txt`, for example
+   `data/output/better/Prishtina_instance_solution.txt`.
+3. Run `python visualization/pipeline/build.py Prishtina --algorithm better`. It
+   finds the file, checks it and exports it without solving (`--rerun` would solve
+   again and overwrite it).
+
+A file in a folder whose id is not registered in `algorithms.py` is ignored.
+
+### Upload or build?
+
+| | **Upload** button in the app | `build.py --algorithm <id>` |
+|---|---|---|
+| What you need | only the solution file | the algorithm registered in `algorithms.py` (and its code, or its solution file) |
+| Where it is processed | in the browser, in about a second | by the Python pipeline |
+| Checks and score | yes, same rules as the validator | yes: `clipp`'s validator when it solves, and the pipeline's own checks (same rules) on every file |
+| Saved? | **no**: only in that browser tab; gone after a reload, closing the app or switching city | **yes**: in `data/output/<id>/` and `public/data/<City>/`, for everyone who opens the app |
+| Realistic (SUMO) mode | no | yes, with `--sumo` |
+| Use it for | a quick look at a file someone sent you | solutions to keep, compare and present |
 
 ## Using the app
 
@@ -113,6 +179,7 @@ The app then offers every algorithm that has a solution for the open city in its
 | Play / pause | ▶ button or <kbd>Space</kbd>; speed from ×1 to ×10000 |
 | Jump in time | drag the timeline; for an uploaded solution that runs past the time limit T, a yellow mark shows T |
 | Pan, rotate, zoom | left drag, right drag, mouse wheel |
+| See or set how far you are zoomed | the small box at the bottom left of the map shows how wide the view is (e.g. "≈ 850 m"); choose a width from its list (50 m … 10 km, or the whole city), or use its **−** / **+** buttons or the **−** / **+** keys to halve or double it |
 | Street or truck details | hover for a tooltip, click for the details card |
 | Focus on a truck | click a truck or a row in the truck list: other trucks fade, its route shows the part already driven (dark) and still ahead (faint blue), and the card shows progress bars for its route, its cleaning and its place in the shift |
 | Follow a truck | after selecting it, **Follow** or <kbd>F</kbd>: the camera moves with it and you can still rotate and zoom |
@@ -124,7 +191,7 @@ The app then offers every algorithm that has a solution for the open city in its
 | Make trucks bigger or smaller | the **Truck size** slider under **Show**: up close trucks stay near real size, and they grow by this factor as you zoom out (remembered by the browser) |
 | Make roads wider or narrower | the **Road width** slider under **Show** (×2 by default; remembered by the browser) |
 | Hide buildings, trees, water spray or day/night | the **Buildings**, **Trees**, **Water spray** and **Time of day** checkboxes under **Show** |
-| Check your own solution | **Upload** (or drop the file on the page) a solution in the validator format for the open city |
+| Check a solution file quickly | **Upload** (or drop the file on the page) a solution in the validator format for the open city; it is not saved (see "Upload or build?") |
 
 Colours follow the course slides: red = mandatory, blue = optional, grey =
 connector, green = cleaned, yellow = depot. Trucks are cyan (S), orange (M) and
@@ -163,10 +230,16 @@ Hover a bar for its times; click to select that truck and jump to that moment. F
 example, trucks spend about two thirds of their working time driving without
 cleaning and are back at the depot within about 2 of the 8 hours.
 
-An uploaded solution is parsed and timed in the browser (no pipeline needed). The
-app shows its score and lists problems such as moves between unconnected junctions,
-routes that do not start and end at the depot, routes over the time limit, trucks
-cleaning streets that need a larger capacity, and mandatory streets left uncleaned.
+An uploaded solution is parsed and timed in the browser (no pipeline needed) and
+appears in the **Solution** list as "Upload: <file name>". It must be for the open
+city (a file with another number of trucks is rejected). The app shows its score
+and lists problems such as moves between unconnected junctions, routes that do not
+start and end at the depot, routes over the time limit, trucks cleaning streets
+that need a larger capacity, and mandatory streets left uncleaned; such a file is
+still played so the problem can be seen (only a move between two junctions with no
+street between them stops the upload). Uploads are **not saved**: a reload
+removes them, and they have no realistic mode. To keep a solution, add it with
+`build.py` (see "Adding a new algorithm").
 
 ## Pipeline
 

@@ -1,14 +1,17 @@
-"""Tolerant instance reader and the problem model used by the DP solvers.
+"""Problem model used by the DP solvers and its instance reader.
 
-Accepts both input layouts: with the N coordinate lines described in the
-official statement, and without them (as in the repository's instances).
+The repository layout is read with `clipp.parser.parse_instance`; the official
+statement's layout, which adds N coordinate lines after the header, is read here.
 """
 
 from dataclasses import dataclass, field
 from pathlib import Path
 
-CAPACITY = {"S": 10, "M": 20, "L": 30}
-TYPE_OF_CAPACITY = {10: "S", 20: "M", 30: "L"}
+from ..parser import parse_instance
+from ..solver import VEHICLE_CAPACITIES
+
+CAPACITY = VEHICLE_CAPACITIES
+TYPE_OF_CAPACITY = {q: v for v, q in VEHICLE_CAPACITIES.items()}
 
 
 @dataclass
@@ -68,12 +71,37 @@ class Problem:
         return max(values) if values else None
 
 
+def problem_from_instance(instance, name: str = "instance") -> Problem:
+    """Build the DP model from the repository's parsed `clipp.parser.Instance`."""
+    streets = sorted(instance.streets, key=lambda s: s.id)
+    return Problem(
+        instance.num_junctions, instance.num_streets, instance.max_time,
+        instance.num_vehicles, instance.depot,
+        # the parser keeps alpha in the historical `water_waste_penalty` field
+        instance.water_waste_penalty,
+        [s.a for s in streets], [s.b for s in streets], [s.direction for s in streets],
+        [s.time for s in streets], [s.length for s in streets],
+        [s.category for s in streets], [s.requirement for s in streets],
+        list(instance.vehicle_types), None, name)
+
+
 def instance_name(path: str | Path) -> str:
+    """Output name, same convention as main.py: real cities become `<City>_instance`."""
     path = Path(path)
-    return path.parent.name if path.stem == "instance" else path.stem
+    return f"{path.parent.name}_instance" if path.stem == "instance" else path.stem
 
 
 def read_problem(path: str | Path) -> Problem:
+    with open(path, encoding="utf-8") as source:
+        source.readline()
+        second = source.readline()
+    if len(second.split()) != 2:  # repository layout: no coordinate lines
+        return problem_from_instance(parse_instance(path), instance_name(path))
+    return _read_with_coordinates(path)
+
+
+def _read_with_coordinates(path: str | Path) -> Problem:
+    """Official layout: header, N coordinate lines, M streets, vehicle types."""
     with open(path, encoding="utf-8") as source:
         lines = [line for line in source.read().split("\n")]
     while lines and not lines[-1].strip():

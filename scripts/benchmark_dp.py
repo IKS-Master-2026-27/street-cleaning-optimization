@@ -2,11 +2,14 @@
 
 Usage (from the repository root):
     python scripts/benchmark_dp.py [--time-limit 120] [--seeds 1 2 3] [--workers 6]
+                                   [--only instance_A Presheva] [--output-dir DIR]
 
 Baselines: the greedy outputs in data/output/greedy/ (all instances) and
 the feasibility witness instance.solution.txt shipped with each real city.
-Best solutions are written to data/output/dp_simple/ and data/output/dp_advanced/;
-the result table goes to data/output/dp_benchmark.md and .csv.
+Solutions go to <output-dir>/dp_simple/ and <output-dir>/dp_advanced/
+(default output-dir: data/output) and only replace a stored solution when they
+score higher, so a quick test run can never overwrite a better result. The
+result table goes to <output-dir>/dp_benchmark.md and .csv.
 """
 
 import argparse
@@ -22,8 +25,9 @@ sys.path.insert(0, str(ROOT))
 
 from clipp.dp.bounds import upper_bound  # noqa: E402
 from clipp.dp.distances import Oracle  # noqa: E402
-from clipp.dp.io import read_problem  # noqa: E402
-from clipp.dp.objective import evaluate, read_solution, to_repo_solution  # noqa: E402
+from clipp.dp.io import instance_name, read_problem  # noqa: E402
+from clipp.dp.objective import (evaluate, read_solution, save_if_better,  # noqa: E402
+                                 to_repo_solution)
 from clipp.output import write_solution  # noqa: E402
 
 
@@ -35,8 +39,7 @@ def instances() -> list[Path]:
 
 
 def greedy_file(path: Path) -> Path | None:
-    stem = f"{path.parent.name}_instance" if path.stem == "instance" else path.stem
-    candidate = ROOT / "data/output/greedy" / f"{stem}_solution.txt"
+    candidate = ROOT / "data/output/greedy" / f"{instance_name(path)}_solution.txt"
     return candidate if candidate.exists() else None
 
 
@@ -52,29 +55,29 @@ def score_file(problem, path: Path | None) -> float | None:
     return ev.score if ev.valid else None
 
 
-def run_simple(path: str) -> dict:
+def run_simple(args: tuple[str, str]) -> dict:
     from clipp.dp.simple import solve_simple
+    path, out_dir = args
     problem = read_problem(path)
     oracle = Oracle(problem)
     result = solve_simple(problem, oracle)
     greedy = score_file(problem, greedy_file(Path(path)))
     witness = score_file(problem, witness_file(Path(path)))
-    out = ROOT / "data/output/dp_simple" / f"{problem.name}_solution.txt"
-    if result.evaluation.valid:
-        write_solution(to_repo_solution(problem, result.routes), out)
+    saved, _ = save_if_better(problem, result.routes,
+                              Path(out_dir) / "dp_simple" / f"{problem.name}_solution.txt")
     return {"name": problem.name, "N": problem.num_junctions, "M": problem.num_streets,
             "C": problem.num_vehicles, "alpha": problem.alpha,
             "greedy": greedy, "witness": witness, "A": result.evaluation.score,
             "A_valid": result.evaluation.valid, "A_seconds": result.seconds,
-            "UB": upper_bound(problem, oracle)}
+            "UB": upper_bound(problem, oracle), "A_saved": saved}
 
 
-def run_advanced(args: tuple[str, int, float]) -> dict:
+def run_advanced(args: tuple[str, int, float, str]) -> dict:
     from clipp.dp.advanced import solve_advanced
-    path, seed, limit = args
+    path, seed, limit, out_dir = args
     problem = read_problem(path)
     result = solve_advanced(problem, Oracle(problem), seed=seed, time_limit=limit)
-    out = ROOT / "data/output/dp_advanced" / f"{problem.name}_seed{seed}_solution.txt"
+    out = Path(out_dir) / "dp_advanced" / f"{problem.name}_seed{seed}_solution.txt"
     if result.evaluation.valid:
         write_solution(to_repo_solution(problem, result.routes), out)
     return {"name": problem.name, "seed": seed, "B": result.evaluation.score,
@@ -93,36 +96,41 @@ def main() -> int:
     parser.add_argument("--seeds", type=int, nargs="+", default=[1, 2, 3])
     parser.add_argument("--workers", type=int, default=6)
     parser.add_argument("--only", nargs="*", help="instance names to run")
+    parser.add_argument("--output-dir", default=str(ROOT / "data/output"),
+                        help="where solutions and the table go (default: data/output)")
     args = parser.parse_args()
+    out_dir = Path(args.output_dir)
     paths = [p for p in instances()
              if not args.only or (p.parent.name if p.stem == "instance" else p.stem) in args.only]
     t0 = time.perf_counter()
     with ProcessPoolExecutor(max_workers=args.workers) as pool:
-        simple = list(pool.map(run_simple, map(str, paths)))
+        simple = list(pool.map(run_simple, [(str(p), str(out_dir)) for p in paths]))
         # Where Solution A already meets the upper bound it is proven optimal and
         # Solution B would return it unchanged, so those runs are skipped.
         open_paths = [p for p, info in zip(paths, simple) if info["A"] < info["UB"] - 1e-12]
-        jobs = [(str(p), s, args.time_limit) for p in open_paths for s in args.seeds]
+        jobs = [(str(p), s, args.time_limit, str(out_dir)) for p in open_paths for s in args.seeds]
         advanced = list(pool.map(run_advanced, jobs))
 
     rows = []
-    for info in simple:
+    saved_b = 0
+    for path, info in zip(paths, simple):
         runs = [r for r in advanced if r["name"] == info["name"]]
+        final = out_dir / "dp_advanced" / f"{info['name']}_solution.txt"
         if not runs:
-            final = ROOT / "data/output/dp_advanced" / f"{info['name']}_solution.txt"
-            final.parent.mkdir(parents=True, exist_ok=True)
-            source = ROOT / "data/output/dp_simple" / f"{info['name']}_solution.txt"
+            # A meets the upper bound: it is also the advanced solution of record
+            source = out_dir / "dp_simple" / f"{info['name']}_solution.txt"
             if source.exists():
-                final.write_text(source.read_text())
+                problem = read_problem(path)
+                saved_b += save_if_better(problem, read_solution(problem, source), final)[0]
             rows.append({**info, "B_mean": info["A"], "B_std": 0.0, "B_best": info["A"],
                          "B_valid": info["A_valid"], "B_seconds": 0.0})
             continue
         scores = [r["B"] for r in runs if r["valid"]]
         best = max(runs, key=lambda r: r["B"] if r["valid"] else -1)
-        # keep the best seed as the advanced solution of record
-        final = ROOT / "data/output/dp_advanced" / f"{info['name']}_solution.txt"
+        # the best seed replaces the stored solution only if it scores higher
         if best["valid"]:
-            final.write_text(Path(best["file"]).read_text())
+            problem = read_problem(path)
+            saved_b += save_if_better(problem, read_solution(problem, best["file"]), final)[0]
         for r in runs:
             Path(r["file"]).unlink(missing_ok=True)
         rows.append({**info,
@@ -138,7 +146,7 @@ def main() -> int:
     for r in rows:
         gap = (r["UB"] - r["B_best"]) / r["UB"] if r["B_best"] is not None and r["UB"] > 0 else None
         lines.append(
-            f"| {r['name']} | {r['N']:,} | {r['M']:,} | {r['C']} | {r['alpha']} | {fmt(r['greedy'])} | "
+            f"| {r['name'].removesuffix('_instance')} | {r['N']:,} | {r['M']:,} | {r['C']} | {r['alpha']} | {fmt(r['greedy'])} | "
             f"{fmt(r['witness'])} | "
             f"{fmt(r['A'])} | {fmt(r['B_mean'])} ± {fmt(r['B_std'])} | **{fmt(r['B_best'])}** | "
             f"{fmt(r['UB'])} | {fmt(None if gap is None else 100 * max(0.0, gap), 2)}% | "
@@ -148,7 +156,8 @@ def main() -> int:
     print(f"\nseeds {args.seeds}, time limit {args.time_limit}s per run, "
           f"all valid: {all(r['A_valid'] and r['B_valid'] for r in rows)}, "
           f"wall time {time.perf_counter() - t0:.0f}s")
-    out_dir = ROOT / "data/output"
+    print(f"stored solutions improved: Solution A {sum(r['A_saved'] for r in rows)}, "
+          f"Solution B {saved_b} (the others were already at least as good)")
     (out_dir / "dp_benchmark.md").write_text(table + "\n", encoding="utf-8")
     with open(out_dir / "dp_benchmark.csv", "w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))

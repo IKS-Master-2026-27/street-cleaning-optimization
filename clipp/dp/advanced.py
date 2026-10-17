@@ -22,13 +22,14 @@ Deterministic for a given seed.
 import random
 import time
 
+from ..solver import Solution
 from .assignment import assign_cleaning, fill_idle_vehicles, route_from_tasks
 from .bounds import upper_bound
 from .distances import Oracle
-from .io import Problem
+from .io import Problem, problem_from_instance
 from .local_search import (Dense, held_karp_sweep, insert_unserved, normalize,
                            select_within, value_of)
-from .objective import Route, evaluate
+from .objective import Route, evaluate, to_repo_solution
 from .simple import DENSE_LIMIT, Result, solve_simple
 from .split import NEG, SplitData, split_heterogeneous, split_ordered, vehicles_for
 from .tour import (class_of, make_tour, nearest_neighbor, orientations, select_streets,
@@ -426,3 +427,10 @@ def solve_advanced(problem: Problem, oracle: Oracle | None = None, seed: int = 1
     log.append(f"polished best: {evaluation.score:.6f}")
     services = [normalize(problem, r) for r in best_routes]
     return Result(best_routes, evaluation, services, log, time.perf_counter() - started)
+
+
+def solve(instance, seed: int = 1, time_limit: float = 60.0, **_ignored) -> Solution:
+    """Solution B behind the shared `main.py --algorithm dp-advanced` interface."""
+    problem = problem_from_instance(instance)
+    result = solve_advanced(problem, seed=seed, time_limit=time_limit)
+    return to_repo_solution(problem, result.routes)

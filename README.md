@@ -36,10 +36,10 @@ Run from the repository root:
 ```powershell
 python main.py
 # Or specify another instance
-python main.py data/input/instance_E.txt
+python main.py data/input/syntetic_generated/instance_E.txt
 
 
-The default input is `data/input/instance_E.txt`. Valid solutions are written to
+The default input is `data/input/syntetic_generated/instance_E.txt`. Valid solutions are written to
 `data/output/<instance-name>_solution.txt`. A greedy assignment failure is reported
 with diagnostics and a nonzero exit status. The current implementation may take
 several minutes on instance_E because shortest paths are recomputed for candidates.

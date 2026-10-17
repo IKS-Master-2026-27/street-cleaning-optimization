@@ -1,8 +1,15 @@
-"""Run the dynamic-programming solvers (Solution A: simple, Solution B: advanced).
+"""Run one dynamic-programming solver with its full report.
 
-Every solution is checked twice: by the repository's validator/scorer and by the
-independent validator in clipp/dp/objective.py, and is compared with the
-provable upper bound from clipp/dp/bounds.py.
+`python main.py --algorithm dp-simple|dp-advanced` is the normal way to run the
+solvers; this tool adds the options and checks that main.py does not have:
+
+    python scripts/run_dp.py <instance> [--method simple|advanced] [--seed 1]
+                             [--time-limit 60] [--output-dir DIR]
+
+Every solution is checked twice (the repository's validator/scorer and the
+independent validator in clipp/dp/objective.py) and compared with the provable
+upper bound from clipp/dp/bounds.py. A stored solution is only replaced by a
+better one.
 """
 
 import argparse
@@ -10,14 +17,16 @@ import sys
 import time
 from pathlib import Path
 
-from clipp.dp.bounds import upper_bound
-from clipp.dp.distances import Oracle
-from clipp.dp.io import read_problem
-from clipp.dp.objective import additive_score, to_repo_solution
-from clipp.output import write_solution
-from clipp.parser import parse_instance
-from clipp.scoring import calculate_score
-from clipp.validator import validate_solution
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from clipp.dp.bounds import upper_bound  # noqa: E402
+from clipp.dp.distances import Oracle  # noqa: E402
+from clipp.dp.io import read_problem  # noqa: E402
+from clipp.dp.objective import additive_score, save_if_better, to_repo_solution  # noqa: E402
+from clipp.parser import parse_instance  # noqa: E402
+from clipp.scoring import calculate_score  # noqa: E402
+from clipp.validator import validate_solution  # noqa: E402
 
 
 def run(path: str, method: str, seed: int, time_limit: float, output_dir: str | None,
@@ -65,8 +74,11 @@ def run(path: str, method: str, seed: int, time_limit: float, output_dir: str | 
     output = None
     if status == "VALID" and output_dir:
         output = Path(output_dir) / f"{problem.name}_solution.txt"
-        write_solution(to_repo_solution(problem, result.routes), output)
-        say(f"Output: {output}")
+        written, previous = save_if_better(problem, result.routes, output)
+        if written:
+            say(f"Output: {output}" + (f"  (improved from {previous:.10f})" if previous is not None else ""))
+        else:
+            say(f"Output: kept {output}  (stored score {previous:.10f} is at least as good)")
     return {
         "instance": problem.name, "method": method, "valid": status == "VALID",
         "score": ev.score, "coverage": ev.coverage, "efficiency": ev.efficiency,
@@ -85,7 +97,7 @@ def main() -> int:
     parser.add_argument("--output-dir", default=None,
                         help="default: data/output/dp_<method>")
     args = parser.parse_args()
-    out = args.output_dir or f"data/output/dp_{args.method}"
+    out = args.output_dir or str(ROOT / "data/output" / f"dp_{args.method}")
     try:
         result = run(args.instance, args.method, args.seed, args.time_limit, out)
     except (OSError, ValueError) as exc:

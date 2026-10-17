@@ -1,7 +1,9 @@
 """Route model, independent validator (per the official statement) and score."""
 
 from dataclasses import dataclass, field
+from pathlib import Path
 
+from ..output import write_solution
 from ..solver import Solution, VehicleRoute
 from .io import Problem
 
@@ -127,3 +129,23 @@ def to_repo_solution(problem: Problem, routes: list[Route]) -> Solution:
         )
         for v, route in enumerate(routes)
     ])
+
+
+def save_if_better(problem: Problem, routes: list[Route], path) -> tuple[bool, float | None]:
+    """Write `routes` to `path` only if they are valid and score strictly higher than
+    the valid solution already stored there, so saved results can only improve.
+
+    Returns (written, previous score or None)."""
+    path = Path(path)
+    new = evaluate(problem, routes)
+    previous = None
+    if path.exists():
+        try:
+            old = evaluate(problem, read_solution(problem, path))
+            previous = old.score if old.valid else None
+        except (OSError, ValueError, IndexError):
+            previous = None
+    if not new.valid or (previous is not None and new.score <= previous + 1e-12):
+        return False, previous
+    write_solution(to_repo_solution(problem, routes), path)
+    return True, previous

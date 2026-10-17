@@ -14,16 +14,19 @@ from pathlib import Path
 from clipp.dp.advanced import solve_advanced
 from clipp.dp.assignment import assign_cleaning
 from clipp.dp.bounds import upper_bound
-from clipp.dp.distances import Oracle
-from clipp.dp.io import read_problem
+from clipp.dp.distances import INF, Oracle
+from clipp.dp.io import problem_from_instance, read_problem
 from clipp.dp.knapsack import knapsack
 from clipp.dp.local_search import Dense, held_karp_window, select_within
-from clipp.dp.objective import Route, additive_score, evaluate, to_repo_solution
+from clipp.dp.objective import (Route, additive_score, evaluate, read_solution, save_if_better,
+                                 to_repo_solution)
 from clipp.dp.simple import solve_simple
 from clipp.dp.split import NEG, SplitData, split_heterogeneous, split_ordered
 from clipp.dp.tour import make_tour, orientations, select_streets, servable
 from clipp.parser import parse_instance
 from clipp.scoring import calculate_score
+from clipp.search import ScoreModel
+from clipp.solver import depot_return_times
 from clipp.validator import validate_solution
 
 PODUJEVA = """6 10 300 3 0 0.5
@@ -295,6 +298,20 @@ class EndToEndTests(unittest.TestCase):
             searched += "search skipped" not in b.log[-1]
         self.assertGreater(searched, 0, "the advanced search was never exercised")
 
+    def test_save_if_better_never_overwrites_a_better_solution(self):
+        path = write(PODUJEVA)
+        problem = read_problem(path)
+        best = solve_simple(problem).routes          # score 1.0
+        worse = [Route(0, 10, [0, 1, 3, 5, 0], [0, 1, 4, 9], [0, 1, 4]),
+                 Route(1, 20, [0, 1, 2, 4, 5, 0], [0, 2, 5, 7, 9], [2]),
+                 Route(2, 30, [0, 1, 2, 4, 5, 2, 4, 5, 0], [0, 2, 5, 7, 8, 5, 7, 9], [5, 8])]  # 0.9
+        target = Path(tempfile.mkdtemp()) / "podujeva_solution.txt"
+        self.assertEqual(save_if_better(problem, worse, target), (True, None))     # nothing stored yet
+        self.assertEqual(save_if_better(problem, worse, target)[0], False)         # equal: kept
+        self.assertTrue(save_if_better(problem, best, target)[0])                  # better: replaced
+        self.assertFalse(save_if_better(problem, worse, target)[0])                # worse: kept
+        self.assertAlmostEqual(evaluate(problem, read_solution(problem, target)).score, 1.0, places=12)
+
     def test_assignment_is_optimal_for_fixed_moves(self):
         """Lemma 1: no other cleaning choice for the same moves scores higher."""
         rng = random.Random(8)
@@ -319,6 +336,56 @@ class EndToEndTests(unittest.TestCase):
                 ev = evaluate(problem, trial)
                 if ev.valid:
                     self.assertLessEqual(ev.score, best + 1e-12)
+
+
+class SharedCodeTests(unittest.TestCase):
+    """The DP keeps its own fast versions of a few shared pieces; these tests
+    check that they agree exactly with the repository's implementations."""
+
+    ROOT = Path(__file__).resolve().parents[1]
+
+    def instances(self):
+        paths = [write(PODUJEVA)] + sorted(
+            str(p) for p in (self.ROOT / "data/input/syntetic_generated").glob("instance_*.txt"))
+        presheva = self.ROOT / "data/input/real_instances/Presheva/instance.txt"
+        return paths + ([str(presheva)] if presheva.exists() else [])
+
+    def test_delta_matches_search_score_model(self):
+        for path in self.instances():
+            instance = parse_instance(path)
+            problem = read_problem(path)
+            model = ScoreModel.from_instance(instance)
+            self.assertEqual(model.l_max, problem.l_max)
+            self.assertAlmostEqual(model.w_max, problem.w_max, places=9)
+            for street in instance.streets:
+                for q in (10, 20, 30):
+                    delta = problem.delta(street.id, q)
+                    if delta is not None:
+                        self.assertAlmostEqual(delta, model.gain(street, q), places=15)
+
+    def test_depot_distances_match_solver(self):
+        for path in self.instances():
+            instance = parse_instance(path)
+            to_depot = Oracle(read_problem(path)).to_depot[0]
+            expected = depot_return_times(instance)
+            for node in range(instance.num_junctions):
+                self.assertEqual(to_depot[node], expected.get(node, INF))
+
+    def test_coordinate_layout_matches_repository_parser(self):
+        """The official layout (N coordinate lines after the header) is read by our
+        own parser; it must give exactly the model built from parse_instance."""
+        for path in self.instances():
+            lines = Path(path).read_text(encoding="utf-8").split("\n")
+            n = int(lines[0].split()[0])
+            coords = [f"{21 + i / 1000:.4f} {42 + i / 1000:.4f}" for i in range(n)]
+            official = read_problem(write("\n".join([lines[0]] + coords + lines[1:])))
+            self.assertEqual(len(official.coords), n)
+            direct = problem_from_instance(parse_instance(path), official.name)
+            via_parser = official
+            for field in ("num_junctions", "num_streets", "time_limit", "num_vehicles", "depot",
+                          "alpha", "a", "b", "direction", "time", "length", "category",
+                          "requirement", "fleet", "l_max", "w_max"):
+                self.assertEqual(getattr(direct, field), getattr(via_parser, field), field)
 
 
 if __name__ == "__main__":

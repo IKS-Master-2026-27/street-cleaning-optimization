@@ -1,22 +1,31 @@
 # Dynamic-programming solvers
 
 Two solvers built from dynamic programs whose states are defined over
-sub-problems. The code lives in `clipp/dp/`; the greedy baseline and every
-other existing module are untouched (they are only imported).
+sub-problems, next to the greedy baseline and the recursive solvers. The code
+lives in `clipp/dp/`; like the other algorithms they plug into `main.py`
+through `solve(instance) -> Solution` and are selected with `--algorithm`.
 
 ```powershell
-python main_dp.py data/input/syntetic_generated/instance_E.txt                      # Solution A
-python main_dp.py data/input/syntetic_generated/instance_E.txt --method advanced \
-       --time-limit 180 --seed 1                                                     # Solution B
+python main.py data/input/syntetic_generated/instance_E.txt --algorithm dp-simple    # Solution A
+python main.py data/input/syntetic_generated/instance_E.txt --algorithm dp-advanced  # Solution B (60 s, seed 1)
+python scripts/run_dp.py data/input/syntetic_generated/instance_E.txt --method advanced --time-limit 180 --seed 1
 python scripts/benchmark_dp.py --time-limit 180 --seeds 1 2 3                        # all instances
-python -m unittest tests.test_dp tests.test_layout                                   # tests
+python -m unittest tests.test_dp                                                     # tests
 ```
 
-Python 3.10+, standard library only. `main_dp.py` writes valid solutions to
-`data/output/dp_simple/` or `data/output/dp_advanced/` (git-ignored) and checks
-each one with the repository's `validator.py` and `scoring.py`, with an
+Python 3.10+, standard library only. As with the other algorithms, valid
+solutions are written to `data/output/dp_simple/` or `data/output/dp_advanced/`
+as `<instance>_solution.txt` (real cities: `<City>_instance_solution.txt`);
+the best known solutions are committed there, like the greedy outputs.
+
+`scripts/run_dp.py` runs one solver with the options `main.py` does not have
+(`--seed`, `--time-limit`, `--output-dir`), checks the solution with an
 independent validator written from the official statement
-(`clipp/dp/objective.py`), and against a provable upper bound.
+(`clipp/dp/objective.py`) and reports the provable upper bound and the gap.
+`scripts/benchmark_dp.py` compares greedy, Solution A and Solution B on every
+instance (`--only` for a subset, `--output-dir` to write elsewhere). Both
+scripts replace a stored solution only when the new one scores higher, so a
+quick test run can never overwrite a better result.
 
 ## Key identity
 

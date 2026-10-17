@@ -15,10 +15,11 @@ import time
 from dataclasses import dataclass
 
 from .assignment import assign_cleaning, fill_idle_vehicles, routes_from_segments
+from ..solver import Solution
 from .distances import Oracle
-from .io import Problem
+from .io import Problem, problem_from_instance
 from .knapsack import fill_spare_time
-from .objective import Evaluation, Route, evaluate
+from .objective import Evaluation, Route, evaluate, to_repo_solution
 from .split import NEG, Segment, SplitData, split_min_routes, split_ordered
 from .tour import Selection, Tour, build_tour, class_of, concatenate, select_streets
 
@@ -135,3 +136,9 @@ def solve_simple(problem: Problem, oracle: Oracle | None = None) -> Result:
         routes, services = routes_from_segments(problem, oracle, parts)
         evaluation = finish(problem, oracle, routes, dense, log)
     return Result(routes, evaluation, services, log, time.perf_counter() - started)
+
+
+def solve(instance, **_ignored) -> Solution:
+    """Solution A behind the shared `main.py --algorithm dp-simple` interface."""
+    problem = problem_from_instance(instance)
+    return to_repo_solution(problem, solve_simple(problem).routes)
