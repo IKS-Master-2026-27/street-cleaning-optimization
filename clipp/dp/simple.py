@@ -52,7 +52,8 @@ def plan_ordered(problem: Problem, oracle: Oracle, tour: Tour):
     return value, [(data, segments)]
 
 
-def plan_by_class(problem: Problem, oracle: Oracle, tours: dict[int, Tour], log: list[str]):
+def plan_by_class(problem: Problem, oracle: Oracle, tours: dict[int, Tour], log: list[str],
+                  selection: Selection | None = None, dense: bool = False):
     parts = []
     total = 0.0
     counts: dict[int, int] = {}
@@ -65,8 +66,24 @@ def plan_by_class(problem: Problem, oracle: Oracle, tours: dict[int, Tour], log:
             log.append(f"class {q}: {len(tour)} tasks covered by {len(segments)}/{counts[q]} vehicles")
             value = data.values(q)[data.n]
         else:
-            value, segments = split_ordered(data, [q] * counts.get(q, 0))
+            fleet = [q] * counts.get(q, 0)
+            value, segments = split_ordered(data, fleet)
             log.append(f"class {q}: fleet short, selective split value {value:.6f}")
+            if selection is not None:
+                # A route must serve every task of its segment, so optional tasks lying
+                # between mandatory ones can make the mixed tour uncoverable. A tour with
+                # the class's mandatory streets first and its optional streets after lets
+                # the Split DP cover the mandatory part and spend the remaining vehicles
+                # on optional streets; keep whichever plan is better.
+                mandatory = [j for j in selection.mandatory if class_of(problem, j) == q]
+                optional = [j for j in selection.optional if class_of(problem, j) == q]
+                first = concatenate(problem, oracle, [build_tour(problem, oracle, mandatory, dense),
+                                                      build_tour(problem, oracle, optional, dense)])
+                first_data = SplitData(problem, oracle, first)
+                first_value, first_segments = split_ordered(first_data, fleet)
+                log.append(f"class {q}: mandatory-first tour, selective split value {first_value:.6f}")
+                if first_value > value:
+                    data, value, segments = first_data, first_value, first_segments
             if value == NEG:
                 raise ValueError(f"class {q}: mandatory streets cannot be covered")
         total += value
@@ -132,7 +149,7 @@ def solve_simple(problem: Problem, oracle: Oracle | None = None) -> Result:
         routes, evaluation, services = best
     else:
         tours = _class_tours(problem, oracle, selection, dense)
-        _, parts = plan_by_class(problem, oracle, tours, log)
+        _, parts = plan_by_class(problem, oracle, tours, log, selection, dense)
         routes, services = routes_from_segments(problem, oracle, parts)
         evaluation = finish(problem, oracle, routes, dense, log)
     return Result(routes, evaluation, services, log, time.perf_counter() - started)

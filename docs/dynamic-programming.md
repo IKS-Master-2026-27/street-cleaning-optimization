@@ -209,6 +209,43 @@ greedy (B: +23% on instance_E up to +134% on instance_A; the cities: +55% to
 +81%, because the solutions clean every street with the right-sized truck and
 waste no water).
 
+## Real cities with an 8-hour shift
+
+Most real instances allow far more time per vehicle than a working day (Vienna
+137 h, New York and Johannesburg 205 h, Sydney 227 h). `scripts/make_8h_instances.py`
+writes variants with the time limit capped at 8 h (`T = min(T, 28800)`; nothing
+else changes) to `data/input/real_instances_8h/` (generated, not committed):
+
+```powershell
+python scripts/make_8h_instances.py
+python scripts/run_dp.py data/input/real_instances_8h/Vienna/instance.txt --method simple --output-dir data/output/dp_simple_8h
+```
+
+Sydney is left out: 163 of its mandatory streets need more than 8 h just for
+depot → street → depot, so no valid plan exists. Results (both validators accept
+every solution; Solution B equals Solution A on networks above 2,000 junctions):
+
+| City | T original → 8 h | Solution A | Solution B | UB | Coverage | Water waste |
+|---|---|---:|---:|---:|---:|---:|
+| Presheva | 8 h → 8 h | 1.000000 | 1.000000 | 1.000000 | 100% | 0 |
+| Ulqini | 12 h → 8 h | 1.000000 | 1.000000 | 1.000000 | 100% | 0 |
+| Prishtina | 8 h → 8 h | 1.000000 | 1.000000 | 1.000000 | 100% | 0 |
+| Shkupi | 18 h → 8 h | 1.000000 | 1.000000 | 1.000000 | 100% | 0 |
+| Tirana | 18 h → 8 h | 1.000000 | 1.000000 | 1.000000 | 100% | 0 |
+| Ljubljana | 40.5 h → 8 h | 1.000000 | 1.000000 | 1.000000 | 100% | 0 |
+| New-York | 205 h → 8 h | 1.000000 | 1.000000 | 1.000000 | 100% | 0 |
+| Vienna | 137 h → 8 h | 0.849957 | 0.849957 | 1.000000 | 70.0% | 0 |
+| Johannesburg | 205 h → 8 h | 0.908388 | 0.908388 | 1.000000 | 81.7% | 0 |
+
+With an 8-hour shift seven cities are still cleaned completely (more vehicles
+are simply put to work). In Vienna and Johannesburg every mandatory street is
+cleaned, but the vehicles of each class cannot also reach all optional streets
+in 8 h; the class mandatory-first tour in `plan_by_class` lets the Split DP cover
+the mandatory streets first and spend the remaining vehicles on the most
+valuable optional ones. The upper bound (1.0) only limits the fleet's total
+time, not the driving to far-away streets, so the 9–15% gap there is an
+overestimate.
+
 ## Limitations
 
 * Optimality is proven per sub-problem, not globally (the problem is strongly
