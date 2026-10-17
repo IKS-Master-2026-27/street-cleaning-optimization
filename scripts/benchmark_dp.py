@@ -1,20 +1,20 @@
 """Benchmark: greedy vs Solution A vs Solution B vs upper bound on every instance.
 
 Usage (from the repository root):
-    python scripts/benchmark_dp.py [--time-limit 120] [--seeds 1 2 3] [--workers 6]
-                                   [--only instance_A Presheva] [--output-dir DIR]
+    python scripts/benchmark_dp.py [--workers 6] [--only instance_A Presheva]
+                                   [--output-dir DIR]
 
 Baselines: the greedy outputs in data/output/greedy/ (all instances) and
 the feasibility witness instance.solution.txt shipped with each real city.
 Solutions go to <output-dir>/dp_simple/ and <output-dir>/dp_advanced/
-(default output-dir: data/output) and only replace a stored solution when they
-score higher, so a quick test run can never overwrite a better result. The
-result table goes to <output-dir>/dp_benchmark.md and .csv.
+(default output-dir: data/output). Both solvers are deterministic, so one run per
+instance is enough. Solution A replaces a stored solution only if it scores
+higher; Solution B always writes its (reproducible) result. The result table
+goes to <output-dir>/dp_benchmark.md and .csv.
 """
 
 import argparse
 import csv
-import statistics
 import sys
 import time
 from concurrent.futures import ProcessPoolExecutor
@@ -72,16 +72,16 @@ def run_simple(args: tuple[str, str]) -> dict:
             "UB": upper_bound(problem, oracle), "A_saved": saved}
 
 
-def run_advanced(args: tuple[str, int, float, str]) -> dict:
+def run_advanced(args: tuple[str, str]) -> dict:
     from clipp.dp.advanced import solve_advanced
-    path, seed, limit, out_dir = args
+    path, out_dir = args
     problem = read_problem(path)
-    result = solve_advanced(problem, Oracle(problem), seed=seed, time_limit=limit)
-    out = Path(out_dir) / "dp_advanced" / f"{problem.name}_seed{seed}_solution.txt"
+    result = solve_advanced(problem, Oracle(problem))
+    out = Path(out_dir) / "dp_advanced" / f"{problem.name}_solution.txt"
     if result.evaluation.valid:
         write_solution(to_repo_solution(problem, result.routes), out)
-    return {"name": problem.name, "seed": seed, "B": result.evaluation.score,
-            "valid": result.evaluation.valid, "seconds": result.seconds, "file": out}
+    return {"name": problem.name, "B": result.evaluation.score,
+            "valid": result.evaluation.valid, "seconds": result.seconds}
 
 
 def fmt(x, digits=4):
@@ -92,8 +92,6 @@ def main() -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser()
-    parser.add_argument("--time-limit", type=float, default=120.0)
-    parser.add_argument("--seeds", type=int, nargs="+", default=[1, 2, 3])
     parser.add_argument("--workers", type=int, default=6)
     parser.add_argument("--only", nargs="*", help="instance names to run")
     parser.add_argument("--output-dir", default=str(ROOT / "data/output"),
@@ -108,56 +106,43 @@ def main() -> int:
         # Where Solution A already meets the upper bound it is proven optimal and
         # Solution B would return it unchanged, so those runs are skipped.
         open_paths = [p for p, info in zip(paths, simple) if info["A"] < info["UB"] - 1e-12]
-        jobs = [(str(p), s, args.time_limit, str(out_dir)) for p in open_paths for s in args.seeds]
-        advanced = list(pool.map(run_advanced, jobs))
+        advanced = list(pool.map(run_advanced, [(str(p), str(out_dir)) for p in open_paths]))
 
     rows = []
     saved_b = 0
     for path, info in zip(paths, simple):
-        runs = [r for r in advanced if r["name"] == info["name"]]
+        run = next((r for r in advanced if r["name"] == info["name"]), None)
         final = out_dir / "dp_advanced" / f"{info['name']}_solution.txt"
-        if not runs:
+        if run is None:
             # A meets the upper bound: it is also the advanced solution of record
             source = out_dir / "dp_simple" / f"{info['name']}_solution.txt"
             if source.exists():
                 problem = read_problem(path)
                 saved_b += save_if_better(problem, read_solution(problem, source), final)[0]
-            rows.append({**info, "B_mean": info["A"], "B_std": 0.0, "B_best": info["A"],
-                         "B_valid": info["A_valid"], "B_seconds": 0.0})
+            rows.append({**info, "B": info["A"], "B_valid": info["A_valid"], "B_seconds": 0.0})
             continue
-        scores = [r["B"] for r in runs if r["valid"]]
-        best = max(runs, key=lambda r: r["B"] if r["valid"] else -1)
-        # the best seed replaces the stored solution only if it scores higher
-        if best["valid"]:
-            problem = read_problem(path)
-            saved_b += save_if_better(problem, read_solution(problem, best["file"]), final)[0]
-        for r in runs:
-            Path(r["file"]).unlink(missing_ok=True)
-        rows.append({**info,
-                     "B_mean": statistics.mean(scores) if scores else None,
-                     "B_std": statistics.pstdev(scores) if len(scores) > 1 else 0.0,
-                     "B_best": max(scores) if scores else None,
-                     "B_valid": all(r["valid"] for r in runs),
-                     "B_seconds": statistics.mean(r["seconds"] for r in runs)})
+        saved_b += run["valid"]
+        rows.append({**info, "B": run["B"] if run["valid"] else None,
+                     "B_valid": run["valid"], "B_seconds": run["seconds"]})
 
-    header = ("| Instance | N | M | C | α | Greedy | Witness | A | B mean ± σ | B best | UB | Gap B | "
-              "Time A (s) | Time B (s) |\n|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
+    header = ("| Instance | N | M | C | α | Greedy | Witness | A | B | UB | Gap B | "
+              "Time A (s) | Time B (s) |\n|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
     lines = [header]
     for r in rows:
-        gap = (r["UB"] - r["B_best"]) / r["UB"] if r["B_best"] is not None and r["UB"] > 0 else None
+        gap = (r["UB"] - r["B"]) / r["UB"] if r["B"] is not None and r["UB"] > 0 else None
         lines.append(
             f"| {r['name'].removesuffix('_instance')} | {r['N']:,} | {r['M']:,} | {r['C']} | {r['alpha']} | {fmt(r['greedy'])} | "
             f"{fmt(r['witness'])} | "
-            f"{fmt(r['A'])} | {fmt(r['B_mean'])} ± {fmt(r['B_std'])} | **{fmt(r['B_best'])}** | "
+            f"{fmt(r['A'])} | **{fmt(r['B'])}** | "
             f"{fmt(r['UB'])} | {fmt(None if gap is None else 100 * max(0.0, gap), 2)}% | "
             f"{r['A_seconds']:.1f} | {r['B_seconds']:.1f} |")
     table = "\n".join(lines)
     print(table)
-    print(f"\nseeds {args.seeds}, time limit {args.time_limit}s per run, "
-          f"all valid: {all(r['A_valid'] and r['B_valid'] for r in rows)}, "
+    print(f"\nall valid: {all(r['A_valid'] and r['B_valid'] for r in rows)}, "
           f"wall time {time.perf_counter() - t0:.0f}s")
     print(f"stored solutions improved: Solution A {sum(r['A_saved'] for r in rows)}, "
-          f"Solution B {saved_b} (the others were already at least as good)")
+          f"Solution B written for {saved_b} open instances "
+          f"(the others reach the upper bound with Solution A)")
     (out_dir / "dp_benchmark.md").write_text(table + "\n", encoding="utf-8")
     with open(out_dir / "dp_benchmark.csv", "w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))

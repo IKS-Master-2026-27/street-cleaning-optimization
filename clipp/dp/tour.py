@@ -4,7 +4,6 @@ A task is an oriented street encoded as oid = 2 * street + orientation, where
 orientation 0 runs A -> B and orientation 1 runs B -> A (two-way streets only).
 """
 
-import random
 from dataclasses import dataclass, field
 from heapq import heappop, heappush
 
@@ -84,12 +83,12 @@ def make_tour(problem: Problem, oracle: Oracle, tasks: list[int]) -> Tour:
 
 
 def nearest_neighbor(problem: Problem, oracle: Oracle, streets: list[int],
-                     rng: random.Random | None = None, choices: int = 1,
-                     origin: int | None = None) -> list[int]:
+                     second_every: int = 0, origin: int | None = None) -> list[int]:
     """Orientation-aware nearest-neighbour ordering (dense distance rows).
 
-    With rng and choices > 1, picks uniformly among the `choices` nearest tasks,
-    which diversifies the initial population of the memetic algorithm.
+    Deterministic. With second_every = k > 0, every k-th step takes the second
+    nearest task instead of the nearest one, which gives the memetic algorithm
+    different (but reproducible) starting tours.
     """
     options = {j: [oid for oid in orientations(problem, j) if servable(problem, oracle, oid)]
                for j in streets}
@@ -97,19 +96,21 @@ def nearest_neighbor(problem: Problem, oracle: Oracle, streets: list[int],
     mandatory_first = {j: 0 if problem.category[j] == "M" else 1 for j in streets}
     current = problem.depot if origin is None else origin
     order: list[int] = []
+    step = 0
     while remaining:
         row = oracle.from_depot[0] if current == problem.depot else oracle.dist_row(current)
-        if choices <= 1 or rng is None:
+        step += 1
+        if second_every > 0 and step % second_every == 0:
+            ranked = sorted((row[start(problem, oid)], mandatory_first[j], oid)
+                            for j in remaining for oid in options[j])[:2]
+            best = ranked[-1][2]
+        else:
             best_key, best = None, None
             for j in remaining:
                 for oid in options[j]:
                     key = (row[start(problem, oid)], mandatory_first[j], oid)
                     if best_key is None or key < best_key:
                         best_key, best = key, oid
-        else:
-            ranked = sorted(((row[start(problem, oid)], mandatory_first[j], oid)
-                             for j in remaining for oid in options[j]))[:choices]
-            best = rng.choice(ranked)[2]
         order.append(best)
         remaining.discard(best >> 1)
         current = end(problem, best)
@@ -192,10 +193,9 @@ def concatenate(problem: Problem, oracle: Oracle, parts: list[Tour]) -> Tour:
     return Tour(tasks, legs, paths)
 
 
-def build_tour(problem: Problem, oracle: Oracle, streets: list[int], dense: bool,
-               rng: random.Random | None = None, choices: int = 1) -> Tour:
+def build_tour(problem: Problem, oracle: Oracle, streets: list[int], dense: bool) -> Tour:
     if dense:
-        return make_tour(problem, oracle, nearest_neighbor(problem, oracle, streets, rng, choices))
+        return make_tour(problem, oracle, nearest_neighbor(problem, oracle, streets))
     return nearest_neighbor_sparse(problem, oracle, streets)
 
 

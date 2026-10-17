@@ -29,6 +29,9 @@ from clipp.search import ScoreModel
 from clipp.solver import depot_return_times
 from clipp.validator import validate_solution
 
+# fixed iteration budget for Solution B in tests (keeps the suite fast)
+SMALL_BUDGET = {"generations": 60, "stagnation": 60, "lns_iterations": 60}
+
 PODUJEVA = """6 10 300 3 0 0.5
 0 1 2 30 200 M 10
 1 3 2 25 150 O 10
@@ -292,11 +295,28 @@ class EndToEndTests(unittest.TestCase):
             except ValueError:
                 continue  # mandatory streets genuinely out of reach within T
             score_a = self.check(path, a.routes)
-            b = solve_advanced(read_problem(path), seed=1, time_limit=1.0)
+            b = solve_advanced(read_problem(path), **SMALL_BUDGET)
             score_b = self.check(path, b.routes)
             self.assertGreaterEqual(score_b, score_a - 1e-12)
             searched += "search skipped" not in b.log[-1]
         self.assertGreater(searched, 0, "the advanced search was never exercised")
+
+    def test_advanced_is_deterministic(self):
+        """Solution B has no randomness: two runs give exactly the same routes."""
+        rng = random.Random(21)  # only generates the test instances
+        compared = 0
+        for _ in range(12):
+            path = write(random_instance(rng, n=12, extra=16, vehicles=3, alpha=1.0,
+                                         time_limit=rng.choice((150, 200, 260)), with_large=True))
+            try:
+                first = solve_advanced(read_problem(path), **SMALL_BUDGET)
+            except ValueError:
+                continue
+            second = solve_advanced(read_problem(path), **SMALL_BUDGET)
+            self.assertEqual([(r.nodes, r.cleaned) for r in first.routes],
+                             [(r.nodes, r.cleaned) for r in second.routes])
+            compared += "search skipped" not in first.log[-1]
+        self.assertGreater(compared, 0, "the advanced search was never exercised")
 
     def test_save_if_better_never_overwrites_a_better_solution(self):
         path = write(PODUJEVA)

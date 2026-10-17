@@ -3,13 +3,13 @@
 `python main.py --algorithm dp-simple|dp-advanced` is the normal way to run the
 solvers; this tool adds the options and checks that main.py does not have:
 
-    python scripts/run_dp.py <instance> [--method simple|advanced] [--seed 1]
-                             [--time-limit 60] [--output-dir DIR]
+    python scripts/run_dp.py <instance> [--method simple|advanced] [--output-dir DIR]
 
 Every solution is checked twice (the repository's validator/scorer and the
 independent validator in clipp/dp/objective.py) and compared with the provable
-upper bound from clipp/dp/bounds.py. A stored solution is only replaced by a
-better one.
+upper bound from clipp/dp/bounds.py. Both solvers are deterministic: Solution A
+replaces a stored solution only if it is better, Solution B always writes its
+(reproducible) result, which is the solution of record.
 """
 
 import argparse
@@ -24,12 +24,13 @@ from clipp.dp.bounds import upper_bound  # noqa: E402
 from clipp.dp.distances import Oracle  # noqa: E402
 from clipp.dp.io import read_problem  # noqa: E402
 from clipp.dp.objective import additive_score, save_if_better, to_repo_solution  # noqa: E402
+from clipp.output import write_solution  # noqa: E402
 from clipp.parser import parse_instance  # noqa: E402
 from clipp.scoring import calculate_score  # noqa: E402
 from clipp.validator import validate_solution  # noqa: E402
 
 
-def run(path: str, method: str, seed: int, time_limit: float, output_dir: str | None,
+def run(path: str, method: str, output_dir: str | None,
         quiet: bool = False) -> dict:
     say = (lambda *a: None) if quiet else print
     t0 = time.perf_counter()
@@ -42,8 +43,7 @@ def run(path: str, method: str, seed: int, time_limit: float, output_dir: str | 
         result = solve_simple(problem, oracle)
     else:
         from clipp.dp.advanced import solve_advanced
-        result = solve_advanced(problem, oracle, seed=seed, time_limit=time_limit,
-                                progress=None if quiet else say)
+        result = solve_advanced(problem, oracle, progress=None if quiet else say)
     for line in result.log:
         say(f"  {line}")
 
@@ -74,11 +74,16 @@ def run(path: str, method: str, seed: int, time_limit: float, output_dir: str | 
     output = None
     if status == "VALID" and output_dir:
         output = Path(output_dir) / f"{problem.name}_solution.txt"
-        written, previous = save_if_better(problem, result.routes, output)
-        if written:
-            say(f"Output: {output}" + (f"  (improved from {previous:.10f})" if previous is not None else ""))
+        if method == "advanced":
+            # deterministic: this run's result is the solution of record
+            write_solution(solution, output)
+            say(f"Output: {output}")
         else:
-            say(f"Output: kept {output}  (stored score {previous:.10f} is at least as good)")
+            written, previous = save_if_better(problem, result.routes, output)
+            if written:
+                say(f"Output: {output}" + (f"  (improved from {previous:.10f})" if previous is not None else ""))
+            else:
+                say(f"Output: kept {output}  (stored score {previous:.10f} is at least as good)")
     return {
         "instance": problem.name, "method": method, "valid": status == "VALID",
         "score": ev.score, "coverage": ev.coverage, "efficiency": ev.efficiency,
@@ -91,15 +96,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("instance")
     parser.add_argument("--method", choices=["simple", "advanced"], default="simple")
-    parser.add_argument("--seed", type=int, default=1)
-    parser.add_argument("--time-limit", type=float, default=60.0,
-                        help="search budget in seconds for the advanced method")
     parser.add_argument("--output-dir", default=None,
                         help="default: data/output/dp_<method>")
     args = parser.parse_args()
     out = args.output_dir or str(ROOT / "data/output" / f"dp_{args.method}")
     try:
-        result = run(args.instance, args.method, args.seed, args.time_limit, out)
+        result = run(args.instance, args.method, out)
     except (OSError, ValueError) as exc:
         print(f"ERROR: {exc}")
         return 1

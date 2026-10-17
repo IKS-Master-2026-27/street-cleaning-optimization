@@ -7,9 +7,9 @@ through `solve(instance) -> Solution` and are selected with `--algorithm`.
 
 ```powershell
 python main.py data/input/syntetic_generated/instance_E.txt --algorithm dp-simple    # Solution A
-python main.py data/input/syntetic_generated/instance_E.txt --algorithm dp-advanced  # Solution B (60 s, seed 1)
-python scripts/run_dp.py data/input/syntetic_generated/instance_E.txt --method advanced --time-limit 180 --seed 1
-python scripts/benchmark_dp.py --time-limit 180 --seeds 1 2 3                        # all instances
+python main.py data/input/syntetic_generated/instance_E.txt --algorithm dp-advanced  # Solution B
+python scripts/run_dp.py data/input/syntetic_generated/instance_E.txt --method advanced
+python scripts/benchmark_dp.py                                                       # all instances
 python -m unittest tests.test_dp                                                     # tests
 ```
 
@@ -18,14 +18,18 @@ solutions are written to `data/output/dp_simple/` or `data/output/dp_advanced/`
 as `<instance>_solution.txt` (real cities: `<City>_instance_solution.txt`);
 the best known solutions are committed there, like the greedy outputs.
 
-`scripts/run_dp.py` runs one solver with the options `main.py` does not have
-(`--seed`, `--time-limit`, `--output-dir`), checks the solution with an
-independent validator written from the official statement
-(`clipp/dp/objective.py`) and reports the provable upper bound and the gap.
-`scripts/benchmark_dp.py` compares greedy, Solution A and Solution B on every
-instance (`--only` for a subset, `--output-dir` to write elsewhere). Both
-scripts replace a stored solution only when the new one scores higher, so a
-quick test run can never overwrite a better result.
+`scripts/run_dp.py` runs one solver with an option `main.py` does not have
+(`--output-dir`), checks the solution with an independent validator written
+from the official statement (`clipp/dp/objective.py`) and reports the provable
+upper bound and the gap. `scripts/benchmark_dp.py` compares greedy, Solution A
+and Solution B on every instance (`--only` for a subset, `--output-dir` to
+write elsewhere).
+
+Both solvers are **deterministic**: they use no randomness and no wall-clock
+limits, so the same instance always gives exactly the same solution (checked by
+`test_advanced_is_deterministic`). Solution A replaces a stored solution only if
+it scores higher; Solution B always writes its result, which is the solution of
+record.
 
 ## Key identity
 
@@ -121,8 +125,17 @@ synthetic instances.
 ## Solution B – `clipp/dp/advanced.py`
 
 Memetic search over giant tours (order crossover, mutation, replacement of the
-worst individual), then a large-neighbourhood search; Solution A seeds the
-population, so B is never worse than A. Deterministic for a given seed.
+worst individual), then a large-neighbourhood search; Solution A is part of the
+initial population, so B is never worse than A.
+
+**No randomness.** Every choice follows a fixed rule: the starting tours are
+nearest-neighbour tours where every k-th step takes the second-nearest task
+(k = 2, 3, 4, …), parents come from a fixed list of rank pairs (best pairs
+first), crossover blocks and mutations advance with fixed strides, every third
+child is mutated, and the ruin-and-recreate move follows a fixed 40-step cycle.
+Each phase stops after a fixed number of iterations (`GENERATIONS = 4000`, or
+`STAGNATION = 1500` generations without a new best; `LNS_ITERATIONS = 3000`),
+never on wall-clock time, so the result does not depend on the machine.
 
 * Decoder: Held–Karp education of the mandatory subsequence → exact
   `split_heterogeneous` (chooses vehicle types) → optional tasks follow their
@@ -132,7 +145,7 @@ population, so B is never worse than A. Deterministic for a given seed.
   Held–Karp → insertion, repeated until no gain.
 * LNS moves (exactly scored, equal scores accepted): relocate 1–3 mandatory
   services to their cheapest slot, drop a block of optional services from a
-  route, drop the optional services nearest to a random point, swap the plans of
+  route, drop the optional services nearest to a chosen service, swap the plans of
   two vehicles of different type (`alpha < 1`); each followed by Held–Karp, the
   selection DP and insertion.
 * If Solution A already meets the upper bound it is returned as proven optimal.
@@ -142,35 +155,57 @@ population, so B is never worse than A. Deterministic for a given seed.
 Scores of the solution files kept in `data/output/` (each re-read from disk and
 accepted by both validators). Greedy: the optimized greedy outputs in
 `data/output/greedy/`. Witness: the feasibility witness `instance.solution.txt`
-shipped with each real city. A: `data/output/dp_simple/`. B (saved):
-`data/output/dp_advanced/`, the best Solution B plan found over the benchmark
-runs (seeds 1, 2, 3, 180 s each); B mean ± σ is from the latest
-`scripts/benchmark_dp.py` run. The six synthetic/Presheva solutions were also
-accepted by the official online validator with identical scores (instance C was
-improved afterwards, from 0.9054 to 0.9239).
+shipped with each real city. A: `data/output/dp_simple/`. B:
+`data/output/dp_advanced/`, the result of the deterministic Solution B (one run;
+running it again gives the same file). Time B is the run time of that run.
 
-| Instance | N | M | C | α | Greedy | Witness | A | B mean ± σ | **B (saved)** | UB | Gap B | Time A (s) | Time B (s) |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| instance_A | 20 | 45 | 4 | 1.0 | 0.3883 | – | 0.5448 | 0.8935 ± 0.0206 | **0.9096** | 1.0000 | 9.04% | 0.0 | 180.0 |
-| instance_B | 40 | 100 | 5 | 1.0 | 0.6859 | – | 0.7432 | 0.9967 ± 0.0027 | **1.0000** | 1.0000 | 0.00% | 0.0 | 180.0 |
-| instance_C | 70 | 250 | 6 | 1.0 | 0.6520 | – | 0.7610 | 0.9145 ± 0.0099 | **0.9239** | 1.0000 | 7.61% | 0.1 | 180.1 |
-| instance_D | 120 | 600 | 9 | 0.7 | 0.5928 | – | 0.7494 | 0.8485 ± 0.0027 | **0.8554** | 0.9962 | 14.13% | 0.6 | 180.0 |
-| instance_E | 200 | 1,200 | 12 | 1.0 | 0.5836 | – | 0.6305 | 0.7025 ± 0.0011 | **0.7059** | 0.8833 | 20.08% | 1.3 | 180.1 |
-| Presheva | 744 | 838 | 6 | 0.5 | 0.6169 | 0.6064 | 1.0000 | 1.0000 ± 0.0000 | **1.0000** | 1.0000 | 0.00% | 2.7 | 0.0 |
-| Ulqini | 4,610 | 5,074 | 92 | 0.5 | 0.5539 | 0.6050 | 1.0000 | 1.0000 ± 0.0000 | **1.0000** | 1.0000 | 0.00% | 0.2 | 0.0 |
-| Prishtina | 7,400 | 8,729 | 72 | 0.5 | 0.6202 | 0.6063 | 1.0000 | 1.0000 ± 0.0000 | **1.0000** | 1.0000 | 0.00% | 0.5 | 0.0 |
-| Shkupi | 13,771 | 16,658 | 87 | 0.5 | 0.5994 | 0.6017 | 1.0000 | 1.0000 ± 0.0000 | **1.0000** | 1.0000 | 0.00% | 1.0 | 0.0 |
-| Tirana | 16,951 | 19,175 | 75 | 0.5 | 0.6132 | 0.5965 | 1.0000 | 1.0000 ± 0.0000 | **1.0000** | 1.0000 | 0.00% | 1.4 | 0.0 |
-| Ljubljana | 30,278 | 34,104 | 94 | 0.5 | 0.6262 | 0.6014 | 1.0000 | 1.0000 ± 0.0000 | **1.0000** | 1.0000 | 0.00% | 3.4 | 0.0 |
-| Vienna | 45,049 | 56,787 | 68 | 0.5 | 0.6464 | 0.5998 | 1.0000 | 1.0000 ± 0.0000 | **1.0000** | 1.0000 | 0.00% | 4.9 | 0.0 |
-| New-York | 132,300 | 182,700 | 392 | 0.5 | 0.6217 | 0.6358 | 1.0000 | 1.0000 ± 0.0000 | **1.0000** | 1.0000 | 0.00% | 15.6 | 0.0 |
-| Johannesburg | 157,587 | 204,280 | 379 | 0.5 | 0.5915 | 0.5998 | 1.0000 | 1.0000 ± 0.0000 | **1.0000** | 1.0000 | 0.00% | 15.1 | 0.0 |
-| Sydney | 255,428 | 316,886 | 697 | 0.5 | 0.6395 | 0.6001 | 1.0000 | 1.0000 ± 0.0000 | **1.0000** | 1.0000 | 0.00% | 33.1 | 0.0 |
+| Instance | N | M | C | α | Greedy | Witness | A | **B** | UB | Gap B | Time A (s) | Time B (s) |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| instance_A | 20 | 45 | 4 | 1.0 | 0.3883 | – | 0.5448 | **0.9096** | 1.0000 | 9.04% | 0.0 | 40.8 |
+| instance_B | 40 | 100 | 5 | 1.0 | 0.6859 | – | 0.7432 | **1.0000** | 1.0000 | 0.00% | 0.0 | 95.8 |
+| instance_C | 70 | 250 | 6 | 1.0 | 0.6520 | – | 0.7610 | **0.8913** | 1.0000 | 10.87% | 0.1 | 365.9 |
+| instance_D | 120 | 600 | 9 | 0.7 | 0.5928 | – | 0.7494 | **0.8564** | 0.9962 | 14.04% | 0.6 | 2112.0 |
+| instance_E | 200 | 1,200 | 12 | 1.0 | 0.5836 | – | 0.6305 | **0.7161** | 0.8833 | 18.93% | 1.3 | 2646.3 |
+| Presheva | 744 | 838 | 6 | 0.5 | 0.6169 | 0.6064 | 1.0000 | **1.0000** | 1.0000 | 0.00% | 2.7 | 0.0 |
+| Ulqini | 4,610 | 5,074 | 92 | 0.5 | 0.5539 | 0.6050 | 1.0000 | **1.0000** | 1.0000 | 0.00% | 0.2 | 0.0 |
+| Prishtina | 7,400 | 8,729 | 72 | 0.5 | 0.6202 | 0.6063 | 1.0000 | **1.0000** | 1.0000 | 0.00% | 0.5 | 0.0 |
+| Shkupi | 13,771 | 16,658 | 87 | 0.5 | 0.5994 | 0.6017 | 1.0000 | **1.0000** | 1.0000 | 0.00% | 1.0 | 0.0 |
+| Tirana | 16,951 | 19,175 | 75 | 0.5 | 0.6132 | 0.5965 | 1.0000 | **1.0000** | 1.0000 | 0.00% | 1.4 | 0.0 |
+| Ljubljana | 30,278 | 34,104 | 94 | 0.5 | 0.6262 | 0.6014 | 1.0000 | **1.0000** | 1.0000 | 0.00% | 3.4 | 0.0 |
+| Vienna | 45,049 | 56,787 | 68 | 0.5 | 0.6464 | 0.5998 | 1.0000 | **1.0000** | 1.0000 | 0.00% | 4.9 | 0.0 |
+| New-York | 132,300 | 182,700 | 392 | 0.5 | 0.6217 | 0.6358 | 1.0000 | **1.0000** | 1.0000 | 0.00% | 15.6 | 0.0 |
+| Johannesburg | 157,587 | 204,280 | 379 | 0.5 | 0.5915 | 0.5998 | 1.0000 | **1.0000** | 1.0000 | 0.00% | 15.1 | 0.0 |
+| Sydney | 255,428 | 316,886 | 697 | 0.5 | 0.6395 | 0.6001 | 1.0000 | **1.0000** | 1.0000 | 0.00% | 33.1 | 0.0 |
+
+### Exact scores from `main.py`
+
+Both solvers are deterministic, so `python main.py <instance> --algorithm
+dp-simple|dp-advanced` reproduces these scores exactly on every run (printed by
+`main.py` after the repository validator accepted the solution; all mandatory
+streets cleaned in every case).
+
+| Instance | Solution A (`dp-simple`) | Solution B (`dp-advanced`) |
+|---|---:|---:|
+| instance_A | 0.5448013996947474 | 0.9096452369430071 |
+| instance_B | 0.7431717746506777 | 1.0 |
+| instance_C | 0.7610409776674996 | 0.8913221526839433 |
+| instance_D | 0.7494036565131714 | 0.8563561683951457 |
+| instance_E | 0.6305051248665259 | 0.7160944928651553 |
+| Presheva | 1.0 | 1.0 |
+| Ulqini | 1.0 | 1.0 |
+| Prishtina | 1.0 | 1.0 |
+| Shkupi | 1.0 | 1.0 |
+| Tirana | 1.0 | 1.0 |
+| Ljubljana | 1.0 | 1.0 |
+| Vienna | 1.0 | 1.0 |
+| New-York | 1.0 | 1.0 |
+| Johannesburg | 1.0 | 1.0 |
+| Sydney | 1.0 | 1.0 |
 
 Where A meets the upper bound it is proven optimal and B is not run (time 0):
 all ten real cities. instance_B also reaches the bound, so 11 of the 15
 instances are solved to proven optimality. On every instance both solutions beat
-greedy (B: +21% on instance_E up to +134% on instance_A; the cities: +55% to
+greedy (B: +23% on instance_E up to +134% on instance_A; the cities: +55% to
 +81%, because the solutions clean every street with the right-sized truck and
 waste no water).
 

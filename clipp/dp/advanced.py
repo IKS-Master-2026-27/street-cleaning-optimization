@@ -16,10 +16,13 @@ The memetic loop (order crossover + mutation + replacement of the worst
 individual) explores giant tours; the best individual is polished by repeating
 assignment (Lemma 1) -> normalisation -> Held-Karp -> insertion until no gain.
 Solution A is part of the initial population, so B is never worse than A.
-Deterministic for a given seed.
+
+No randomness: starting tours, parent pairs, crossover blocks, mutations and
+ruin-and-recreate moves are all enumerated systematically in a fixed order, and
+every phase stops after a fixed number of iterations (never on wall-clock time).
+The same instance therefore always gives exactly the same solution.
 """
 
-import random
 import time
 
 from ..solver import Solution
@@ -36,11 +39,20 @@ from .tour import (class_of, make_tour, nearest_neighbor, orientations, select_s
                    servable)
 
 
+# Fixed iteration budgets (they replace the old wall-clock limits).
+GENERATIONS = 4000      # crossover children in the memetic loop
+STAGNATION = 1500       # stop early after this many generations without a new best
+LNS_ITERATIONS = 3000   # ruin-and-recreate moves on the best plan
+
+
 class Memetic:
-    def __init__(self, problem: Problem, oracle: Oracle, seed: int) -> None:
+    def __init__(self, problem: Problem, oracle: Oracle) -> None:
         self.p = problem
         self.oracle = oracle
-        self.rng = random.Random(seed)
+        # counters that drive the systematic (non-random) enumeration of moves
+        self.mutations = 0
+        self.crossovers = 0
+        self.lns_moves = 0
         self.dense = Dense(problem, oracle)
         selection = select_streets(problem, oracle)
         self.mandatory = selection.mandatory
@@ -156,17 +168,23 @@ class Memetic:
 
     def ruin_recreate(self, seqs: list[list[int]]) -> list[list[int]]:
         """Remove a block of optional services (one route, or a neighbourhood
-        across routes), then rebuild with Held-Karp + best-ratio insertion."""
-        rng, p = self.rng, self.p
+        across routes), then rebuild with Held-Karp + best-ratio insertion.
+
+        Deterministic: the move type follows a fixed cycle of 40 slots (3 type
+        swaps, 11 relocations, 13 route ruins, 13 neighbourhood ruins) and the
+        move counter k selects which routes/services are touched."""
+        p = self.p
+        k = self.lns_moves
+        self.lns_moves += 1
+        slot = k % 40
         new = [list(s) for s in seqs]
         touched = set()
-        mode = rng.random()
-        if mode < 0.08 and p.alpha < 1.0:
+        if slot < 3 and p.alpha < 1.0:
             # type swap: exchange the plans of two vehicles of different capacity
             pairs = [(x, y) for x in range(len(new)) for y in range(x + 1, len(new))
                      if p.capacities[x] != p.capacities[y]]
             if pairs:
-                x, y = rng.choice(pairs)
+                x, y = pairs[(k // 40 * 3 + slot) % len(pairs)]
                 ok = all(p.requirement[o >> 1] <= p.capacities[y] for o in new[x]
                          if self.is_m.get(o >> 1, False)) and \
                     all(p.requirement[o >> 1] <= p.capacities[x] for o in new[y]
@@ -180,17 +198,21 @@ class Memetic:
                         new[r] = kept
                     insert_unserved(self.dense, new, p.capacities)
             return new
-        if mode < 0.35:
+        if slot < 14:
             # relocate 1-3 mandatory services to their cheapest feasible slot
             m_services = [(r, oid) for r, s in enumerate(new) for oid in s
                           if self.is_m.get(oid >> 1, False)]
             if not m_services:
                 return new
-            for r, oid in rng.sample(m_services, min(len(m_services), rng.randint(1, 3))):
+            count = min(len(m_services), 1 + k % 3)
+            step = max(1, len(m_services) // count)
+            first = (k // 3) % len(m_services)
+            picked = {m_services[(first + t * step) % len(m_services)] for t in range(count)}
+            for r, oid in sorted(picked):
                 new[r].remove(oid)
                 touched.add(r)
             for r, oid in sorted(set(m_services) - {(r, o) for r, s in enumerate(new) for o in s}):
-                slot = self.cheapest_slot(new, oid >> 1, exclude=r if rng.random() < 0.7 else -1)
+                slot = self.cheapest_slot(new, oid >> 1, exclude=r if k % 10 < 7 else -1)
                 if slot is None:
                     slot = self.cheapest_slot(new, oid >> 1, exclude=-1)
                 if slot is None:
@@ -209,22 +231,22 @@ class Memetic:
                     new[rr] = kept
             insert_unserved(self.dense, new, p.capacities)
             return new
-        if mode < 0.675:
-            r = rng.randrange(len(new))
-            opt = [k for k, oid in enumerate(new[r]) if not self.is_m.get(oid >> 1, False)]
+        if slot < 27:
+            r = k % len(new)
+            opt = [h for h, oid in enumerate(new[r]) if not self.is_m.get(oid >> 1, False)]
             if opt:
-                k0 = rng.randrange(len(opt))
-                drop = set(opt[k0:k0 + rng.randint(2, 10)])
-                new[r] = [oid for k, oid in enumerate(new[r]) if k not in drop]
+                h0 = (k // len(new)) % len(opt)
+                drop = set(opt[h0:h0 + 2 + k % 9])
+                new[r] = [oid for h, oid in enumerate(new[r]) if h not in drop]
                 touched.add(r)
         else:
             services = [(r, oid) for r, s in enumerate(new) for oid in s]
             if services:
-                _, centre = rng.choice(services)
+                _, centre = services[(k // 40) % len(services)]
                 row = self.dense.D[self.dense.a[centre]]
                 ranked = sorted(((row[self.dense.a[oid]], r, oid) for r, oid in services
                                  if not self.is_m.get(oid >> 1, False)))
-                for _, r, oid in ranked[:rng.randint(3, 12)]:
+                for _, r, oid in ranked[:3 + k % 10]:
                     new[r].remove(oid)
                     touched.add(r)
         for r in touched:
@@ -255,19 +277,20 @@ class Memetic:
             out.extend(inserts.get(k, []))
         return out
 
-    def random_chromosome(self, choices: int, mandatory_first: bool) -> list[int]:
-        """Randomised nearest-neighbour tour. With mandatory_first, the mandatory
-        streets are ordered by class (largest requirement first) and the optional
-        streets are slotted in next to their closest mandatory service."""
+    def start_chromosome(self, second_every: int, mandatory_first: bool) -> list[int]:
+        """Deterministic nearest-neighbour tour (every second_every-th step takes
+        the second nearest task). With mandatory_first, the mandatory streets are
+        ordered by class (largest requirement first) and the optional streets are
+        slotted in next to their closest mandatory service."""
         if not mandatory_first:
-            return nearest_neighbor(self.p, self.oracle, sorted(self.universe), self.rng, choices)
+            return nearest_neighbor(self.p, self.oracle, sorted(self.universe), second_every)
         groups: dict[int, list[int]] = {}
         for j in self.mandatory:
             groups.setdefault(class_of(self.p, j), []).append(j)
         order: list[int] = []
         for q in sorted(groups, reverse=True):
             origin = self.dense.b[order[-1]] if order else None
-            order += nearest_neighbor(self.p, self.oracle, groups[q], self.rng, choices, origin)
+            order += nearest_neighbor(self.p, self.oracle, groups[q], second_every, origin)
         return self.chromosome_from_order(order)
 
     def chromosome_from_order(self, order: list[int]) -> list[int]:
@@ -275,25 +298,36 @@ class Memetic:
         return self.chromosome(seqs)
 
     def crossover(self, x: list[int], y: list[int]) -> list[int]:
-        """Order crossover (OX) on streets; orientations follow the donor."""
+        """Order crossover (OX) on streets; orientations follow the donor.
+
+        The copied block is chosen systematically: its start advances by a fixed
+        stride and its length cycles through n/3 .. n/6 with every call."""
         n = len(x)
-        i, k = sorted(self.rng.sample(range(n), 2))
+        c = self.crossovers
+        self.crossovers += 1
+        i = (c * 37) % n
+        k = min(n - 1, i + max(1, n // (3 + c % 4)))
         middle = x[i:k + 1]
         taken = {oid >> 1 for oid in middle}
         rest = [oid for oid in y if (oid >> 1) not in taken]
         return rest[:i] + middle + rest[i:]
 
     def mutate(self, chrom: list[int]) -> None:
+        """Systematic mutation: even calls reverse a segment (2-opt), odd calls
+        move a block of up to 8 tasks; positions advance with a fixed stride."""
         n = len(chrom)
         if n < 4:
             return
-        i, k = sorted(self.rng.sample(range(n), 2))
-        if self.rng.random() < 0.5:
+        m = self.mutations
+        self.mutations += 1
+        i = (m * 53) % (n - 1)
+        if m % 2 == 0:
+            k = min(n - 1, i + 1 + (m // 2) % max(1, n // 4))
             chrom[i:k + 1] = reversed([self._flip(o) for o in chrom[i:k + 1]])
         else:
-            block = chrom[i:min(k + 1, i + 8)]
+            block = chrom[i:i + 1 + (m // 2) % 8]
             del chrom[i:i + len(block)]
-            pos = self.rng.randrange(len(chrom) + 1)
+            pos = (i + len(chrom) // 2 + m) % (len(chrom) + 1)
             chrom[pos:pos] = block
 
     def _flip(self, oid: int) -> int:
@@ -304,24 +338,30 @@ class Memetic:
     def materialise(self, seqs: list[list[int]]) -> list[Route]:
         return [route_from_tasks(self.p, self.oracle, v, seqs[v]) for v in range(len(seqs))]
 
-    def polish(self, seqs: list[list[int]], deadline: float) -> tuple[list[Route], float]:
+    def polish(self, seqs: list[list[int]]) -> tuple[list[Route], float]:
         best_routes, best_score = None, -1.0
         for _ in range(20):
             score, routes = self.score(seqs)
             if score <= best_score + 1e-12:
                 break
             best_routes, best_score = routes, score
-            if time.perf_counter() > deadline:
-                break
             seqs = [normalize(self.p, r) for r in routes]
             self.improve(seqs, light=False)
         return best_routes, best_score
 
 
-def solve_advanced(problem: Problem, oracle: Oracle | None = None, seed: int = 1,
-                   time_limit: float = 60.0, population: int = 24, progress=None) -> Result:
+def parent_pairs(size: int) -> list[tuple[int, int]]:
+    """All pairs of population ranks, best pairs first (fixed order, no sampling)."""
+    return sorted(((a, b) for a in range(size) for b in range(a + 1, size)),
+                  key=lambda ab: (ab[0] + ab[1], ab[0]))
+
+
+def solve_advanced(problem: Problem, oracle: Oracle | None = None, population: int = 24,
+                   generations: int = GENERATIONS, stagnation: int = STAGNATION,
+                   lns_iterations: int = LNS_ITERATIONS, progress=None) -> Result:
+    """Deterministic Solution B. Every phase has a fixed iteration budget, so the
+    result never depends on the machine's speed."""
     started = time.perf_counter()
-    deadline = started + time_limit
     oracle = oracle or Oracle(problem)
     base = solve_simple(problem, oracle)
     log = [f"Solution A (start): {base.evaluation.score:.6f}"]
@@ -333,7 +373,7 @@ def solve_advanced(problem: Problem, oracle: Oracle | None = None, seed: int = 1
         log.append("network too large for the dense memetic search; returning Solution A")
         return Result(base.routes, base.evaluation, base.services, log, time.perf_counter() - started)
 
-    mem = Memetic(problem, oracle, seed)
+    mem = Memetic(problem, oracle)
     pop: list[tuple[float, list[int], list[list[int]]]] = []
 
     def add(seqs):
@@ -345,34 +385,34 @@ def solve_advanced(problem: Problem, oracle: Oracle | None = None, seed: int = 1
     start_seqs = [normalize(problem, r) for r in base.routes]
     mem.improve(start_seqs, light=False)
     add(start_seqs)
-    seed_chrom = pop[0][1]
+    start_chrom = pop[0][1]
+    # Initial population, built deterministically: mutations of Solution A
+    # alternate with nearest-neighbour tours of different second_every rules.
+    variants = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     attempts = 0
-    init_deadline = started + 0.3 * time_limit
-    while len(pop) < population and attempts < 3 * population and time.perf_counter() < init_deadline:
+    while len(pop) < population and attempts < 3 * population:
         attempts += 1
         if attempts % 2:
-            chrom = list(seed_chrom)
+            chrom = list(start_chrom)
             for _ in range(1 + attempts % 5):
                 mem.mutate(chrom)
         else:
-            chrom = mem.random_chromosome(choices=1 + attempts % 3,
-                                          mandatory_first=attempts % 4 != 0)
+            chrom = mem.start_chromosome(second_every=variants[(attempts // 2) % len(variants)],
+                                         mandatory_first=attempts % 4 != 0)
         add(mem.decode(chrom))
     pop.sort(key=lambda x: -x[0])
     log.append(f"initial population {len(pop)}, best fitness {pop[0][0]:.6f}")
 
-    generations = 0
-    improvements = 0
-    memetic_deadline = started + 0.7 * time_limit
-    last_gain = time.perf_counter()
-    while time.perf_counter() < memetic_deadline:
-        if time.perf_counter() - last_gain > 0.25 * time_limit:
-            break  # stagnation: hand the remaining time to the LNS
-        generations += 1
-        a = min(mem.rng.sample(range(len(pop)), 2)) if len(pop) > 1 else 0
-        b = min(mem.rng.sample(range(len(pop)), 2)) if len(pop) > 1 else 0
+    # Memetic loop: parents follow a fixed schedule of rank pairs and every third
+    # child is mutated; it stops after a fixed number of generations, or earlier
+    # after a fixed number of generations without a new best.
+    pairs = parent_pairs(len(pop)) if len(pop) > 1 else [(0, 0)]
+    gen = improvements = last_gain = 0
+    while gen < generations and gen - last_gain < stagnation:
+        gen += 1
+        a, b = pairs[(gen - 1) % len(pairs)]
         child = mem.crossover(pop[a][1], pop[b][1])
-        if mem.rng.random() < 0.3:
+        if gen % 3 == 0:
             mem.mutate(child)
         seqs = mem.decode(child)
         if seqs is None:
@@ -380,23 +420,19 @@ def solve_advanced(problem: Problem, oracle: Oracle | None = None, seed: int = 1
         fit = mem.fitness(seqs)
         if any(abs(fit - f) < 1e-12 for f, _, _ in pop):
             continue
-        if len(pop) < population:
-            pop.append((fit, mem.chromosome(seqs), seqs))
-            pop.sort(key=lambda x: -x[0])
-            continue
         if fit > pop[-1][0]:
             if fit > pop[0][0]:
                 improvements += 1
-                last_gain = time.perf_counter()
+                last_gain = gen
                 if progress:
-                    progress(f"  gen {generations}: best fitness {fit:.6f}")
+                    progress(f"  gen {gen}: best fitness {fit:.6f}")
             pop[-1] = (fit, mem.chromosome(seqs), seqs)
             pop.sort(key=lambda x: -x[0])
-    log.append(f"memetic: {generations} generations, {improvements} improvements of the best")
+    log.append(f"memetic: {gen} generations, {improvements} improvements of the best")
 
     best_routes, best_score = None, -1.0
     for fit, _, seqs in pop[:3]:
-        routes, score = mem.polish([list(s) for s in seqs], deadline)
+        routes, score = mem.polish([list(s) for s in seqs])
         if routes is not None and score > best_score:
             best_routes, best_score = routes, score
 
@@ -405,9 +441,8 @@ def solve_advanced(problem: Problem, oracle: Oracle | None = None, seed: int = 1
     if best_routes is not None:
         current = [normalize(problem, r) for r in best_routes]
         current_score = best_score
-        lns_iterations = lns_improvements = 0
-        while time.perf_counter() < deadline:
-            lns_iterations += 1
+        lns_improvements = 0
+        for it in range(1, lns_iterations + 1):
             candidate = mem.ruin_recreate(current)
             score, routes = mem.score(candidate)
             if score >= current_score - 1e-12:
@@ -415,7 +450,7 @@ def solve_advanced(problem: Problem, oracle: Oracle | None = None, seed: int = 1
                     best_routes, best_score = routes, score
                     lns_improvements += 1
                     if progress:
-                        progress(f"  lns {lns_iterations}: best score {score:.6f}")
+                        progress(f"  lns {it}: best score {score:.6f}")
                 current = [normalize(problem, r) for r in routes]
                 current_score = score
         log.append(f"LNS: {lns_iterations} iterations, {lns_improvements} improvements")
@@ -429,8 +464,8 @@ def solve_advanced(problem: Problem, oracle: Oracle | None = None, seed: int = 1
     return Result(best_routes, evaluation, services, log, time.perf_counter() - started)
 
 
-def solve(instance, seed: int = 1, time_limit: float = 60.0, **_ignored) -> Solution:
+def solve(instance, **_ignored) -> Solution:
     """Solution B behind the shared `main.py --algorithm dp-advanced` interface."""
     problem = problem_from_instance(instance)
-    result = solve_advanced(problem, seed=seed, time_limit=time_limit)
+    result = solve_advanced(problem)
     return to_repo_solution(problem, result.routes)
