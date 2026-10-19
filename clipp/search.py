@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from heapq import heappop, heappush
 
 from .graph import build_graph, shortest_path
+from .preprocessing import preprocess_graph, INF as PREPROCESS_INF
 from .parser import Instance, Street
 from .solver import VEHICLE_CAPACITIES, VehicleRoute, depot_return_times
 
@@ -80,6 +81,7 @@ class SearchSpace:
                  radius_growth: int = 8) -> None:
         self.instance = instance
         self.graph = build_graph(instance)
+        self.preprocessed = preprocess_graph(self.graph)
         self.dist_depot = depot_return_times(instance)
         self.model = model or ScoreModel.from_instance(instance)
         self.streets_by_id = {street.id: street for street in instance.streets}
@@ -173,6 +175,8 @@ class SearchSpace:
 
     def _dijkstra(self, source: int, capacity: int, elapsed: int,
                   width: int, exclude, radius: int) -> list:
+        if self.preprocessed is not None:
+            return self._precomputed_moves(source, capacity, elapsed, width, exclude, radius)
         self.probes += 1
         graph = self.graph
         dist_depot = self.dist_depot
@@ -235,6 +239,55 @@ class SearchSpace:
                 junctions.append(node)
                 street_ids.append(traversed)
             street = streets[street_id]
+            gain, value = self._value(street, capacity)
+            moves.append(Move(reach, street, entry, end, gain, value,
+                              tuple(reversed(junctions)),
+                              tuple(reversed(street_ids))))
+        return moves
+
+    def _precomputed_moves(self, source: int, capacity: int, elapsed: int,
+                           width: int, exclude, radius: int) -> list:
+        """Read precomputed shortest paths instead of running Dijkstra again."""
+        self.probes += 1
+        pre = self.preprocessed
+        n = pre.num_junctions
+        row = pre.offset(source)
+        found = []
+        max_time = self.instance.max_time
+
+        for node in range(n):
+            reach = pre.distances[row + node]
+            if reach == PREPROCESS_INF or reach > radius:
+                continue
+            self.popped += 1
+            for street_id in self.pending_at.get(node, ()):
+                street = self.streets_by_id[street_id]
+                if not self._accept(street, capacity, exclude):
+                    continue
+                end = street.b if street.a == node else street.a
+                home = self.dist_depot.get(end)
+                if home is None:
+                    continue
+                if elapsed + reach + street.time + home > max_time:
+                    continue
+                found.append((reach, street_id, end, node))
+
+        found.sort()
+        moves = []
+        for reach, street_id, end, entry in found[:width]:
+            junctions = [entry]
+            street_ids = []
+            node = entry
+            while node != source:
+                offset = row + node
+                parent = pre.previous_junction[offset]
+                traversed = pre.previous_street[offset]
+                if parent < 0 or traversed < 0:
+                    raise ValueError("Incomplete precomputed shortest path")
+                junctions.append(parent)
+                street_ids.append(traversed)
+                node = parent
+            street = self.streets_by_id[street_id]
             gain, value = self._value(street, capacity)
             moves.append(Move(reach, street, entry, end, gain, value,
                               tuple(reversed(junctions)),
