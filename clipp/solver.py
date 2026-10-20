@@ -9,6 +9,7 @@ from .preprocessing import (
     candidate_junctions,
     preprocess_graph,
     precompute_water_waste,
+    precompute_score_gain,
 )
 
 VEHICLE_CAPACITIES = {"S": 10, "M": 20, "L": 30}
@@ -273,6 +274,7 @@ def _candidate_for(
     min_street_time: int,
     water_waste_costs,
     num_vehicles: int,
+    score_gains,
     preprocessed: PreprocessedGraph | None = None,
     candidate_nodes: list[int] | None = None,
     strategy: str = "time",
@@ -310,8 +312,13 @@ def _candidate_for(
 
     water_cost = water_waste_costs[street.id * num_vehicles + route.vehicle_id]
 
-    # Both strategies retain feasibility checks in _search.
-    if strategy == "water":
+    # The score strategy ranks the feasible candidates returned by _search.
+    # _search still chooses the nearest feasible street for each vehicle.
+    if strategy == "score":
+        gain = score_gains[street.id * num_vehicles + route.vehicle_id]
+        density = gain / max(1, incremental)
+        key = (-density, incremental, street.id, route.vehicle_id, start, end)
+    elif strategy == "water":
         key = (water_cost, incremental, street.id, route.vehicle_id, start, end)
     else:
         key = (incremental, water_cost, street.id, route.vehicle_id, start, end)
@@ -338,6 +345,7 @@ def _solve_once(instance: Instance, strategy: str = "time") -> Solution:
         instance.streets,
         instance.vehicle_types,
     )
+    score_gains = precompute_score_gain(instance)
 
     routes = [
         VehicleRoute(
@@ -403,6 +411,7 @@ def _solve_once(instance: Instance, strategy: str = "time") -> Solution:
                 min_street_time,
                 water_waste_costs,
                 len(instance.vehicle_types),
+                score_gains,
                 preprocessed,
                 candidate_nodes,
                 strategy,
@@ -485,6 +494,7 @@ def _solve_once(instance: Instance, strategy: str = "time") -> Solution:
                         min_street_time,
                         water_waste_costs,
                         len(instance.vehicle_types),
+                        score_gains,
                         preprocessed,
                         candidate_nodes,
                         strategy,
@@ -630,11 +640,9 @@ def _improve_optional_detours(instance: Instance, solution: Solution) -> Solutio
 
 
 def solve(instance: Instance) -> Solution:
-    """Keep the valid baseline, and accept a water-aware run only if its score improves.
+    """Compare feasible time/water/score runs and keep the best score.
 
-    The extra strategy is limited to moderately sized inputs to avoid doubling
-    runtime for very large city graphs. No hash tables or heaps are used by
-    preprocessing.py; the original solver's fallback remains unchanged.
+    On large instances retain the baseline to limit execution time.
     """
     baseline = _solve_once(instance, "time")
     if len(instance.streets) > 1500:
@@ -643,11 +651,13 @@ def solve(instance: Instance) -> Solution:
     from .scoring import calculate_score
     best = baseline
     best_score = calculate_score(instance, baseline).score
-    try:
-        alternative = _solve_once(instance, "water")
-        alternative_score = calculate_score(instance, alternative).score
-        if alternative_score > best_score:
-            best = alternative
-    except (GreedyAssignmentError, ValueError):
-        pass
+    for strategy in ("water", "score"):
+        try:
+            alternative = _solve_once(instance, strategy)
+            alternative_score = calculate_score(instance, alternative).score
+            if alternative_score > best_score:
+                best = alternative
+                best_score = alternative_score
+        except (GreedyAssignmentError, ValueError):
+            pass
     return _improve_optional_detours(instance, best)
