@@ -3,7 +3,11 @@ from dataclasses import dataclass
 from heapq import heappop, heappush
 
 from .graph import build_graph, shortest_path
-from .preprocessing import preprocess_graph, INF as PREPROCESS_INF
+from .preprocessing import (
+    preprocess_graph, precompute_capacity_gains, rank_mandatory_candidates,
+    choose_optional_depot_trip,
+    INF as PREPROCESS_INF,
+)
 from .parser import Instance, Street
 from .solver import VEHICLE_CAPACITIES, VehicleRoute, depot_return_times
 
@@ -84,6 +88,7 @@ class SearchSpace:
         self.preprocessed = preprocess_graph(self.graph)
         self.dist_depot = depot_return_times(instance)
         self.model = model or ScoreModel.from_instance(instance)
+        self.precomputed_gains = precompute_capacity_gains(instance)
         self.streets_by_id = {street.id: street for street in instance.streets}
         self.cleaned: set[int] = set()
         self.mandatory_pending: set[int] = set()
@@ -145,7 +150,11 @@ class SearchSpace:
     def _value(self, street: Street, capacity: int) -> tuple:
         # Mandatory coverage is a hard constraint, so one clean is worth one
         # unit of progress and the score gain only breaks ties.
-        gain = self.model.gain(street, capacity)
+        slot = capacity // 10 - 1
+        if capacity in (10, 20, 30) and street.id * 3 + slot < len(self.precomputed_gains):
+            gain = self.precomputed_gains[street.id * 3 + slot]
+        else:
+            gain = self.model.gain(street, capacity)
         return gain, 1.0 + gain
 
     def probe(self, junction: int, capacity: int, elapsed: int,
@@ -190,6 +199,7 @@ class SearchSpace:
         queue = [(0, source)]
         found: list[tuple] = []
         limit = radius
+        pool_size = max(width, min(32, width * 6))
 
         while queue:
             reach, node = heappop(queue)
@@ -211,9 +221,9 @@ class SearchSpace:
                     if elapsed + reach + street.time + home > max_time:
                         continue
                     found.append((reach, street_id, end, node))
-                if len(found) >= width:
+                if len(found) >= pool_size:
                     found.sort()
-                    del found[width:]
+                    del found[pool_size:]
                     limit = min(limit, found[-1][0])
             for edge in graph[node]:
                 step = reach + edge.time
@@ -228,7 +238,23 @@ class SearchSpace:
                     heappush(queue, (step, edge.destination))
 
         found.sort()
-        del found[width:]
+        if width > 1:
+            ranked = rank_mandatory_candidates(
+                [(reach, sid, end, entry, streets[sid].time)
+                 for reach, sid, end, entry in found],
+                self.precomputed_gains, capacity, width,
+            )
+            # Keep the closest move and use preprocessing for the remaining slots.
+            selected = [found[0]] if found else []
+            for reach, sid, end, entry, _ in ranked:
+                candidate = (reach, sid, end, entry)
+                if candidate not in selected:
+                    selected.append(candidate)
+                if len(selected) == width:
+                    break
+            found = selected
+        else:
+            found = found[:width]
         moves = []
         for reach, street_id, end, entry in found:
             junctions = [entry]
@@ -273,8 +299,25 @@ class SearchSpace:
                 found.append((reach, street_id, end, node))
 
         found.sort()
+        if width > 1:
+            # Limit score ranking to a local pool to avoid very distant detours.
+            pool = found[:max(width, min(32, width * 6))]
+            ranked = rank_mandatory_candidates(
+                [(reach, sid, end, entry, self.streets_by_id[sid].time)
+                 for reach, sid, end, entry in pool],
+                self.precomputed_gains, capacity, width,
+            )
+            selected = [found[0]] if found else []
+            for reach, sid, end, entry, _ in ranked:
+                candidate = (reach, sid, end, entry)
+                if candidate not in selected:
+                    selected.append(candidate)
+                if len(selected) == width:
+                    break
+        else:
+            selected = found[:width]
         moves = []
-        for reach, street_id, end, entry in found[:width]:
+        for reach, street_id, end, entry in selected:
             junctions = [entry]
             street_ids = []
             node = entry
@@ -362,9 +405,57 @@ class SearchSpace:
         route.total_time += home.total_time
         route.current_junction = depot
 
+    def _precomputed_path(self, start, end):
+        pre = self.preprocessed
+        row = pre.offset(start)
+        node = end
+        junctions = [end]
+        streets = []
+        while node != start:
+            parent = pre.previous_junction[row + node]
+            street_id = pre.previous_street[row + node]
+            if parent < 0 or street_id < 0:
+                return None
+            junctions.append(parent)
+            streets.append(street_id)
+            node = parent
+        return tuple(reversed(junctions)), tuple(reversed(streets))
+
+    def _augment_optional(self, routes):
+        pre = self.preprocessed
+        if pre is None:
+            return
+        marked = bytearray(len(self.precomputed_gains) // 3)
+        for street_id in self.cleaned:
+            marked[street_id] = 1
+        for _ in range(min(200, len(marked))):
+            choice = choose_optional_depot_trip(
+                self.instance, pre, routes, marked, self.precomputed_gains)
+            if choice is None:
+                break
+            route_index, street_id, entry, exit = choice
+            route = routes[route_index]
+            outward = self._precomputed_path(self.instance.depot, entry)
+            home = self._precomputed_path(exit, self.instance.depot)
+            if outward is None or home is None:
+                marked[street_id] = 1
+                continue
+            street = self.streets_by_id[street_id]
+            route.junctions.extend(outward[0][1:])
+            route.street_ids.extend(outward[1])
+            route.junctions.append(exit)
+            route.street_ids.append(street_id)
+            route.junctions.extend(home[0][1:])
+            route.street_ids.extend(home[1])
+            route.total_time += pre.distances[pre.offset(self.instance.depot) + entry] + street.time + pre.distances[pre.offset(exit) + self.instance.depot]
+            route.current_junction = self.instance.depot
+            self._clean(route, street, [])
+            marked[street_id] = 1
+
     def sweep_traversed(self, routes) -> None:
         # After the routes are closed, clean the eligible streets they already
         # drive over; an optional street only when it raises the score.
+        self._augment_optional(routes)
         for route in sorted(routes, key=lambda r: (r.capacity, r.vehicle_id)):
             for street_id in sorted(set(route.street_ids)):
                 street = self.streets_by_id[street_id]
