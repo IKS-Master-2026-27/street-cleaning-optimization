@@ -2,6 +2,7 @@ import argparse
 from pathlib import Path
 
 from clipp import recursive, recursive_enum
+from clipp.dp import advanced as dp_advanced, simple as dp_simple
 from clipp.graph import build_graph, shortest_path
 from clipp.output import write_solution
 from clipp.parser import parse_instance
@@ -13,6 +14,8 @@ ALGORITHMS = {
     "greedy": solve,
     "recursive": recursive.solve,
     "recursive-enum": recursive_enum.solve,
+    "dp-simple": dp_simple.solve,
+    "dp-advanced": dp_advanced.solve,
 }
 
 
