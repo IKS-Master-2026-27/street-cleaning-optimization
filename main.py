@@ -12,6 +12,7 @@ from clipp.validator import validate_solution
 
 ALGORITHMS = {
     "greedy": solve,
+    "preprocessing": solve,
     "recursive": recursive.solve,
     "recursive-enum": recursive_enum.solve,
     "dp-simple": dp_simple.solve,
