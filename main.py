@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 
-from clipp import recursive, recursive_enum, greedy_lookahead
+from clipp import recursive, recursive_enum, greedy_lookahead, divide_conquer
 from clipp.dp import simple as dp_simple
 from clipp.graph import build_graph, shortest_path
 from clipp.output import write_solution
@@ -16,6 +16,7 @@ ALGORITHMS = {
     "recursive-enum": recursive_enum.solve,
     "dp-simple": dp_simple.solve,
     "greedy-lookahead": greedy_lookahead.solve,
+    "divide-conquer": divide_conquer.solve,
 }
 
 
