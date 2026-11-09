@@ -1,7 +1,6 @@
 import argparse
 from pathlib import Path
 
-
 from clipp import recursive, recursive_enum, greedy_lookahead, divide_conquer
 from clipp import preprocessing_solver
 from clipp import beam_search
@@ -24,7 +23,6 @@ ALGORITHMS = {
     "dp-memo": dp_memo.solve,
     "dp-memo-ls": dp_memo_ls.solve,
     "greedy-lookahead": greedy_lookahead.solve,
-    "divide-conquer": divide_conquer.solve,
     "beam-search": beam_search.solve,
 }
 
