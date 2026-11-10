@@ -1,31 +1,14 @@
 """Filtered beam search for route construction. See docs/beam-search.md.
 
-A *state* is a partial solution for the whole fleet: every vehicle's position
-and elapsed time plus the streets still pending in the current phase. One step
-extends every state in the beam by one move (shortest approach path + one
-street cleaned) and keeps only the ``width`` best children (beam width). Each
-vehicle proposes only its ``candidates`` nearest feasible streets (filter
-width). A state keeps its vehicles' proposals in a priority queue, so a step
-only recomputes the vehicle that moved and the vehicles whose proposed street
-was just cleaned, instead of exploring the full tree.
+A state is a partial solution for the whole fleet. Each step extends every
+state in the beam by one move (shortest path to a street + cleaning it); each
+vehicle proposes only its ``candidates`` nearest feasible streets, and only the
+``width`` best children are kept (beam width).
 
-Phases follow the greedy baseline: mandatory streets by requirement class
-30, 20, 10 (vehicles with enough capacity), then optional streets with a
-positive score gain. Within a phase every child cleans exactly one street, so
-all states in the beam have cleaned the same number of streets and are compared
-fairly by
-
-    score = value - rho * cost
-
-value  exact additive score terms: -waste for a mandatory street (its coverage
-       is the same in every complete solution) and the full gain
-       alpha*L/L_max - (1-alpha)*waste/W_max for an optional street;
-cost   closing time of the partial solution (every vehicle's time plus its
-       shortest way home); for mandatory streets their service time is left
-       out, because every complete solution pays it (deadhead time);
-rho    score value of one fleet second, estimated from the instance.
-
-Deterministic: no randomness and no time limits.
+Phases follow the greedy baseline: mandatory streets by requirement 30, 20, 10,
+then optional streets with a positive score gain. States are ranked by an
+estimate of the final score: score terms gained so far minus the time used,
+weighted by ``rho``. Deterministic: no randomness and no time limits.
 """
 
 from collections import OrderedDict
