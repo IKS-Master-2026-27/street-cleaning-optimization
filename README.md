@@ -37,7 +37,7 @@ Run from the repository root:
 python main.py
 # Or specify another instance
 python main.py data/input/syntetic_generated/instance_E.txt
-
+```
 
 The default input is `data/input/syntetic_generated/instance_E.txt`. Valid solutions are written to
 `data/output/<instance-name>_solution.txt`. A greedy assignment failure is reported
@@ -47,6 +47,43 @@ several minutes on instance_E because shortest paths are recomputed for candidat
 The supplied instance_E solution was accepted by the external validator with all
 356 mandatory streets and 91 optional streets cleaned, at score 0.58363268951526.
 See [the baseline notes](docs/greedy-baseline.md) for the algorithm and formats.
+
+## Publishing algorithm results
+
+Every algorithm's results are compared in InstanceLab, which reads them from
+`data/output/`. Please publish the results of your algorithm as follows.
+
+1. Register the algorithm in `main.py` under `ALGORITHMS`, for example
+   `"greedy-lookahead": greedy_lookahead.solve`.
+2. Run it with `main.py` on **all 15 reference instances**:
+
+   ```powershell
+   # 5 synthetic instances: instance_A ... instance_E
+   python main.py data/input/syntetic_generated/instance_A.txt --algorithm <algorithm-name>
+
+   # 10 real cities: Johannesburg, Ljubljana, New-York, Presheva, Prishtina,
+   # Shkupi, Sydney, Tirana, Ulqini, Vienna
+   python main.py data/input/real_instances/Presheva/instance.txt --algorithm <algorithm-name>
+   ```
+
+   `main.py` validates the solution and writes it only when it is valid, to
+   `data/output/<algorithm_name>/` (`-` becomes `_`, so `dp-simple` writes to
+   `data/output/dp_simple/`). File names are created automatically:
+   `instance_A_solution.txt` for synthetic instances and
+   `Presheva_instance_solution.txt` for real cities.
+3. Commit all 15 `*_solution.txt` files in `data/output/<algorithm_name>/`.
+   If git still ignores the files (old checkout), use
+   `git add -f data/output/<algorithm_name>/`.
+
+Rules:
+
+- Publish results for **all 15 instances**. An algorithm with missing or
+  invalid solutions is excluded from the comparison.
+- Do not modify the instance files in `data/input/`.
+- `greedy` is the exception: `main.py` writes its solutions directly to
+  `data/output/`. Move them to `data/output/greedy/` before committing.
+- If your algorithm cannot produce a valid solution for an instance, report it
+  to the team instead of committing a partial set.
 
 ## Project Structure
 
