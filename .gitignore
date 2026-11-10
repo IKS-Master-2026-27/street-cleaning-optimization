@@ -16,6 +16,7 @@ build/
 
 data/output/*
 !data/output/.gitkeep
+!data/output/*/
 
 .venv/
 venv/
