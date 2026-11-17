@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CLIPP Performance Analyzer</title>
+    <!-- STYLES: dashboard.py puts ui/style.css here -->
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <header class="side-head">
+          <h1>CLIPP Performance Analyzer</h1>
+          <p>Time and memory of every algorithm, and how they grow (Big O)</p>
+        </header>
+
+        <section>
+          <nav
+            class="segmented tabs"
+            role="tablist"
+            id="tabs"
+            aria-label="Sections"
+          >
+            <button role="tab" type="button" data-tab="overview">
+              Overview
+            </button>
+            <button role="tab" type="button" data-tab="algorithms">
+              Algorithms
+            </button>
+            <button role="tab" type="button" data-tab="functions">
+              Functions
+            </button>
+            <button role="tab" type="button" data-tab="compare">Compare</button>
+          </nav>
+        </section>
+
+        <section id="run-panel" hidden></section>
+
+        <section
+          id="family-wrap"
+          title="Only changes what the charts, tables and Big O fits show. It does not start any measurement."
+        >
+          <h2>Show results for</h2>
+          <div
+            class="segmented"
+            id="family"
+            role="group"
+            aria-label="Show results for"
+          ></div>
+        </section>
+
+        <section id="stats-wrap">
+          <h2>Summary · all algorithms</h2>
+          <div class="stats" id="stats"></div>
+        </section>
+
+        <footer class="side-foot">
+          <span id="mode-pill" class="pill"></span>
+          <div id="footer"></div>
+        </footer>
+      </aside>
+
+      <main class="content">
+        <div id="view"></div>
+        <div id="runbar" class="runbar" hidden></div>
+      </main>
+    </div>
+
+    <div id="tooltip" class="tooltip" role="status" hidden></div>
+
+    <script id="boot" type="application/json">
+      __BOOT__
+    </script>
+    <!-- SCRIPTS: dashboard.py puts the ui/js/ files here -->
+  </body>
+</html>

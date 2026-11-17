@@ -131,6 +131,20 @@ data/output/
 
 Contains generated routes and algorithm results.
 
+### `tools/complexity/` — CLIPP Performance Analyzer
+
+Measures execution time and memory of every algorithm in `main.py` and of every
+function it calls, and shows the measured Big O in an interactive dashboard. See [its README](tools/complexity/README.md):
+
+```powershell
+python -m tools.complexity run --open   # measure, then open the dashboard
+python -m tools.complexity serve        # live dashboard with a Run button
+```
+
+To add your algorithm to the tool, register it in `ALGORITHMS` in `main.py`;
+it is then measured and shown automatically. Measure only it with
+`python -m tools.complexity -a <name>`.
+
 ### `tests/`
 
 Contains tests for the graph model, algorithms, constraints, and route calculations.
