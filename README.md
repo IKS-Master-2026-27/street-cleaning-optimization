@@ -85,6 +85,24 @@ Rules:
 - If your algorithm cannot produce a valid solution for an instance, report it
   to the team instead of committing a partial set.
 
+## InstanceLab
+
+InstanceLab is an analysis dashboard for the CLIPP instances and the published
+algorithm results. It validates every instance (including the time-limit T
+check), extracts 26 instance features, shows a 2D PCA instance space and
+compares algorithm scores and execution times. It only reads `data/input/`
+and `data/output/`; it never modifies them.
+
+```powershell
+cd tools\instancelab
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -e .
+streamlit run app.py
+```
+
+See [tools/instancelab/README.md](tools/instancelab/README.md) for details.
+
 ## Project Structure
 
 ```text
@@ -106,6 +124,8 @@ street-cleaning-optimization/
 ├── visualization/
 │   ├── public/
 │   └── src/
+├── tools/
+│   └── instancelab/
 ├── README.md
 └── CONTRIBUTING.md
 ```

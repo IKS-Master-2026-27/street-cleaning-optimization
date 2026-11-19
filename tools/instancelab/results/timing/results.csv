@@ -1,0 +1,31 @@
+instance,group,algorithm,status,seconds,published_score,run_score,score_matches,reason
+Johannesburg,real,dp_simple,ok,102.63052179990336,1.0,1.0,True,
+Johannesburg,real,greedy,ok,430.44604210020043,0.5915139815808839,0.5934633879905269,False,re-run score differs from published score
+Ljubljana,real,dp_simple,ok,2.4066733000800014,1.0,1.0,True,
+Ljubljana,real,greedy,ok,16.07987769995816,0.6262426770584184,0.6302844225963535,False,re-run score differs from published score
+New-York,real,dp_simple,ok,20.58045110013336,1.0,1.0,True,
+New-York,real,greedy,ok,198.65029629995115,0.6216815319439436,0.6243831004655455,False,re-run score differs from published score
+Presheva,real,dp_simple,ok,1.9559120000340044,1.0,1.0,True,
+Presheva,real,greedy,ok,0.25348179996944964,0.6169369148068955,0.7099405332891259,False,re-run score differs from published score
+Prishtina,real,dp_simple,ok,0.33238209993578494,1.0,1.0,True,
+Prishtina,real,greedy,ok,2.5756680998019874,0.6201823057488995,0.6201823057488995,True,
+Shkupi,real,dp_simple,ok,0.8264495998155326,1.0,1.0,True,
+Shkupi,real,greedy,ok,6.173644999973476,0.599364689841078,0.5987525714606374,False,re-run score differs from published score
+Sydney,real,dp_simple,ok,176.20275439997204,1.0,1.0,True,
+Sydney,real,greedy,ok,1097.351695000194,0.6395446732326774,0.6416690235334116,False,re-run score differs from published score
+Tirana,real,dp_simple,ok,1.032791200093925,1.0,1.0,True,
+Tirana,real,greedy,ok,12.608304800000042,0.6131667838199696,0.6134348687798619,False,re-run score differs from published score
+Ulqini,real,dp_simple,ok,0.19051690003834665,1.0,1.0,True,
+Ulqini,real,greedy,ok,1.52846849989146,0.5539244958186165,0.5539244958186165,True,
+Vienna,real,dp_simple,ok,4.33887830004096,1.0,1.0,True,
+Vienna,real,greedy,ok,27.034139700001106,0.6463985429206709,0.6554124848561536,False,re-run score differs from published score
+instance_A,synthetic,dp_simple,ok,0.004079399863258004,0.5448013996947474,0.5448013996947474,True,
+instance_A,synthetic,greedy,ok,0.00542409997433424,0.3883333953765402,0.3883333953765402,True,
+instance_B,synthetic,dp_simple,ok,0.015706000151112676,0.7431717746506777,0.7431717746506777,True,
+instance_B,synthetic,greedy,ok,0.026046699844300747,0.685893378974074,0.7594422950982065,False,re-run score differs from published score
+instance_C,synthetic,dp_simple,ok,0.048882999923080206,0.7610409776674996,0.7610409776674996,True,
+instance_C,synthetic,greedy,ok,0.13585230009630322,0.651955346518344,0.6835228836998204,False,re-run score differs from published score
+instance_D,synthetic,dp_simple,ok,0.4174508999567479,0.7494036565131714,0.7494036565131714,True,
+instance_D,synthetic,greedy,ok,0.8448985000140965,0.5928010419166317,0.6718434164229725,False,re-run score differs from published score
+instance_E,synthetic,dp_simple,ok,1.015318499878049,0.6305051248665259,0.6305051248665259,True,
+instance_E,synthetic,greedy,ok,1.9659188999794424,0.58363268951526,0.58363268951526,True,
