@@ -1,13 +1,4 @@
 {
-  "mega_local_size_bounds_lifted": {
-    "valid": true,
-    "coverage": 0.21259181932978186,
-    "efficiency": 1.0,
-    "score": 0.6062959096648909
-  },
-  "mega_official": {
-    "status": "NOT_RUN",
-    "reason": "Previous result invalidated: fleet/time changed by scaling-policy-v3 migration. The official validator was not re-run in this migration."
-  },
-  "districts": []
+  "official_status": "NOT_RUN",
+  "note": "Instance only. No baseline solution is provided and no feasibility status is published."
 }

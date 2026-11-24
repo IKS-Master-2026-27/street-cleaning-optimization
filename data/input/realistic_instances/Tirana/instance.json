@@ -55317,7 +55317,6 @@
     "scaling_mode": "auto",
     "strict_budget": false
   },
-  "baseline": "Constructive feasibility witness for the scaling-policy-v3 fleet and time; not optimal",
   "scaling": {
     "version": "scaling-policy-v3",
     "mode": "auto",
@@ -55376,62 +55375,13 @@
       "L": 5
     },
     "time_limit": 74938,
-    "route_seconds": [
-      59111,
-      59199,
-      59106,
-      59170,
-      49957,
-      59149,
-      59130,
-      59235,
-      59140,
-      59211,
-      5684,
-      58537,
-      59277,
-      59254,
-      59225,
-      58466
-    ],
-    "witness_longest_route_seconds": 59277,
-    "witness_routes_on_larger_vehicles": 0,
-    "witness_class_grouping": "S+M+L",
     "mandatory_trip_lower_bound_seconds": 2984.0,
     "mandatory_traversal_seconds": 30390,
-    "feasibility": "witness_valid",
-    "feasibility_reason": "constructive witness fits the policy fleet and time",
     "relaxed_research_bounds": true,
     "standard_bound_exceedances": [],
     "within_standard_bounds": false,
     "rule": "T = ceil(3600 * 2.995 * (N/1000)^0.685) s; C = max(2, ceil(sqrt(W vehicle-hours))); S/M/L allocation by class workload",
-    "limitations": "Scenario-budget rules, not feasibility guarantees or observed municipal resources. A failed constructive witness is not proof of infeasibility.",
-    "migration": {
-      "from_version": "scaling-policy-v2",
-      "previous_time_limit": 82432,
-      "previous_fleet": [
-        "S",
-        "S",
-        "S",
-        "S",
-        "S",
-        "S",
-        "M",
-        "M",
-        "M",
-        "M",
-        "M",
-        "M",
-        "L",
-        "L",
-        "L",
-        "L",
-        "L",
-        "L"
-      ],
-      "previous_vehicles": 18,
-      "validation_status_after": "official NOT_RUN (invalidated); local witness check passed"
-    }
+    "limitations": "Scenario-budget rules, not feasibility guarantees or observed municipal resources."
   },
   "time_limit": 74938,
   "fleet": [
@@ -55452,24 +55402,5 @@
     "L",
     "L"
   ],
-  "route_seconds": [
-    59111,
-    59199,
-    59106,
-    59170,
-    49957,
-    59149,
-    59130,
-    59235,
-    59140,
-    59211,
-    5684,
-    58537,
-    59277,
-    59254,
-    59225,
-    58466
-  ],
-  "fleet_mode": "auto",
-  "feasibility": "witness_valid"
+  "fleet_mode": "auto"
 }
