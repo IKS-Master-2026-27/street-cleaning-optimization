@@ -1,16 +1,14 @@
 {
   "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
-  "baseline_score": 0.6016631962278058,
   "city_id": "node-170792214",
   "country": "MK",
   "directory": "Shkupi",
   "files": {
     "geography.json": "f9db82548aef7f658f35f8adec9812cc962fd787f49d071b1a0bf0c2065b716c",
-    "instance.json": "56e81868a050792c3ef82ce96c15ee81d271f63c394f4d9b097a4d7e78e43ce4",
-    "instance.solution.txt": "e1b2d443abc6e946fafa88bba044e1451f672f943da2dc5d5fe1d100ceaa3a5d",
+    "instance.json": "87966b75be294b9b15d3b41ab4ff3d86949ecca40d78b0b804196ff6786d4341",
     "instance.txt": "ce5f04a4cb393adde59dd61b8eca3d5cc66f173e9582807cb1977904535ed99e",
     "roads.geojson": "957a6ec666693272c692cb324cb441575473f83798c188a207e85905cc7a5b00",
-    "validation.json": "c9690255c57ec62318c4b4788c62d164fd39d402ed2c43caaafb352dcde94b5b"
+    "validation.json": "8dfa860724d0a66bfe9b7ae69e0b34efd3eec27127f778818e579565aa5b6ebf"
   },
   "instance_bytes": 383577,
   "mandatory_streets": 3398,
@@ -37,7 +35,6 @@
       "strict_budget": false
     }
   },
-  "solution_bytes": 386834,
   "source": {
     "bytes": 29784160,
     "etag": "\"1c67860-65d18c9e14f59\"",
@@ -51,9 +48,7 @@
   "time_limit": 64997,
   "vehicles": 16,
   "within_official_limits": false,
-  "mega_local_valid": true,
   "mega_official": "NOT_RUN",
-  "mega_baseline_score": 0.6016631962278058,
   "scaling": {
     "version": "scaling-policy-v3",
     "mode": "auto",
@@ -112,63 +107,13 @@
       "L": 5
     },
     "time_limit": 64997,
-    "route_seconds": [
-      62478,
-      62447,
-      62436,
-      62327,
-      61974,
-      11101,
-      61155,
-      62437,
-      62446,
-      61726,
-      62478,
-      62441,
-      62458,
-      62455,
-      62125,
-      48825
-    ],
-    "witness_longest_route_seconds": 62478,
-    "witness_routes_on_larger_vehicles": 0,
-    "witness_class_grouping": "S+M+L",
     "mandatory_trip_lower_bound_seconds": 4989.0,
     "mandatory_traversal_seconds": 45094,
-    "feasibility": "witness_valid",
-    "feasibility_reason": "constructive witness fits the policy fleet and time",
     "relaxed_research_bounds": true,
     "standard_bound_exceedances": [],
     "within_standard_bounds": false,
     "rule": "T = ceil(3600 * 2.995 * (N/1000)^0.685) s; C = max(2, ceil(sqrt(W vehicle-hours))); S/M/L allocation by class workload",
-    "limitations": "Scenario-budget rules, not feasibility guarantees or observed municipal resources. A failed constructive witness is not proof of infeasibility.",
-    "migration": {
-      "from_version": "scaling-policy-v2",
-      "previous_time_limit": 71497,
-      "previous_fleet": [
-        "S",
-        "S",
-        "S",
-        "S",
-        "S",
-        "S",
-        "M",
-        "M",
-        "M",
-        "M",
-        "M",
-        "M",
-        "L",
-        "L",
-        "L",
-        "L",
-        "L",
-        "L"
-      ],
-      "previous_vehicles": 18,
-      "validation_status_after": "official NOT_RUN (invalidated); local witness check passed"
-    }
+    "limitations": "Scenario-budget rules, not feasibility guarantees or observed municipal resources."
   },
-  "feasibility": "witness_valid",
   "scaling_version": "scaling-policy-v3"
 }

@@ -1,15 +1,14 @@
 {
   "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
-  "baseline_score": null,
   "city_id": "node-192271967",
   "country": "ME",
   "directory": "Ulqini",
   "files": {
     "geography.json": "75aa371864dc32b8c1670f6cc7aedceb2d16654b177597b698ae949a7833d4e8",
-    "instance.json": "f8733e601f671ffdfcc08916b078c97f2fd74904acd47bd72386b5571fa5cf93",
+    "instance.json": "7102ad4869c23bd172b9ecb84a5383f4d7620fd6bc033999bdf9ddc591c9a218",
     "instance.txt": "578a7909dd04a6448b6192ecdb01cdbb4081e992943a02ac367b31d25872e6be",
     "roads.geojson": "64d6c2a6ce3700ba834ed3e3316ebfe672326eabaccd3c2404b9388c3161bc59",
-    "validation.json": "58724daae82f36c38d11d5af1a7d7ac9a9d449bee46b1c000b95c9e2f494aaf6"
+    "validation.json": "8dfa860724d0a66bfe9b7ae69e0b34efd3eec27127f778818e579565aa5b6ebf"
   },
   "instance_bytes": 114250,
   "mandatory_streets": 1054,
@@ -36,7 +35,6 @@
       "strict_budget": false
     }
   },
-  "solution_bytes": 0,
   "source": {
     "bytes": 34457648,
     "etag": "\"20dc830-65c96f3015072\"",
@@ -50,9 +48,7 @@
   "time_limit": 30714,
   "vehicles": 9,
   "within_official_limits": true,
-  "mega_local_valid": null,
   "mega_official": "NOT_RUN",
-  "mega_baseline_score": null,
   "scaling": {
     "version": "scaling-policy-v3",
     "mode": "auto",
@@ -104,38 +100,13 @@
       "L": 3
     },
     "time_limit": 30714,
-    "route_seconds": null,
-    "witness_longest_route_seconds": 33221,
-    "witness_routes_on_larger_vehicles": 0,
-    "witness_class_grouping": "S+M+L",
     "mandatory_trip_lower_bound_seconds": 8843.0,
     "mandatory_traversal_seconds": 21911,
-    "feasibility": "feasibility_not_established",
-    "feasibility_reason": "constructive witness needs 33221 s on its longest route > T = 30714 s",
     "relaxed_research_bounds": true,
     "standard_bound_exceedances": [],
     "within_standard_bounds": true,
     "rule": "T = ceil(3600 * 2.995 * (N/1000)^0.685) s; C = max(2, ceil(sqrt(W vehicle-hours))); S/M/L allocation by class workload",
-    "limitations": "Scenario-budget rules, not feasibility guarantees or observed municipal resources. A failed constructive witness is not proof of infeasibility.",
-    "migration": {
-      "from_version": "scaling-policy-v2",
-      "previous_time_limit": 33786,
-      "previous_fleet": [
-        "S",
-        "S",
-        "S",
-        "M",
-        "M",
-        "M",
-        "M",
-        "L",
-        "L",
-        "L"
-      ],
-      "previous_vehicles": 10,
-      "validation_status_after": "official NOT_RUN (invalidated); local witness check not applicable: feasibility_not_established"
-    }
+    "limitations": "Scenario-budget rules, not feasibility guarantees or observed municipal resources."
   },
-  "feasibility": "feasibility_not_established",
   "scaling_version": "scaling-policy-v3"
 }

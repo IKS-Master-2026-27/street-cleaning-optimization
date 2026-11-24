@@ -1,15 +1,4 @@
 {
-  "mega_local_size_bounds_lifted": {
-    "valid": null,
-    "feasibility": "feasibility_not_established",
-    "reason": "constructive witness needs 33221 s on its longest route > T = 30714 s",
-    "coverage": null,
-    "efficiency": null,
-    "score": null
-  },
-  "mega_official": {
-    "status": "NOT_RUN",
-    "reason": "Previous result invalidated: fleet/time changed by scaling-policy-v3 migration. The official validator was not re-run in this migration."
-  },
-  "districts": []
+  "official_status": "NOT_RUN",
+  "note": "Instance only. No baseline solution is provided and no feasibility status is published."
 }

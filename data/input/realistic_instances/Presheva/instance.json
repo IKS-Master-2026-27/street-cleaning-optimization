@@ -2436,7 +2436,6 @@
     "scaling_mode": "auto",
     "strict_budget": false
   },
-  "baseline": "No baseline: feasibility not established for the scaling-policy-v3 fleet and time (a failed heuristic is not proof of infeasibility)",
   "scaling": {
     "version": "scaling-policy-v3",
     "mode": "auto",
@@ -2483,31 +2482,13 @@
       "L": 1
     },
     "time_limit": 8805,
-    "route_seconds": null,
-    "witness_longest_route_seconds": 11416,
-    "witness_routes_on_larger_vehicles": 2,
-    "witness_class_grouping": "SM+L",
     "mandatory_trip_lower_bound_seconds": 1408.0,
     "mandatory_traversal_seconds": 3344,
-    "feasibility": "feasibility_not_established",
-    "feasibility_reason": "constructive witness needs 11416 s on its longest route > T = 8805 s",
     "relaxed_research_bounds": true,
     "standard_bound_exceedances": [],
     "within_standard_bounds": true,
     "rule": "T = ceil(3600 * 2.995 * (N/1000)^0.685) s; C = max(2, ceil(sqrt(W vehicle-hours))); S/M/L allocation by class workload",
-    "limitations": "Scenario-budget rules, not feasibility guarantees or observed municipal resources. A failed constructive witness is not proof of infeasibility.",
-    "migration": {
-      "from_version": "scaling-policy-v2",
-      "previous_time_limit": 9686,
-      "previous_fleet": [
-        "S",
-        "M",
-        "M",
-        "L"
-      ],
-      "previous_vehicles": 4,
-      "validation_status_after": "official NOT_RUN (invalidated); local witness check not applicable: feasibility_not_established"
-    }
+    "limitations": "Scenario-budget rules, not feasibility guarantees or observed municipal resources."
   },
   "time_limit": 8805,
   "fleet": [
@@ -2516,7 +2497,5 @@
     "M",
     "L"
   ],
-  "route_seconds": null,
-  "fleet_mode": "auto",
-  "feasibility": "feasibility_not_established"
+  "fleet_mode": "auto"
 }
