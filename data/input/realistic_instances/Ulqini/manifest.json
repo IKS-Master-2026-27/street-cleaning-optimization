@@ -1,0 +1,141 @@
+{
+  "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
+  "baseline_score": null,
+  "city_id": "node-192271967",
+  "country": "ME",
+  "directory": "Ulqini",
+  "files": {
+    "geography.json": "75aa371864dc32b8c1670f6cc7aedceb2d16654b177597b698ae949a7833d4e8",
+    "instance.json": "f8733e601f671ffdfcc08916b078c97f2fd74904acd47bd72386b5571fa5cf93",
+    "instance.txt": "578a7909dd04a6448b6192ecdb01cdbb4081e992943a02ac367b31d25872e6be",
+    "roads.geojson": "64d6c2a6ce3700ba834ed3e3316ebfe672326eabaccd3c2404b9388c3161bc59",
+    "validation.json": "58724daae82f36c38d11d5af1a7d7ac9a9d449bee46b1c000b95c9e2f494aaf6"
+  },
+  "instance_bytes": 114250,
+  "mandatory_streets": 1054,
+  "nodes": 4610,
+  "official_status": "NOT_RUN",
+  "osm_name": "Ulcinj - Ulqin",
+  "osm_url": "https://www.openstreetmap.org/node/192271967",
+  "requested_name": "Ulqini",
+  "scope": "whole city",
+  "seconds_to_build": 1,
+  "service_streets": 5074,
+  "settings": {
+    "alpha": 0.5,
+    "budget": 30714,
+    "connectivity": "remove",
+    "connectivity_policy": "real-roads-main-scc-v1",
+    "seed": 42,
+    "speed": 20.0,
+    "target": 8000,
+    "scaling_mode": "auto",
+    "scaling_version": "scaling-policy-v3",
+    "scenario": {
+      "scaling_mode": "auto",
+      "strict_budget": false
+    }
+  },
+  "solution_bytes": 0,
+  "source": {
+    "bytes": 34457648,
+    "etag": "\"20dc830-65c96f3015072\"",
+    "last_modified": "Tue, 29 Sep 2026 03:40:52 GMT",
+    "osm_timestamp": "2026-09-28T20:23:05Z",
+    "retrieved_at": "2026-09-29T15:23:58.396877+00:00",
+    "sha256": "1bbf121a7e298e01b568bb5263da485352df5fab350c6fe53a82242e383a1709",
+    "url": "https://download.geofabrik.de/europe/montenegro-latest.osm.pbf"
+  },
+  "streets": 5074,
+  "time_limit": 30714,
+  "vehicles": 9,
+  "within_official_limits": true,
+  "mega_local_valid": null,
+  "mega_official": "NOT_RUN",
+  "mega_baseline_score": null,
+  "scaling": {
+    "version": "scaling-policy-v3",
+    "mode": "auto",
+    "policy": "automatic defaults",
+    "shortest_path_backend": "cpu",
+    "junctions": 4610,
+    "workload_seconds": 279906.0,
+    "workload_hours": 77.75166666666667,
+    "class_workload_seconds": {
+      "S": 91453.0,
+      "M": 94428.0,
+      "L": 94025.0
+    },
+    "time": {
+      "junctions": 4610,
+      "raw_hours": 8.531628977061635,
+      "margin": 0.0,
+      "hours_with_margin": 8.531628977061635,
+      "seconds_with_margin": 30713.864317421885,
+      "rounding": "ceil to whole second",
+      "time_limit": 30714
+    },
+    "fleet_formula": {
+      "workload_hours": 77.75166666666667,
+      "raw_sqrt": 8.817690551763917,
+      "margin": 0.0,
+      "with_margin": 8.817690551763917,
+      "ceil": 9
+    },
+    "time_margin": 0.0,
+    "fleet_margin": 0.0,
+    "requested_fleet": 9,
+    "fleet_factor": 1.0,
+    "adjustments": [],
+    "fleet": [
+      "S",
+      "S",
+      "S",
+      "M",
+      "M",
+      "M",
+      "L",
+      "L",
+      "L"
+    ],
+    "fleet_composition": {
+      "S": 3,
+      "M": 3,
+      "L": 3
+    },
+    "time_limit": 30714,
+    "route_seconds": null,
+    "witness_longest_route_seconds": 33221,
+    "witness_routes_on_larger_vehicles": 0,
+    "witness_class_grouping": "S+M+L",
+    "mandatory_trip_lower_bound_seconds": 8843.0,
+    "mandatory_traversal_seconds": 21911,
+    "feasibility": "feasibility_not_established",
+    "feasibility_reason": "constructive witness needs 33221 s on its longest route > T = 30714 s",
+    "relaxed_research_bounds": true,
+    "standard_bound_exceedances": [],
+    "within_standard_bounds": true,
+    "rule": "T = ceil(3600 * 2.995 * (N/1000)^0.685) s; C = max(2, ceil(sqrt(W vehicle-hours))); S/M/L allocation by class workload",
+    "limitations": "Scenario-budget rules, not feasibility guarantees or observed municipal resources. A failed constructive witness is not proof of infeasibility.",
+    "migration": {
+      "from_version": "scaling-policy-v2",
+      "previous_time_limit": 33786,
+      "previous_fleet": [
+        "S",
+        "S",
+        "S",
+        "M",
+        "M",
+        "M",
+        "M",
+        "L",
+        "L",
+        "L"
+      ],
+      "previous_vehicles": 10,
+      "validation_status_after": "official NOT_RUN (invalidated); local witness check not applicable: feasibility_not_established"
+    }
+  },
+  "feasibility": "feasibility_not_established",
+  "scaling_version": "scaling-policy-v3"
+}
