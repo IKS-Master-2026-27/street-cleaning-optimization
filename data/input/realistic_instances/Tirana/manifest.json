@@ -1,0 +1,119 @@
+{
+  "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
+  "city_id": "node-1835254686",
+  "country": "AL",
+  "directory": "Tirana",
+  "files": {
+    "geography.json": "fba955e48dd5d6beb3bb987a9cc24cc56828a925b49e5023275d5891818272b2",
+    "instance.json": "9bfab6f4460bbf0130759decd9cdf28077755b6f45b84700c9508f089cfe449b",
+    "instance.txt": "d608fb741d86ef10658a6736f5f98a517c29b92ecc649b8a59326e34bc0cce0b",
+    "roads.geojson": "a4539d6e7383c16fdfc9d9c7db052bd0556567942bf631c8ebb9440cf6fa6bfa",
+    "validation.json": "8dfa860724d0a66bfe9b7ae69e0b34efd3eec27127f778818e579565aa5b6ebf"
+  },
+  "instance_bytes": 439755,
+  "mandatory_streets": 3745,
+  "nodes": 16951,
+  "official_status": "NOT_RUN",
+  "osm_name": "Tirana",
+  "osm_url": "https://www.openstreetmap.org/node/1835254686",
+  "requested_name": "Tirana",
+  "scope": "whole city",
+  "seconds_to_build": 2,
+  "service_streets": 19175,
+  "settings": {
+    "alpha": 0.5,
+    "budget": 74938,
+    "connectivity": "remove",
+    "connectivity_policy": "real-roads-main-scc-v1",
+    "seed": 42,
+    "speed": 20.0,
+    "target": 8000,
+    "scaling_mode": "auto",
+    "scaling_version": "scaling-policy-v3",
+    "scenario": {
+      "scaling_mode": "auto",
+      "strict_budget": false
+    }
+  },
+  "source": {
+    "bytes": 54144640,
+    "etag": "\"33a2e80-65c96e0e2e2a4\"",
+    "last_modified": "Tue, 29 Sep 2026 03:35:48 GMT",
+    "osm_timestamp": "2026-09-28T20:23:05Z",
+    "retrieved_at": "2026-09-29T15:21:59.627688+00:00",
+    "sha256": "f4133e83edb9739aa71df882c186555bd374ed0194b2ac7069adc1d3385b5db6",
+    "url": "https://download.geofabrik.de/europe/albania-latest.osm.pbf"
+  },
+  "streets": 19175,
+  "time_limit": 74938,
+  "vehicles": 16,
+  "within_official_limits": false,
+  "mega_official": "NOT_RUN",
+  "scaling": {
+    "version": "scaling-policy-v3",
+    "mode": "auto",
+    "policy": "automatic defaults",
+    "shortest_path_backend": "cpu",
+    "junctions": 16951,
+    "workload_seconds": 876444.0,
+    "workload_hours": 243.45666666666668,
+    "class_workload_seconds": {
+      "S": 283795.0,
+      "M": 299365.0,
+      "L": 293284.0
+    },
+    "time": {
+      "junctions": 16951,
+      "raw_hours": 20.815920644473135,
+      "margin": 0.0,
+      "hours_with_margin": 20.815920644473135,
+      "seconds_with_margin": 74937.31432010328,
+      "rounding": "ceil to whole second",
+      "time_limit": 74938
+    },
+    "fleet_formula": {
+      "workload_hours": 243.45666666666668,
+      "raw_sqrt": 15.603097982986156,
+      "margin": 0.0,
+      "with_margin": 15.603097982986156,
+      "ceil": 16
+    },
+    "time_margin": 0.0,
+    "fleet_margin": 0.0,
+    "requested_fleet": 16,
+    "fleet_factor": 1.0,
+    "adjustments": [],
+    "fleet": [
+      "S",
+      "S",
+      "S",
+      "S",
+      "S",
+      "M",
+      "M",
+      "M",
+      "M",
+      "M",
+      "M",
+      "L",
+      "L",
+      "L",
+      "L",
+      "L"
+    ],
+    "fleet_composition": {
+      "S": 5,
+      "M": 6,
+      "L": 5
+    },
+    "time_limit": 74938,
+    "mandatory_trip_lower_bound_seconds": 2984.0,
+    "mandatory_traversal_seconds": 30390,
+    "relaxed_research_bounds": true,
+    "standard_bound_exceedances": [],
+    "within_standard_bounds": false,
+    "rule": "T = ceil(3600 * 2.995 * (N/1000)^0.685) s; C = max(2, ceil(sqrt(W vehicle-hours))); S/M/L allocation by class workload",
+    "limitations": "Scenario-budget rules, not feasibility guarantees or observed municipal resources."
+  },
+  "scaling_version": "scaling-policy-v3"
+}

@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-11-04T17:58:34+00:00",
+  "shared_repository_revision": "96323e0e202692a43e8745db8b22774b1a13bfeb",
+  "timed_algorithms": [
+    "dp_simple",
+    "greedy"
+  ],
+  "not_timeable": [
+    {
+      "folder": "dp_simple_8h",
+      "reason": "no algorithm with this name is registered in main.py"
+    }
+  ],
+  "timeout_seconds": 1800.0,
+  "workers": 2,
+  "python": "3.13.0",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "processor": "Intel64 Family 6 Model 154 Stepping 4, GenuineIntel",
+  "cpu_count": 8,
+  "timing": "time.perf_counter around the algorithm call only; one run per pair"
+}

@@ -1,7 +1,10 @@
 import argparse
 from pathlib import Path
 
+
 from clipp import recursive, recursive_enum, greedy_lookahead, divide_conquer
+from clipp import preprocessing_solver
+from clipp import beam_search
 from clipp.dp import simple as dp_simple
 from clipp.graph import build_graph, shortest_path
 from clipp.output import write_solution
@@ -12,19 +15,32 @@ from clipp.validator import validate_solution
 
 ALGORITHMS = {
     "greedy": solve,
+    "preprocessing": preprocessing_solver.solve,
     "recursive": recursive.solve,
     "recursive-enum": recursive_enum.solve,
     "dp-simple": dp_simple.solve,
     "greedy-lookahead": greedy_lookahead.solve,
     "divide-conquer": divide_conquer.solve,
+    "beam-search": beam_search.solve,
 }
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("instance", nargs="?", default="data/input/syntetic_generated/instance_E.txt")
+    parser.add_argument(
+        "instance",
+        nargs="?",
+        default=None,
+    )
     parser.add_argument("--algorithm", choices=sorted(ALGORITHMS), default="greedy")
     args = parser.parse_args()
+
+    if args.instance is None:
+        default_input = Path("data/input/instance_E.txt")
+        generated_input = Path("data/input/syntetic_generated/instance_E.txt")
+        args.instance = str(
+            default_input if default_input.exists() else generated_input
+        )
     try:
         instance = parse_instance(args.instance)
         mandatory_count = sum(s.category == "M" for s in instance.streets)

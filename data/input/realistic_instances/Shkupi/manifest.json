@@ -1,0 +1,119 @@
+{
+  "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
+  "city_id": "node-170792214",
+  "country": "MK",
+  "directory": "Shkupi",
+  "files": {
+    "geography.json": "f9db82548aef7f658f35f8adec9812cc962fd787f49d071b1a0bf0c2065b716c",
+    "instance.json": "87966b75be294b9b15d3b41ab4ff3d86949ecca40d78b0b804196ff6786d4341",
+    "instance.txt": "ce5f04a4cb393adde59dd61b8eca3d5cc66f173e9582807cb1977904535ed99e",
+    "roads.geojson": "957a6ec666693272c692cb324cb441575473f83798c188a207e85905cc7a5b00",
+    "validation.json": "8dfa860724d0a66bfe9b7ae69e0b34efd3eec27127f778818e579565aa5b6ebf"
+  },
+  "instance_bytes": 383577,
+  "mandatory_streets": 3398,
+  "nodes": 13771,
+  "official_status": "NOT_RUN",
+  "osm_name": "Skopje",
+  "osm_url": "https://www.openstreetmap.org/node/170792214",
+  "requested_name": "Shkupi",
+  "scope": "whole city",
+  "seconds_to_build": 2,
+  "service_streets": 16658,
+  "settings": {
+    "alpha": 0.5,
+    "budget": 64997,
+    "connectivity": "remove",
+    "connectivity_policy": "real-roads-main-scc-v1",
+    "seed": 42,
+    "speed": 20.0,
+    "target": 8000,
+    "scaling_mode": "auto",
+    "scaling_version": "scaling-policy-v3",
+    "scenario": {
+      "scaling_mode": "auto",
+      "strict_budget": false
+    }
+  },
+  "source": {
+    "bytes": 29784160,
+    "etag": "\"1c67860-65d18c9e14f59\"",
+    "last_modified": "Mon, 05 Oct 2026 14:35:07 GMT",
+    "osm_timestamp": "2026-10-04T20:20:21Z",
+    "retrieved_at": "2026-10-05T18:02:15.876957+00:00",
+    "sha256": "bac1b56c9594d0b45364dd63acbfd82ca06df9bb5d0f886cf388040c82206fa0",
+    "url": "https://download.geofabrik.de/europe/macedonia-latest.osm.pbf"
+  },
+  "streets": 16658,
+  "time_limit": 64997,
+  "vehicles": 16,
+  "within_official_limits": false,
+  "mega_official": "NOT_RUN",
+  "scaling": {
+    "version": "scaling-policy-v3",
+    "mode": "auto",
+    "policy": "automatic defaults",
+    "shortest_path_backend": "cpu",
+    "junctions": 13771,
+    "workload_seconds": 912284.0,
+    "workload_hours": 253.41222222222223,
+    "class_workload_seconds": {
+      "S": 314399.0,
+      "M": 306226.0,
+      "L": 291659.0
+    },
+    "time": {
+      "junctions": 13771,
+      "raw_hours": 18.054612816180722,
+      "margin": 0.0,
+      "hours_with_margin": 18.054612816180722,
+      "seconds_with_margin": 64996.6061382506,
+      "rounding": "ceil to whole second",
+      "time_limit": 64997
+    },
+    "fleet_formula": {
+      "workload_hours": 253.41222222222223,
+      "raw_sqrt": 15.918926541140337,
+      "margin": 0.0,
+      "with_margin": 15.918926541140337,
+      "ceil": 16
+    },
+    "time_margin": 0.0,
+    "fleet_margin": 0.0,
+    "requested_fleet": 16,
+    "fleet_factor": 1.0,
+    "adjustments": [],
+    "fleet": [
+      "S",
+      "S",
+      "S",
+      "S",
+      "S",
+      "S",
+      "M",
+      "M",
+      "M",
+      "M",
+      "M",
+      "L",
+      "L",
+      "L",
+      "L",
+      "L"
+    ],
+    "fleet_composition": {
+      "S": 6,
+      "M": 5,
+      "L": 5
+    },
+    "time_limit": 64997,
+    "mandatory_trip_lower_bound_seconds": 4989.0,
+    "mandatory_traversal_seconds": 45094,
+    "relaxed_research_bounds": true,
+    "standard_bound_exceedances": [],
+    "within_standard_bounds": false,
+    "rule": "T = ceil(3600 * 2.995 * (N/1000)^0.685) s; C = max(2, ceil(sqrt(W vehicle-hours))); S/M/L allocation by class workload",
+    "limitations": "Scenario-budget rules, not feasibility guarantees or observed municipal resources."
+  },
+  "scaling_version": "scaling-policy-v3"
+}

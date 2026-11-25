@@ -1,0 +1,123 @@
+{
+  "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
+  "city_id": "node-6968827",
+  "country": "SI",
+  "directory": "Ljubljana",
+  "files": {
+    "geography.json": "d13d0759668c04701ef2ca52663a05b81cb5a4d2b80d0b0d5fcf0074ad4851d8",
+    "instance.json": "7d2f041a559361ec3cc7393e9554f3dd39f85d4dd0539d21a8f931d8c61b686c",
+    "instance.txt": "c95096df648047464f211a9fbc1b78c3b506e4332ba4ae8714fd9bbca7aff276",
+    "roads.geojson": "c6eaccddbed909fc8e819be5901f428a36c2bf2b52063eb8a6ff520a2fd59196",
+    "validation.json": "8dfa860724d0a66bfe9b7ae69e0b34efd3eec27127f778818e579565aa5b6ebf"
+  },
+  "instance_bytes": 805311,
+  "mandatory_streets": 6722,
+  "nodes": 30278,
+  "official_status": "NOT_RUN",
+  "osm_name": "Ljubljana",
+  "osm_url": "https://www.openstreetmap.org/node/6968827",
+  "requested_name": "Ljubljana",
+  "scope": "whole city",
+  "seconds_to_build": 5,
+  "service_streets": 34104,
+  "settings": {
+    "alpha": 0.5,
+    "budget": 111500,
+    "connectivity": "remove",
+    "connectivity_policy": "real-roads-main-scc-v1",
+    "seed": 42,
+    "speed": 20.0,
+    "target": 8000,
+    "scaling_mode": "auto",
+    "scaling_version": "scaling-policy-v3",
+    "scenario": {
+      "scaling_mode": "auto",
+      "strict_budget": false
+    }
+  },
+  "source": {
+    "bytes": 313335209,
+    "etag": "\"12ad1da9-65c967bd3f51b\"",
+    "last_modified": "Tue, 29 Sep 2026 03:07:32 GMT",
+    "osm_timestamp": "2026-09-28T20:23:05Z",
+    "retrieved_at": "2026-09-29T15:26:56.977676+00:00",
+    "sha256": "f6185c40c0e114664228cf87b1fa9bb810fec5d0921f5aa69274de090a3159f0",
+    "url": "https://download.geofabrik.de/europe/slovenia-latest.osm.pbf"
+  },
+  "streets": 34104,
+  "time_limit": 111500,
+  "vehicles": 20,
+  "within_official_limits": false,
+  "mega_official": "NOT_RUN",
+  "scaling": {
+    "version": "scaling-policy-v3",
+    "mode": "auto",
+    "policy": "automatic defaults",
+    "shortest_path_backend": "cpu",
+    "junctions": 30278,
+    "workload_seconds": 1358394.0,
+    "workload_hours": 377.33166666666665,
+    "class_workload_seconds": {
+      "S": 471507.0,
+      "M": 445512.0,
+      "L": 441375.0
+    },
+    "time": {
+      "junctions": 30278,
+      "raw_hours": 30.971978435221995,
+      "margin": 0.0,
+      "hours_with_margin": 30.971978435221995,
+      "seconds_with_margin": 111499.12236679919,
+      "rounding": "ceil to whole second",
+      "time_limit": 111500
+    },
+    "fleet_formula": {
+      "workload_hours": 377.33166666666665,
+      "raw_sqrt": 19.425026812508307,
+      "margin": 0.0,
+      "with_margin": 19.425026812508307,
+      "ceil": 20
+    },
+    "time_margin": 0.0,
+    "fleet_margin": 0.0,
+    "requested_fleet": 20,
+    "fleet_factor": 1.0,
+    "adjustments": [],
+    "fleet": [
+      "S",
+      "S",
+      "S",
+      "S",
+      "S",
+      "S",
+      "S",
+      "M",
+      "M",
+      "M",
+      "M",
+      "M",
+      "M",
+      "M",
+      "L",
+      "L",
+      "L",
+      "L",
+      "L",
+      "L"
+    ],
+    "fleet_composition": {
+      "S": 7,
+      "M": 7,
+      "L": 6
+    },
+    "time_limit": 111500,
+    "mandatory_trip_lower_bound_seconds": 9188.0,
+    "mandatory_traversal_seconds": 70956,
+    "relaxed_research_bounds": true,
+    "standard_bound_exceedances": [],
+    "within_standard_bounds": false,
+    "rule": "T = ceil(3600 * 2.995 * (N/1000)^0.685) s; C = max(2, ceil(sqrt(W vehicle-hours))); S/M/L allocation by class workload",
+    "limitations": "Scenario-budget rules, not feasibility guarantees or observed municipal resources."
+  },
+  "scaling_version": "scaling-policy-v3"
+}

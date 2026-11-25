@@ -1,0 +1,107 @@
+{
+  "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
+  "city_id": "relation-6654047",
+  "country": "RS",
+  "directory": "Presheva",
+  "files": {
+    "geography.json": "8a5fe79bee9f2f79452fc89d1cbe65f47a5c7591913b35b2af6bdb11a0bf4fce",
+    "instance.json": "96be1e50e13a252ef699417f61406472aef0babf10312c2116cdde5fa4dfa4fb",
+    "instance.txt": "c15323d81aa430c5f80be169fa39f2e47df996b7a4ddd39b9c05d3ad45f1f2c2",
+    "roads.geojson": "3c08ebe7180f601fe85af4f7b417c3d71399126b6846317ab2f7f29e81ddd225",
+    "validation.json": "8dfa860724d0a66bfe9b7ae69e0b34efd3eec27127f778818e579565aa5b6ebf"
+  },
+  "instance_bytes": 17255,
+  "mandatory_streets": 186,
+  "nodes": 744,
+  "official_status": "NOT_RUN",
+  "osm_name": "Presevo",
+  "osm_url": "https://www.openstreetmap.org/relation/6654047",
+  "requested_name": "Presheva",
+  "scope": "whole city",
+  "seconds_to_build": 0,
+  "service_streets": 838,
+  "settings": {
+    "alpha": 0.5,
+    "budget": 8805,
+    "connectivity": "remove",
+    "connectivity_policy": "real-roads-main-scc-v1",
+    "seed": 42,
+    "speed": 20.0,
+    "target": 8000,
+    "scaling_mode": "auto",
+    "scaling_version": "scaling-policy-v3",
+    "scenario": {
+      "scaling_mode": "auto",
+      "strict_budget": false
+    }
+  },
+  "source": {
+    "bytes": 240523511,
+    "etag": "\"e5618f7-65d18e1c0fcd4\"",
+    "last_modified": "Mon, 05 Oct 2026 14:41:48 GMT",
+    "osm_timestamp": "2026-10-04T20:20:21Z",
+    "retrieved_at": "2026-10-05T18:03:32.897109+00:00",
+    "sha256": "1c66caf0c13355c6b5fd8df5bbb9871aaff756bbf3fce88bd2822ecf9479dda3",
+    "url": "https://download.geofabrik.de/europe/serbia-latest.osm.pbf"
+  },
+  "streets": 838,
+  "time_limit": 8805,
+  "vehicles": 4,
+  "within_official_limits": true,
+  "mega_official": "NOT_RUN",
+  "scaling": {
+    "version": "scaling-policy-v3",
+    "mode": "auto",
+    "policy": "automatic defaults",
+    "shortest_path_backend": "cpu",
+    "junctions": 744,
+    "workload_seconds": 35428.0,
+    "workload_hours": 9.841111111111111,
+    "class_workload_seconds": {
+      "S": 11934.0,
+      "M": 12078.0,
+      "L": 11416.0
+    },
+    "time": {
+      "junctions": 744,
+      "raw_hours": 2.4458188487579617,
+      "margin": 0.0,
+      "hours_with_margin": 2.4458188487579617,
+      "seconds_with_margin": 8804.947855528662,
+      "rounding": "ceil to whole second",
+      "time_limit": 8805
+    },
+    "fleet_formula": {
+      "workload_hours": 9.841111111111111,
+      "raw_sqrt": 3.1370545279148576,
+      "margin": 0.0,
+      "with_margin": 3.1370545279148576,
+      "ceil": 4
+    },
+    "time_margin": 0.0,
+    "fleet_margin": 0.0,
+    "requested_fleet": 4,
+    "fleet_factor": 1.0,
+    "adjustments": [],
+    "fleet": [
+      "S",
+      "M",
+      "M",
+      "L"
+    ],
+    "fleet_composition": {
+      "S": 1,
+      "M": 2,
+      "L": 1
+    },
+    "time_limit": 8805,
+    "mandatory_trip_lower_bound_seconds": 1408.0,
+    "mandatory_traversal_seconds": 3344,
+    "relaxed_research_bounds": true,
+    "standard_bound_exceedances": [],
+    "within_standard_bounds": true,
+    "rule": "T = ceil(3600 * 2.995 * (N/1000)^0.685) s; C = max(2, ceil(sqrt(W vehicle-hours))); S/M/L allocation by class workload",
+    "limitations": "Scenario-budget rules, not feasibility guarantees or observed municipal resources."
+  },
+  "scaling_version": "scaling-policy-v3"
+}

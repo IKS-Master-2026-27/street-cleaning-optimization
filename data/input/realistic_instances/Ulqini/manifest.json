@@ -1,0 +1,112 @@
+{
+  "attribution": "© OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
+  "city_id": "node-192271967",
+  "country": "ME",
+  "directory": "Ulqini",
+  "files": {
+    "geography.json": "75aa371864dc32b8c1670f6cc7aedceb2d16654b177597b698ae949a7833d4e8",
+    "instance.json": "7102ad4869c23bd172b9ecb84a5383f4d7620fd6bc033999bdf9ddc591c9a218",
+    "instance.txt": "578a7909dd04a6448b6192ecdb01cdbb4081e992943a02ac367b31d25872e6be",
+    "roads.geojson": "64d6c2a6ce3700ba834ed3e3316ebfe672326eabaccd3c2404b9388c3161bc59",
+    "validation.json": "8dfa860724d0a66bfe9b7ae69e0b34efd3eec27127f778818e579565aa5b6ebf"
+  },
+  "instance_bytes": 114250,
+  "mandatory_streets": 1054,
+  "nodes": 4610,
+  "official_status": "NOT_RUN",
+  "osm_name": "Ulcinj - Ulqin",
+  "osm_url": "https://www.openstreetmap.org/node/192271967",
+  "requested_name": "Ulqini",
+  "scope": "whole city",
+  "seconds_to_build": 1,
+  "service_streets": 5074,
+  "settings": {
+    "alpha": 0.5,
+    "budget": 30714,
+    "connectivity": "remove",
+    "connectivity_policy": "real-roads-main-scc-v1",
+    "seed": 42,
+    "speed": 20.0,
+    "target": 8000,
+    "scaling_mode": "auto",
+    "scaling_version": "scaling-policy-v3",
+    "scenario": {
+      "scaling_mode": "auto",
+      "strict_budget": false
+    }
+  },
+  "source": {
+    "bytes": 34457648,
+    "etag": "\"20dc830-65c96f3015072\"",
+    "last_modified": "Tue, 29 Sep 2026 03:40:52 GMT",
+    "osm_timestamp": "2026-09-28T20:23:05Z",
+    "retrieved_at": "2026-09-29T15:23:58.396877+00:00",
+    "sha256": "1bbf121a7e298e01b568bb5263da485352df5fab350c6fe53a82242e383a1709",
+    "url": "https://download.geofabrik.de/europe/montenegro-latest.osm.pbf"
+  },
+  "streets": 5074,
+  "time_limit": 30714,
+  "vehicles": 9,
+  "within_official_limits": true,
+  "mega_official": "NOT_RUN",
+  "scaling": {
+    "version": "scaling-policy-v3",
+    "mode": "auto",
+    "policy": "automatic defaults",
+    "shortest_path_backend": "cpu",
+    "junctions": 4610,
+    "workload_seconds": 279906.0,
+    "workload_hours": 77.75166666666667,
+    "class_workload_seconds": {
+      "S": 91453.0,
+      "M": 94428.0,
+      "L": 94025.0
+    },
+    "time": {
+      "junctions": 4610,
+      "raw_hours": 8.531628977061635,
+      "margin": 0.0,
+      "hours_with_margin": 8.531628977061635,
+      "seconds_with_margin": 30713.864317421885,
+      "rounding": "ceil to whole second",
+      "time_limit": 30714
+    },
+    "fleet_formula": {
+      "workload_hours": 77.75166666666667,
+      "raw_sqrt": 8.817690551763917,
+      "margin": 0.0,
+      "with_margin": 8.817690551763917,
+      "ceil": 9
+    },
+    "time_margin": 0.0,
+    "fleet_margin": 0.0,
+    "requested_fleet": 9,
+    "fleet_factor": 1.0,
+    "adjustments": [],
+    "fleet": [
+      "S",
+      "S",
+      "S",
+      "M",
+      "M",
+      "M",
+      "L",
+      "L",
+      "L"
+    ],
+    "fleet_composition": {
+      "S": 3,
+      "M": 3,
+      "L": 3
+    },
+    "time_limit": 30714,
+    "mandatory_trip_lower_bound_seconds": 8843.0,
+    "mandatory_traversal_seconds": 21911,
+    "relaxed_research_bounds": true,
+    "standard_bound_exceedances": [],
+    "within_standard_bounds": true,
+    "rule": "T = ceil(3600 * 2.995 * (N/1000)^0.685) s; C = max(2, ceil(sqrt(W vehicle-hours))); S/M/L allocation by class workload",
+    "limitations": "Scenario-budget rules, not feasibility guarantees or observed municipal resources."
+  },
+  "scaling_version": "scaling-policy-v3"
+}
