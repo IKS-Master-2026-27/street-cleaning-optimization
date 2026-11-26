@@ -1,0 +1,35 @@
+{
+  "part": 2,
+  "model": "CLIPP competition MILP, OR-Tools CP-SAT (third_party/clipp_cpsat, commit cf6ed8a)",
+  "ortools": "9.15.6755",
+  "python": "3.14.5",
+  "platform": "macOS-27.0-arm64-arm-64bit-Mach-O",
+  "cpu_count": 12,
+  "time_limit_s": 3600.0,
+  "workers": 4,
+  "random_seed": 0,
+  "build_limit_s": 3600.0,
+  "hint_check_limit_s": 600.0,
+  "memory_limit_gb": 9.0,
+  "large_memory_limit_gb": 19.0,
+  "small_vars": 200000,
+  "seed_algorithm": "dp_simple",
+  "batches": [
+    [
+      "instance_D_cold",
+      "instance_D_warm"
+    ],
+    [
+      "Presheva_cold",
+      "Presheva_warm"
+    ],
+    [
+      "instance_E_cold",
+      "instance_E_warm"
+    ]
+  ],
+  "power_at_start": [
+    "Now drawing from 'AC Power'"
+  ],
+  "started_utc": "2026-11-25T17:15:41+00:00"
+}

@@ -1,0 +1,9 @@
+{
+  "instance": "Sydney",
+  "variant": "warm",
+  "result": "model not built",
+  "reason": "model not built within the build limit",
+  "num_vars": 528551534,
+  "build_s": "3602.9",
+  "peak_rss_mb": "7719.0"
+}

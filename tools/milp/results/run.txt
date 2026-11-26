@@ -1,0 +1,19 @@
+[start] Ulqini_warm (1,234,583 variables)
+[done] Ulqini_warm: no improvement (seed optimal) - the model's upper bound equals the seed score: the seed is proven optimal | LB 0.9999999960 UB 0.9999999960 gap 0.000000
+[start] Prishtina_warm (1,579,838 variables)
+[done] Prishtina_warm: no improvement (seed optimal) - the model's upper bound equals the seed score: the seed is proven optimal | LB 1.0000000000 UB 1.0000000000 gap 0.000000
+[start] Tirana_warm (3,522,878 variables)
+[done] Tirana_warm: no improvement (seed optimal) - the model's upper bound equals the seed score: the seed is proven optimal | LB 0.9999995360 UB 0.9999995360 gap 0.000000
+[start] Shkupi_warm (3,609,329 variables)
+[done] Shkupi_warm: no improvement (seed optimal) - the model's upper bound equals the seed score: the seed is proven optimal | LB 0.9999998630 UB 0.9999998630 gap 0.000000
+[start] Ljubljana_warm (8,054,842 variables)
+[done] Ljubljana_warm: no improvement (seed optimal) - the model's upper bound equals the seed score: the seed is proven optimal | LB 1.0000002610 UB 1.0000002610 gap 0.000000
+[start] Vienna_warm (8,822,423 variables)
+[done] Vienna_warm: no improvement (seed optimal) - the model's upper bound equals the seed score: the seed is proven optimal | LB 0.9999997140 UB 0.9999997140 gap 0.000000
+[start] New-York_warm (163,924,392 variables)
+[done] New-York_warm: model not built - model not built within the build limit | LB  UB  gap 
+[start] Johannesburg_warm (190,903,396 variables)
+[done] Johannesburg_warm: model not built - model not built within the build limit | LB  UB  gap 
+[start] Sydney_warm (528,551,534 variables)
+[done] Sydney_warm: model not built - model not built within the build limit | LB  UB  gap 
+Report: tools/milp/results/results.md
