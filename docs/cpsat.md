@@ -92,8 +92,14 @@ python scripts/run_cpsat.py --background            # the whole experiment (~6-8
 python scripts/run_cpsat.py --part 1 --background   # A, B, C cold + warm        (<= 3 h)
 python scripts/run_cpsat.py --part 2 --background   # D, E, Presheva cold + warm (<= 3 h)
 python scripts/run_cpsat.py --part 3 --background   # other 9 cities, warm       (~1-3 h)
+python scripts/cpsat_viewer.py                      # rebuild results/cpsat/viewer.html
 python -m unittest tests.test_cpsat
 ```
+
+`results/cpsat/viewer.html` shows every run: an overview of all instances,
+per instance the cold and warm run side by side with the best score over
+time, the professor's four requirements with the runs that answer them, and
+the findings. `run_cpsat.py` rebuilds it after every batch.
 
 Scheduling (8 performance cores, 24 GB RAM): instances with at most 200 000
 variables run their cold and warm run side by side (2 × 4 workers, 9 GB each);
@@ -113,6 +119,7 @@ Files in `results/cpsat/`:
 |---|---|
 | `results.csv`, `results.md` | one row per run (columns above) |
 | `metadata_part<N>.json` | settings, versions, computer, batches of each part |
+| `viewer.html` | interactive results viewer (open in a browser, works offline) |
 | `run.txt` | start/end of every run |
 | `jobs/<instance>_<variant>/result.json` | the run's row |
 | `jobs/<instance>_<variant>/progress.csv` | every solution and bound found, with time (for "score over time") |
