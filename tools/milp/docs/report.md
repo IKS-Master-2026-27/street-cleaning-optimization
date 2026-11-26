@@ -1,8 +1,8 @@
 # MILP cold start vs warm start: results report
 
-Experiment run 2026-11-25/26. Raw results: `results/cpsat/results.csv`,
-`results/cpsat/results.md`, per run `results/cpsat/jobs/<instance>_<variant>/`.
-Tool and method: `docs/cpsat.md`.
+Experiment run 2026-11-25/26. Raw results: `tools/milp/results/results.csv`,
+`tools/milp/results/results.md`, per run `tools/milp/results/jobs/<instance>_<variant>/`.
+Tool and method: [`tools/milp/README.md`](../README.md).
 
 ## 1. Task
 
@@ -179,7 +179,7 @@ on A is (0.9179 − 0.9096) / 0.9096 = 0.9%, smaller than the reported 2.59%.
   model was built (column `hint_feasible`).
 - Every result was turned into routes and checked with this repository's
   validator and official score; all valid.
-- Changes to the original solve loop (details in `docs/cpsat.md`): one 1 h
+- Changes to the original solve loop (details in `tools/milp/README.md`): one 1 h
   deadline for all rounds; warm runs keep hinting the best valid solution;
   valid solutions are recorded during a round; the run stops when a valid
   solution reaches the upper bound.
