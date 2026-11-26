@@ -20,3 +20,10 @@ data/output/*
 
 .venv/
 venv/
+
+# CP-SAT experiment: files only needed while a run is in progress
+results/*/status.txt
+results/*/runner.pid
+results/*/STOP
+results/*/jobs/*/phase.txt
+results/*/jobs/*/log.txt
