@@ -102,6 +102,22 @@ See [tools/milp/README.md](tools/milp/README.md) and the results report
 [tools/milp/docs/report.md](tools/milp/docs/report.md). Results are in
 `tools/milp/results/`; open `tools/milp/results/viewer.html` in a browser for an
 interactive view of all runs (`python tools/milp/viewer.py` rebuilds it).
+### Realistic instances (main comparison)
+
+The main comparison uses `data/input/realistic_instances/` (the same ten cities with
+a workload-scaled fleet and time limit). Their file names are the same as those of
+`real_instances`, so publish them in a separate folder with:
+
+```powershell
+python scripts/run_realistic.py --algorithm <algorithm-name>
+python scripts/validate_solution.py --algorithm <algorithm_name> --realistic
+```
+
+This validates every solution and writes it to
+`data/output/realistic_instances/<algorithm_name>/<City>_instance_solution.txt`,
+and appends score and run time to `data/output/realistic_instances/results.csv`.
+Commit all 10 files. The old 15-instance set above stays available as an
+optional view in InstanceLab.
 
 ## InstanceLab
 

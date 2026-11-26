@@ -6,7 +6,12 @@ from pathlib import Path
 from ..model import Instance
 from ..performance import AlgorithmResult
 from ..validation import VEHICLE_CAPACITIES
-from .shared_repository import InstanceSource
+from .shared_repository import (
+    InstanceSource,
+    results_root,
+    solution_file_name,
+    source_dataset,
+)
 
 
 class SolutionResultError(ValueError):
@@ -31,9 +36,7 @@ class SharedResultScan:
 
 
 def _solution_name(source: InstanceSource) -> str:
-    if source.group == "real":
-        return f"{source.name}_instance_solution.txt"
-    return f"{source.name}_solution.txt"
+    return solution_file_name(source)
 
 
 def score_solution_file(
@@ -180,7 +183,10 @@ def scan_shared_algorithm_results(
     """
 
     repository = Path(root)
-    output_root = repository / "data" / "output"
+    realistic = any(
+        source_dataset(source) == "realistic" for source, _ in loaded_instances
+    )
+    output_root = results_root(repository, "realistic" if realistic else "legacy")
     if algorithms is None:
         if not output_root.is_dir():
             discovered_algorithms = ()
