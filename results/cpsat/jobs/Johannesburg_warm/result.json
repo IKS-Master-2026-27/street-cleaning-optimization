@@ -1,0 +1,9 @@
+{
+  "instance": "Johannesburg",
+  "variant": "warm",
+  "result": "model not built",
+  "reason": "model not built within the build limit",
+  "num_vars": 190903396,
+  "build_s": "3603.5",
+  "peak_rss_mb": "10033.2"
+}
