@@ -5,7 +5,7 @@ from pathlib import Path
 import unittest
 
 from instancelab.adapters import discover_shared_instances, scan_shared_instances
-from instancelab.adapters import scan_shared_algorithm_results
+from instancelab.adapters import results_root, scan_shared_algorithm_results
 from instancelab.analysis import (
     DEFAULT_PCA_FEATURES,
     FeatureTable,
@@ -83,10 +83,25 @@ class SharedRepositoryIntegrationTests(unittest.TestCase):
                 self.assertEqual(features["num_streets"], float(len(instance.streets)))
                 self.assertGreater(features["directed_arc_to_junction_ratio"], 0.0)
 
-    def test_real_analysis_matrix_is_standardized(self):
+    def test_realistic_instances_are_the_default_set(self):
         sources = discover_shared_instances(self.root)
+        if not (self.root / "data/input/realistic_instances").is_dir():
+            self.skipTest("No realistic_instances in this checkout")
+        self.assertTrue(sources)
+        self.assertEqual({source.group for source in sources}, {"realistic"})
+
+    def test_real_analysis_matrix_is_standardized(self):
+        self._check_analysis("legacy")
+
+    def test_realistic_analysis_matrix_is_standardized(self):
+        if not (self.root / "data/input/realistic_instances").is_dir():
+            self.skipTest("No realistic_instances in this checkout")
+        self._check_analysis("realistic")
+
+    def _check_analysis(self, dataset):
+        sources = discover_shared_instances(self.root, dataset)
         paths = [source.path for source in sources]
-        scan = scan_shared_instances(self.root)
+        scan = scan_shared_instances(self.root, dataset)
 
         table = build_feature_table(read_instance(path) for path in paths)
         prepared = preprocess_for_pca(table)
@@ -120,7 +135,7 @@ class SharedRepositoryIntegrationTests(unittest.TestCase):
         result_scan = scan_shared_algorithm_results(self.root, scan.loaded)
         # Expectations are derived from the files present in this checkout, so
         # newly published result folders do not break the test.
-        output_root = self.root / "data" / "output"
+        output_root = results_root(self.root, dataset)
         expected_discovered = tuple(sorted(
             directory.name
             for directory in output_root.iterdir()
