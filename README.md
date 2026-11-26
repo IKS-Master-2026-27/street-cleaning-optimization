@@ -100,6 +100,8 @@ python scripts/run_cpsat.py --background
 
 Results are written to `results/cpsat/`. See [docs/cpsat.md](docs/cpsat.md)
 and the results report [docs/cpsat-report.md](docs/cpsat-report.md).
+Open `results/cpsat/viewer.html` in a browser for an interactive view of all
+runs (`python scripts/cpsat_viewer.py` rebuilds it).
 
 ### Realistic instances (main comparison)
 

@@ -444,6 +444,11 @@ def parent(args) -> int:
             writer.writeheader()
             writer.writerows(rows)
         write_markdown(rows, out / "results.md", args)
+        try:
+            from cpsat_viewer import build as build_viewer   # scripts/cpsat_viewer.py
+            build_viewer(out)
+        except Exception as error:  # the viewer must never stop the experiment
+            print(f"[viewer] not updated: {error}", flush=True)
     (out / "status.txt").write_text(f"finished {datetime.now().isoformat(timespec='seconds')}\n")
     print(f"Report: {out / 'results.md'}", flush=True)
     return 0
