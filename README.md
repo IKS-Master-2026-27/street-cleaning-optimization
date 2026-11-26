@@ -85,6 +85,22 @@ Rules:
 - If your algorithm cannot produce a valid solution for an instance, report it
   to the team instead of committing a partial set.
 
+## MILP: cold start vs warm start
+
+The existing CLIPP competition MILP model (OR-Tools CP-SAT, copied unchanged
+into `third_party/clipp_cpsat/`) is run in two variants: from scratch (cold)
+and with the Dynamic Programming solution as a hint (warm). The tool reports
+time, time to the first valid solution, objective, lower/upper bound, gap,
+improvement over the seed and outcome for both.
+
+```powershell
+pip install -r requirements-milp.txt
+python scripts/run_cpsat.py --background
+```
+
+Results are written to `results/cpsat/`. See [docs/cpsat.md](docs/cpsat.md)
+and the results report [docs/cpsat-report.md](docs/cpsat-report.md).
+
 ### Realistic instances (main comparison)
 
 The main comparison uses `data/input/realistic_instances/` (the same ten cities with
