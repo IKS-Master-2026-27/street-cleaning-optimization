@@ -1,0 +1,20 @@
+{
+  "instance": "instance_D",
+  "variant": "cold",
+  "time_limit_s": 3600.0,
+  "workers": 4,
+  "num_vars": 11856,
+  "build_s": "0.065",
+  "num_constraints": 7966,
+  "solve_s": "3600.094",
+  "rounds": 1,
+  "cut_rounds": 1,
+  "cpsat_status": "FEASIBLE",
+  "slept_s": "0.0",
+  "first_valid_s": "",
+  "best_s": "",
+  "upper_bound": "1.0000000000",
+  "result": "no valid solution",
+  "reason": "no connected solution found (time_limit)",
+  "peak_rss_mb": "842.8"
+}
