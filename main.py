@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 
-from clipp import recursive, recursive_enum, greedy_lookahead
+from clipp import recursive, recursive_enum, greedy_lookahead, divide_conquer
 from clipp import preprocessing_solver
 from clipp import beam_search
 from clipp.dp import memo as dp_memo

@@ -102,6 +102,7 @@ See [tools/milp/README.md](tools/milp/README.md) and the results report
 [tools/milp/docs/report.md](tools/milp/docs/report.md). Results are in
 `tools/milp/results/`; open `tools/milp/results/viewer.html` in a browser for an
 interactive view of all runs (`python tools/milp/viewer.py` rebuilds it).
+
 ### Realistic instances (main comparison)
 
 The main comparison uses `data/input/realistic_instances/` (the same ten cities with
