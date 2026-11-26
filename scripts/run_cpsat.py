@@ -87,6 +87,29 @@ def label(path: Path) -> str:
     return path.parent.name if path.stem == "instance" else path.stem
 
 
+def absolute(path, base: Path = ROOT) -> Path:
+    """One spelling per instance file (``./data/x`` and ``data/x`` are the same)."""
+
+    path = Path(path).expanduser()
+    return (path if path.is_absolute() else base / path).resolve()
+
+
+def planned_runs(args) -> list[tuple[Path, str]]:
+    """(instance, variant) of every run this call will do, in input order."""
+
+    paths = [absolute(p) for p in (args.instances or SYNTHETIC + REAL)]
+    cold = {absolute(p) for p in (args.cold_instances if args.cold_instances is not None
+                                  else args.instances or COLD_DEFAULT)}
+    return [(path, v) for path in paths for v in args.variants if v == "warm" or path in cold]
+
+
+def finished_runs(args, out: Path) -> list[str]:
+    """Planned runs that already have a result in ``out`` (they would be overwritten)."""
+
+    names = [f"{label(path)}_{variant}" for path, variant in planned_runs(args)]
+    return [n for n in names if (out / "jobs" / n / "result.json").exists()]
+
+
 def rss_bytes(pid: int) -> int:
     try:
         out = subprocess.run(["ps", "-o", "rss=", "-p", str(pid)], capture_output=True,
@@ -194,12 +217,7 @@ def worker(args) -> int:
     if record.upper_objective is not None:
         row["upper_bound"] = fmt(built.to_score(record.upper_objective), 10)
 
-    best, best_objective = record.best, record.best_objective
-    if seed_values is not None and seed_objective is not None and (
-            best is None or best_objective < seed_objective):
-        # the solver found nothing better than the seed: the seed stays the result
-        best, best_objective = seed_values, seed_objective
-    from_solver = best is not None and best is record.best
+    best, best_objective, from_solver = cpsat.final_values(record, seed_values, seed_objective)
     if best is not None:
         lower = built.to_score(best_objective)
         row["objective"] = row["lower_bound"] = fmt(lower, 10)
@@ -250,18 +268,13 @@ def plan_jobs(args) -> list[list[dict]]:
     from clipp.milp import cpsat
     from clipp_cpsat.parser import parse_instance as parse_competition
 
-    paths = [Path(p) for p in (args.instances or SYNTHETIC + REAL)]
-    if args.cold_instances is not None:
-        cold = set(map(Path, args.cold_instances))
-    else:
-        cold = set(map(Path, args.instances or COLD_DEFAULT))
+    by_path: dict[Path, list[str]] = {}
+    for path, variant in planned_runs(args):
+        by_path.setdefault(path, []).append(variant)
     batches_small, batches_large = [], []
-    for path in paths:
+    for path, variants in by_path.items():
         size = cpsat.count_variables(parse_competition(str(path)))
-        variants = [v for v in args.variants if v == "warm" or path in cold]
         jobs = [{"path": path, "variant": v, "num_vars": size} for v in variants]
-        if not jobs:
-            continue
         if size <= args.small_vars:
             for job in jobs:
                 job["memory_gb"] = args.memory_limit_gb
@@ -392,6 +405,12 @@ def parent(args) -> int:
     import ortools
 
     out = Path(args.out).expanduser().resolve()
+    existing = finished_runs(args, out)
+    if existing and not args.overwrite:
+        print(f"{out} already has results for: {', '.join(existing)}.\n"
+              "Nothing was run. Use another --out folder (e.g. for a demo), or add "
+              "--overwrite to replace these results.", file=sys.stderr)
+        return 1
     if args.background:
         out.mkdir(parents=True, exist_ok=True)
         argv = [a for a in sys.argv[1:] if a != "--background"]
@@ -483,6 +502,8 @@ def main() -> int:
                         help="folder in --output-root with the warm-start solutions")
     parser.add_argument("--output-root", default=str(ROOT / "data/output"))
     parser.add_argument("--out", default=str(ROOT / "results/cpsat"))
+    parser.add_argument("--overwrite", action="store_true",
+                        help="replace runs that already have a result in --out")
     parser.add_argument("--background", action="store_true")
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--variant", help=argparse.SUPPRESS)
@@ -494,8 +515,13 @@ def main() -> int:
     if args.part:
         if args.instances:
             parser.error("give either --part or instance files, not both")
-        args.instances = PARTS[args.part]
+        args.instances = PARTS[args.part]                       # relative to ROOT
         args.cold_instances = [p for p in args.instances if p in COLD_DEFAULT]
+    else:                                                       # relative to the shell
+        if args.instances:
+            args.instances = [str(absolute(p, Path.cwd())) for p in args.instances]
+        if args.cold_instances is not None:
+            args.cold_instances = [str(absolute(p, Path.cwd())) for p in args.cold_instances]
     return parent(args)
 
 

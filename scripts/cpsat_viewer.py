@@ -61,9 +61,11 @@ def load(out: Path) -> dict:
     return {"rows": rows, "progress": progress, "metadata": metadata}
 
 
-def build(out: Path) -> Path:
+def build(out: Path, page: Path | None = None) -> Path:
+    """Write the viewer for the results in ``out`` (default: ``out/viewer.html``)."""
+
     data = json.dumps(load(out), separators=(",", ":")).replace("</", "<\\/")
-    page = out / "viewer.html"
+    page = page or out / "viewer.html"
     page.write_text(TEMPLATE.replace("__DATA__", data), encoding="utf-8")
     return page
 

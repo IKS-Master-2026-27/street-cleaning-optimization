@@ -81,5 +81,70 @@ class CpSatTests(unittest.TestCase):
         self.assertFalse(cpsat.routes_connected(built, only_cycle))
 
 
+    def test_warm_result_is_never_below_the_seed(self):
+        seed, found = cpsat.Values({(0, 0): 1}, {}), cpsat.Values({(1, 0): 1}, {})
+        worse = cpsat.SolveRecord(best=found, best_objective=5.0)
+        better = cpsat.SolveRecord(best=found, best_objective=20.0)
+        nothing = cpsat.SolveRecord()
+        self.assertEqual(cpsat.final_values(worse, seed, 10.0), (seed, 10.0, False))
+        self.assertEqual(cpsat.final_values(better, seed, 10.0), (found, 20.0, True))
+        self.assertEqual(cpsat.final_values(nothing, seed, 10.0), (seed, 10.0, False))
+        self.assertEqual(cpsat.final_values(nothing, None, None), (None, None, False))
+        self.assertEqual(cpsat.final_values(worse, None, None), (found, 5.0, True))
+
+
+class RunnerTests(unittest.TestCase):
+    """scripts/run_cpsat.py and scripts/cpsat_viewer.py (no solving)."""
+
+    @classmethod
+    def setUpClass(cls):
+        import importlib.util
+        import sys
+        sys.path.insert(0, str(ROOT / "scripts"))
+        spec = importlib.util.spec_from_file_location("run_cpsat", ROOT / "scripts/run_cpsat.py")
+        cls.runner = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.runner)
+        import cpsat_viewer
+        cls.viewer = cpsat_viewer
+
+    def args(self, instances=None, cold=None):
+        import argparse
+        return argparse.Namespace(instances=instances, cold_instances=cold,
+                                  variants=["cold", "warm"])
+
+    def test_instance_paths_are_normalised(self):
+        a = "data/input/syntetic_generated/instance_A.txt"
+        runs = self.runner.planned_runs(self.args(["./" + a], ["data/../" + a]))
+        self.assertEqual([v for _, v in runs], ["cold", "warm"])
+        self.assertEqual(self.runner.planned_runs(self.args())[0][1], "cold")
+        self.assertEqual(len(self.runner.planned_runs(self.args())), 6 + 15)
+
+    def test_existing_results_are_not_overwritten(self):
+        with tempfile.TemporaryDirectory() as folder:
+            out = Path(folder)
+            args = self.args(["data/input/syntetic_generated/instance_A.txt"])
+            self.assertEqual(self.runner.finished_runs(args, out), [])
+            (out / "jobs/instance_A_warm").mkdir(parents=True)
+            (out / "jobs/instance_A_warm/result.json").write_text("{}")
+            self.assertEqual(self.runner.finished_runs(args, out), ["instance_A_warm"])
+
+    def test_viewer_builds_from_the_committed_results(self):
+        results = ROOT / "results/cpsat"
+        if not (results / "results.csv").exists():
+            self.skipTest("no results")
+        with tempfile.TemporaryDirectory() as folder:
+            page = self.viewer.build(results, Path(folder) / "viewer.html")
+            html = page.read_text(encoding="utf-8")
+        self.assertNotIn("__DATA__", html)
+        data = self.viewer.load(results)
+        self.assertEqual(len(data["rows"]), len(list(csv_rows(results))))
+
+
+def csv_rows(results):
+    import csv
+    with (results / "results.csv").open(encoding="utf-8") as handle:
+        yield from csv.DictReader(handle)
+
+
 if __name__ == "__main__":
     unittest.main()
