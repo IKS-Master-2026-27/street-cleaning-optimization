@@ -93,8 +93,14 @@ python scripts/run_cpsat.py --part 1 --background   # A, B, C cold + warm       
 python scripts/run_cpsat.py --part 2 --background   # D, E, Presheva cold + warm (<= 3 h)
 python scripts/run_cpsat.py --part 3 --background   # other 9 cities, warm       (~1-3 h)
 python scripts/cpsat_viewer.py                      # rebuild results/cpsat/viewer.html
+python scripts/run_cpsat.py data/input/syntetic_generated/instance_A.txt \
+    --time-limit 30 --out ~/Desktop/cpsat_demo      # 30 s demo, outside results/cpsat
 python -m unittest tests.test_cpsat
 ```
+
+A run never replaces a finished result in `--out`: the tool stops and names
+the runs that already exist. Use another `--out` folder (as in the demo) or
+add `--overwrite` to replace them.
 
 `results/cpsat/viewer.html` shows every run: an overview of all instances,
 per instance the cold and warm run side by side with the best score over

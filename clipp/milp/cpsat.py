@@ -23,19 +23,23 @@ score scale. We maximise, so
                        so each of its bounds is valid for the full problem
     gap              = (UB - LB) / LB
 
-Differences to ``clipp_cpsat.model._iterative_solve`` (all documented in
-docs/cpsat.md):
+Differences to ``clipp_cpsat.model._iterative_solve`` (the same six points as
+in docs/cpsat.md):
 
-1. Time limit: the remaining time is measured against one deadline, so the time
+1. Warm start: the seed is given as a *complete* hint (every variable, zeros
+   included) and is checked first with all variables fixed to it
+   (``check_hint``). If several vehicles clean a street, the smallest keeps it.
+2. Hint in later rounds: warm runs hint the better of the seed and the best
+   valid solution found so far. The original replaces the hint with the last,
+   disconnected, candidate; cold runs keep exactly that behaviour.
+3. Time limit: the remaining time is measured against one deadline, so the time
    spent on subtour cuts also counts (the original only subtracts solve time).
-2. Warm variant: the hint is the seed (or a better valid solution found later)
-   in every round. The original replaces the hint with the last, disconnected,
-   candidate; cold runs keep exactly that behaviour.
-3. Valid solutions that CP-SAT finds *during* a round are recorded (time of
+4. Valid solutions that CP-SAT finds *during* a round are recorded (time of
    the first valid solution, best valid solution), not only the end of a round.
-4. The loop stops as soon as a known valid solution (found, or the warm-start
+5. The loop stops as soon as a known valid solution (found, or the warm-start
    seed) reaches the upper bound: it is then proven optimal and further rounds
    cannot improve it.
+6. A warm result is never reported below its seed (``final_values``).
 """
 
 from __future__ import annotations
@@ -427,6 +431,21 @@ def solve(built: BuiltModel, *, time_limit: float, workers: int,
             record.seed_proven_optimal = True
             record.stop_reason = "optimal"
     return record
+
+
+def final_values(record: SolveRecord, seed: Values | None,
+                 seed_objective: float | None) -> tuple[Values | None, float | None, bool]:
+    """The solution to report: the solver's best valid one, unless the seed is better.
+
+    Returns (values, model objective, came from the solver). A warm run is never
+    reported below its seed: if CP-SAT found only worse valid solutions (or
+    none), the seed is the result.
+    """
+
+    if seed is not None and seed_objective is not None and (
+            record.best is None or record.best_objective < seed_objective):
+        return seed, seed_objective, False
+    return record.best, record.best_objective, record.best is not None
 
 
 # ------------------------------------------------------------------ routes
