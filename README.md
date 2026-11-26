@@ -87,21 +87,21 @@ Rules:
 
 ## MILP: cold start vs warm start
 
-The existing CLIPP competition MILP model (OR-Tools CP-SAT, copied unchanged
-into `third_party/clipp_cpsat/`) is run in two variants: from scratch (cold)
-and with the Dynamic Programming solution as a hint (warm). The tool reports
-time, time to the first valid solution, objective, lower/upper bound, gap,
-improvement over the seed and outcome for both.
+`tools/milp/` runs the existing CLIPP competition MILP model (OR-Tools CP-SAT,
+copied unchanged into `tools/milp/third_party/clipp_cpsat/`) in two variants:
+from scratch (cold) and with the Dynamic Programming solution as a hint (warm).
+It reports time, time to the first valid solution, objective, lower/upper
+bound, gap, improvement over the seed and outcome for both.
 
 ```powershell
-pip install -r requirements-milp.txt
-python scripts/run_cpsat.py --background
+pip install -r tools/milp/requirements.txt
+python tools/milp/run.py --background
 ```
 
-Results are written to `results/cpsat/`. See [docs/cpsat.md](docs/cpsat.md)
-and the results report [docs/cpsat-report.md](docs/cpsat-report.md).
-Open `results/cpsat/viewer.html` in a browser for an interactive view of all
-runs (`python scripts/cpsat_viewer.py` rebuilds it).
+See [tools/milp/README.md](tools/milp/README.md) and the results report
+[tools/milp/docs/report.md](tools/milp/docs/report.md). Results are in
+`tools/milp/results/`; open `tools/milp/results/viewer.html` in a browser for an
+interactive view of all runs (`python tools/milp/viewer.py` rebuilds it).
 
 ## InstanceLab
 

@@ -1,13 +1,13 @@
 """Build an offline HTML viewer for the cold/warm CP-SAT results.
 
-Reads ``results/cpsat/`` (``results.csv``, ``metadata_part*.json`` and every
+Reads ``tools/milp/results/`` (``results.csv``, ``metadata_part*.json`` and every
 ``jobs/<instance>_<variant>/progress.csv``) and writes one self-contained page,
-``results/cpsat/viewer.html``. Open it in any browser: no server, no internet.
+``tools/milp/results/viewer.html``. Open it in any browser: no server, no internet.
 
-    python scripts/cpsat_viewer.py                 # results/cpsat/viewer.html
-    python scripts/cpsat_viewer.py --out other/dir # another results folder
+    python tools/milp/viewer.py                 # tools/milp/results/viewer.html
+    python tools/milp/viewer.py --out other/dir # another results folder
 
-``scripts/run_cpsat.py`` rebuilds the page after every finished batch.
+``tools/milp/run.py`` rebuilds the page after every finished batch.
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ import csv
 import json
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+TOOL = Path(__file__).resolve().parent   # tools/milp
 EVENTS = {"solution": 0, "round_end": 1, "event": 2}
 
 
@@ -73,11 +73,9 @@ def build(out: Path, page: Path | None = None) -> Path:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--out", default="results/cpsat", help="results folder of run_cpsat.py")
+    parser.add_argument("--out", default=str(TOOL / "results"), help="results folder of run.py")
     args = parser.parse_args()
-    out = Path(args.out)
-    if not out.is_absolute():
-        out = ROOT / out
+    out = Path(args.out).expanduser().resolve()
     print(f"Viewer: {build(out)}")
     return 0
 
@@ -285,7 +283,7 @@ function requirements(){
   const links=list=>`<div class="links">${list.map(r=>`<button onclick="openInst('${r.instance}')">${r.instance}</button>`).join('')}</div>`;
   const Q=[
    ['MILP model','Modeli ekzistues gjendet në repository-n e garës CLIPP … përdor OR-Tools CP-SAT … përdoreni këtë model si bazë. Për variantin me warm start, mund ta jepni zgjidhjen fillestare si hint (AddHint) në CP-SAT. Modelin tuaj në HiGHS mund ta mbani si krahasim shtesë, por jo si model kryesor.',
-    `The competition model (milp-solver, commit cf6ed8a) is copied unchanged into <code>third_party/clipp_cpsat/</code>. Warm start = the DP solution as a complete <code>AddHint</code>. The earlier HiGHS model appears only as a comparison in <code>docs/cpsat-report.md</code>.`,[]],
+    `The competition model (milp-solver, commit cf6ed8a) is copied unchanged into <code>tools/milp/third_party/clipp_cpsat/</code>. Warm start = the DP solution as a complete <code>AddHint</code>. The earlier HiGHS model appears only as a comparison in <code>tools/milp/docs/report.md</code>.`,[]],
    ['Warm start','Dynamic Programming është zgjedhje e mirë, meqë jep rezultat të përsëritshëm. Kontrolloni që zgjidhja e tij të jetë e vlefshme edhe për modelin.',
     `Seed = <code>data/output/dp_simple</code>. Checked by solving with every variable fixed to the hint plus a depot-connectivity check: <b>valid on ${hintOk} of ${built}</b> built models.`,warm.filter(r=>r.hint_feasible==='True')],
    ['Instances','Pa zgjidhje fillestare (cold start), mjafton A–E dhe Presheva. Me warm start, ekzekutimi duhet të bëhet për të gjitha instancat, me një kohë maksimale prej 1 ore për çdo instancë. Për instancat ku modeli nuk arrin as të ndërtohet ose të përmirësojë zgjidhjen fillestare, raportoni numrin e variablave, kohën dhe arsyen.',

@@ -24,7 +24,7 @@ score scale. We maximise, so
     gap              = (UB - LB) / LB
 
 Differences to ``clipp_cpsat.model._iterative_solve`` (the same six points as
-in docs/cpsat.md):
+in the tool README):
 
 1. Warm start: the seed is given as a *complete* hint (every variable, zeros
    included) and is checked first with all variables fixed to it
@@ -46,22 +46,16 @@ from __future__ import annotations
 
 import collections
 import math
-import sys
 import time
 from dataclasses import dataclass, field
-from pathlib import Path
 from typing import Callable
-
-ROOT = Path(__file__).resolve().parents[2]
-if str(ROOT / "third_party") not in sys.path:
-    sys.path.insert(0, str(ROOT / "third_party"))
 
 from ortools.sat.python import cp_model  # noqa: E402
 
 from clipp_cpsat import model as competition  # noqa: E402  (unchanged model code)
 from clipp_cpsat.graph import build_arcs, dijkstra  # noqa: E402
 
-from ..solver import Solution, VehicleRoute  # noqa: E402
+from clipp.solver import Solution, VehicleRoute  # noqa: E402
 
 OBJ_SCALE = competition._OBJ_SCALE
 CALLBACK_CHECK_MAX_VARS = 2_000_000   # larger models: check connectivity per round only

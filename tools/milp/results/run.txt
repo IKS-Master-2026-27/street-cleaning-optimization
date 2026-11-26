@@ -16,4 +16,4 @@
 [done] Johannesburg_warm: model not built - model not built within the build limit | LB  UB  gap 
 [start] Sydney_warm (528,551,534 variables)
 [done] Sydney_warm: model not built - model not built within the build limit | LB  UB  gap 
-Report: /Users/genti/Documents/street-cleaning-optimization/results/cpsat/results.md
+Report: tools/milp/results/results.md

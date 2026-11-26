@@ -10,14 +10,14 @@ Default experiment (the professor's instructions):
     warm  all 15 instances
     1 h solver time per run, 4 CP-SAT workers per run, same machine for all.
 
-Usage (repository root, requirements-milp.txt installed):
+Usage (repository root, tools/milp/requirements.txt installed):
 
-    python scripts/run_cpsat.py --background          # the whole experiment, detached
-    python scripts/run_cpsat.py --part 1 --background # or in 3 parts of <= 3 h each:
+    python tools/milp/run.py --background          # the whole experiment, detached
+    python tools/milp/run.py --part 1 --background # or in 3 parts of <= 3 h each:
                                                       # 1 = A,B,C  2 = D,E,Presheva
                                                       # 3 = other cities (warm)
-    python scripts/run_cpsat.py data/input/syntetic_generated/instance_A.txt \
-        --time-limit 60 --out results/cpsat_test      # quick test
+    python tools/milp/run.py data/input/syntetic_generated/instance_A.txt \
+        --time-limit 60 --out ~/Desktop/cpsat_test  # quick test
 
 How the runs are scheduled
     Instances with at most --small-vars variables: the cold and warm run of the
@@ -28,7 +28,7 @@ How the runs are scheduled
     its limit, or when building the model takes longer than --build-limit. The
     report then gives the number of variables, the time and the reason.
 
-Outputs (default results/cpsat/):
+Outputs (default tools/milp/results/):
     results.csv, results.md   one row per instance and variant
     metadata.json             machine, versions, settings
     status.txt                running jobs, memory, phase
@@ -56,8 +56,11 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+TOOL = Path(__file__).resolve().parent          # tools/milp
+ROOT = TOOL.parents[1]                          # repository root (instance paths)
+for _path in (ROOT, TOOL / "src", TOOL):
+    if str(_path) not in sys.path:
+        sys.path.insert(0, str(_path))
 
 SYNTHETIC = [f"data/input/syntetic_generated/instance_{c}.txt" for c in "ABCDE"]
 REAL = [f"data/input/real_instances/{city}/instance.txt" for city in (
@@ -132,8 +135,8 @@ def fmt(value, digits=6):
 def worker(args) -> int:
     """One instance x variant, in its own process; writes result.json."""
 
-    from clipp.milp import cpsat
-    from clipp.milp.seed import find_best_seed
+    from milp import cpsat
+    from milp.seed import find_best_seed
     from clipp.output import write_solution
     from clipp.parser import parse_instance
     from clipp.scoring import calculate_score
@@ -265,7 +268,7 @@ def plan_jobs(args) -> list[list[dict]]:
     """Batches of jobs that run together: cold+warm pairs of small instances,
     then the large instances one by one."""
 
-    from clipp.milp import cpsat
+    from milp import cpsat
     from clipp_cpsat.parser import parse_instance as parse_competition
 
     by_path: dict[Path, list[str]] = {}
@@ -433,7 +436,7 @@ def parent(args) -> int:
     name = f"metadata_part{args.part}.json" if args.part else "metadata.json"
     (out / name).write_text(json.dumps({
         "part": args.part,
-        "model": "CLIPP competition MILP, OR-Tools CP-SAT (third_party/clipp_cpsat, commit cf6ed8a)",
+        "model": "CLIPP competition MILP, OR-Tools CP-SAT (tools/milp/third_party/clipp_cpsat, commit cf6ed8a)",
         "ortools": ortools.__version__, "python": platform.python_version(),
         "platform": platform.platform(), "cpu_count": os.cpu_count(),
         "time_limit_s": args.time_limit, "workers": args.workers,
@@ -464,7 +467,7 @@ def parent(args) -> int:
             writer.writerows(rows)
         write_markdown(rows, out / "results.md", args)
         try:
-            from cpsat_viewer import build as build_viewer   # scripts/cpsat_viewer.py
+            from viewer import build as build_viewer   # tools/milp/viewer.py
             build_viewer(out)
         except Exception as error:  # the viewer must never stop the experiment
             print(f"[viewer] not updated: {error}", flush=True)
@@ -501,7 +504,7 @@ def main() -> int:
     parser.add_argument("--seed-algorithm", default="dp_simple",
                         help="folder in --output-root with the warm-start solutions")
     parser.add_argument("--output-root", default=str(ROOT / "data/output"))
-    parser.add_argument("--out", default=str(ROOT / "results/cpsat"))
+    parser.add_argument("--out", default=str(TOOL / "results"))
     parser.add_argument("--overwrite", action="store_true",
                         help="replace runs that already have a result in --out")
     parser.add_argument("--background", action="store_true")

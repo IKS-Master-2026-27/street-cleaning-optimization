@@ -1,23 +1,29 @@
-"""Tests for the cold/warm wrapper around the competition CP-SAT model (clipp/milp/cpsat.py)."""
+"""Tests for the cold/warm wrapper around the competition CP-SAT model (src/milp/cpsat.py)."""
 
 from pathlib import Path
+import sys
 import tempfile
 import unittest
 
+TOOL = Path(__file__).resolve().parents[1]     # tools/milp
+ROOT = TOOL.parents[1]                         # repository root
+for _path in (ROOT, TOOL / "src", TOOL):
+    if str(_path) not in sys.path:
+        sys.path.insert(0, str(_path))
+
 try:
-    from clipp.milp import cpsat
+    from milp import cpsat
     from clipp_cpsat.parser import parse_instance as parse_competition
     HAS_ORTOOLS = True
 except ImportError:  # ortools not installed
     HAS_ORTOOLS = False
 
-from clipp.milp.seed import read_solution, solution_file_name
+from milp.seed import read_solution, solution_file_name
 from clipp.parser import parse_instance
 from clipp.scoring import calculate_score
 from clipp.solver import solve as greedy_solve
 from clipp.validator import validate_solution
 
-ROOT = Path(__file__).resolve().parents[1]
 INSTANCE_A = ROOT / "data/input/syntetic_generated/instance_A.txt"
 
 # depot 0; mandatory 0-1 (R10), optional 1-2 (R20), one-way connector 2->0,
@@ -94,18 +100,13 @@ class CpSatTests(unittest.TestCase):
 
 
 class RunnerTests(unittest.TestCase):
-    """scripts/run_cpsat.py and scripts/cpsat_viewer.py (no solving)."""
+    """run.py and viewer.py (no solving)."""
 
     @classmethod
     def setUpClass(cls):
-        import importlib.util
-        import sys
-        sys.path.insert(0, str(ROOT / "scripts"))
-        spec = importlib.util.spec_from_file_location("run_cpsat", ROOT / "scripts/run_cpsat.py")
-        cls.runner = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(cls.runner)
-        import cpsat_viewer
-        cls.viewer = cpsat_viewer
+        import run
+        import viewer
+        cls.runner, cls.viewer = run, viewer
 
     def args(self, instances=None, cold=None):
         import argparse
@@ -129,7 +130,7 @@ class RunnerTests(unittest.TestCase):
             self.assertEqual(self.runner.finished_runs(args, out), ["instance_A_warm"])
 
     def test_viewer_builds_from_the_committed_results(self):
-        results = ROOT / "results/cpsat"
+        results = TOOL / "results"
         if not (results / "results.csv").exists():
             self.skipTest("no results")
         with tempfile.TemporaryDirectory() as folder:

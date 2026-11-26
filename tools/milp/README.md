@@ -12,8 +12,26 @@ Same settings for every run: 1 h solver time, 4 CP-SAT workers, random seed 0,
 same computer.
 
 **Status:** the experiment was run on 2026-11-25/26 (21 runs, all finished).
-Results and findings: [cpsat-report.md](cpsat-report.md); raw data:
-`results/cpsat/`.
+Results and findings: [docs/report.md](docs/report.md); raw data:
+[`results/`](results/); interactive viewer: `results/viewer.html`.
+
+## Folder layout
+
+Everything of this tool is in `tools/milp/` (like `tools/instancelab/`). It only
+reads the shared repository (`data/input/`, `data/output/dp_simple/` and the
+`clipp` package for parsing, validation and the official score).
+
+| Path | Content |
+|---|---|
+| `run.py` | runs the experiment (each instance and variant in its own process) |
+| `viewer.py` | builds `results/viewer.html` |
+| `src/milp/cpsat.py` | builds the competition model, hint, solve loop, routes |
+| `src/milp/seed.py` | reads the DP solution used as warm start |
+| `third_party/clipp_cpsat/` | the competition model, copied unchanged (MIT) |
+| `results/` | results of the 21 runs (see below) |
+| `docs/report.md` | results report and findings |
+| `tests/test_cpsat.py` | unit tests |
+| `requirements.txt` | `ortools` |
 
 ## The model
 
@@ -35,7 +53,7 @@ components without the depot, add a cut for each, solve again.
 
 ## What the tool adds
 
-`clipp/milp/cpsat.py` builds the model with the competition functions, in the
+`src/milp/cpsat.py` builds the model with the competition functions, in the
 same order as `clipp_cpsat.model.solve_milp`, and runs the same solve loop with
 these differences:
 
@@ -64,7 +82,7 @@ these differences:
 Every final solution is turned into routes (Hierholzer), checked with this
 repository's validator and scored with the official score.
 
-## Report columns (`results/cpsat/results.csv`)
+## Report columns (`results/results.csv`)
 
 | Column | Meaning |
 |---|---|
@@ -86,26 +104,28 @@ from `official_score` in the 9th decimal (e.g. 0.9999999960 vs 1.0).
 
 ## Running
 
+From the repository root:
+
 ```bash
-pip install -r requirements-milp.txt
-python scripts/run_cpsat.py --background            # the whole experiment (~6-8 h), or
-python scripts/run_cpsat.py --part 1 --background   # A, B, C cold + warm        (<= 3 h)
-python scripts/run_cpsat.py --part 2 --background   # D, E, Presheva cold + warm (<= 3 h)
-python scripts/run_cpsat.py --part 3 --background   # other 9 cities, warm       (~1-3 h)
-python scripts/cpsat_viewer.py                      # rebuild results/cpsat/viewer.html
-python scripts/run_cpsat.py data/input/syntetic_generated/instance_A.txt \
-    --time-limit 30 --out ~/Desktop/cpsat_demo      # 30 s demo, outside results/cpsat
-python -m unittest tests.test_cpsat
+pip install -r tools/milp/requirements.txt
+python tools/milp/run.py --background            # the whole experiment (~6-8 h), or
+python tools/milp/run.py --part 1 --background   # A, B, C cold + warm        (<= 3 h)
+python tools/milp/run.py --part 2 --background   # D, E, Presheva cold + warm (<= 3 h)
+python tools/milp/run.py --part 3 --background   # other 9 cities, warm       (~1-3 h)
+python tools/milp/viewer.py                      # rebuild tools/milp/results/viewer.html
+python tools/milp/run.py data/input/syntetic_generated/instance_A.txt \
+    --time-limit 30 --out ~/Desktop/cpsat_demo   # 30 s demo, outside tools/milp/results
+python -m unittest discover -s tools/milp/tests -v
 ```
 
 A run never replaces a finished result in `--out`: the tool stops and names
 the runs that already exist. Use another `--out` folder (as in the demo) or
 add `--overwrite` to replace them.
 
-`results/cpsat/viewer.html` shows every run: an overview of all instances,
+`results/viewer.html` shows every run: an overview of all instances,
 per instance the cold and warm run side by side with the best score over
 time, the professor's four requirements with the runs that answer them, and
-the findings. `run_cpsat.py` rebuilds it after every batch.
+the findings. `run.py` rebuilds it after every batch.
 
 Scheduling (8 performance cores, 24 GB RAM): instances with at most 200 000
 variables run their cold and warm run side by side (2 × 4 workers, 9 GB each);
@@ -119,7 +139,7 @@ All parts write into the same `--out` folder; `results.csv` / `results.md`
 always contain every finished run, and each part keeps its own
 `metadata_part<N>.json`.
 
-Files in `results/cpsat/`:
+Files in `results/`:
 
 | File | Content |
 |---|---|

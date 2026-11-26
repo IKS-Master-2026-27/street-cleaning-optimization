@@ -1,6 +1,6 @@
 """Warm start: read an existing algorithm's solution (the seed).
 
-``clipp.milp.cpsat`` turns the seed into a complete CP-SAT hint.
+``milp.cpsat`` turns the seed into a complete CP-SAT hint.
 """
 
 from __future__ import annotations
@@ -8,10 +8,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from ..parser import Instance
-from ..scoring import calculate_score
-from ..solver import Solution, VehicleRoute, VEHICLE_CAPACITIES
-from ..validator import validate_solution
+from clipp.parser import Instance
+from clipp.scoring import calculate_score
+from clipp.solver import Solution, VehicleRoute, VEHICLE_CAPACITIES
+from clipp.validator import validate_solution
 
 # Folders in data/output that are not independent algorithms on the original
 # instances (this tool's own outputs).
