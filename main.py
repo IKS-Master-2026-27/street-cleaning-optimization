@@ -5,6 +5,8 @@ from pathlib import Path
 from clipp import recursive, recursive_enum, greedy_lookahead, divide_conquer
 from clipp import preprocessing_solver
 from clipp import beam_search
+from clipp.dp import memo as dp_memo
+from clipp.dp import memo_ls as dp_memo_ls
 from clipp.dp import simple as dp_simple
 from clipp.graph import build_graph, shortest_path
 from clipp.output import write_solution
@@ -19,6 +21,8 @@ ALGORITHMS = {
     "recursive": recursive.solve,
     "recursive-enum": recursive_enum.solve,
     "dp-simple": dp_simple.solve,
+    "dp-memo": dp_memo.solve,
+    "dp-memo-ls": dp_memo_ls.solve,
     "greedy-lookahead": greedy_lookahead.solve,
     "divide-conquer": divide_conquer.solve,
     "beam-search": beam_search.solve,

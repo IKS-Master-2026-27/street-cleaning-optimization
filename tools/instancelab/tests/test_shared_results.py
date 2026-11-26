@@ -78,6 +78,33 @@ class SharedResultAdapterTests(unittest.TestCase):
         self.assertEqual(scan.discovered_algorithms, ("dp_simple", "greedy"))
         self.assertEqual(scan.complete_algorithms, ("dp_simple", "greedy"))
 
+    def test_realistic_results_are_read_from_their_own_folder(self):
+        instance = parse_instance(REPOSITORY_LAYOUT, source="instance.txt")
+        with TemporaryDirectory(dir=Path.cwd()) as folder:
+            root = Path(folder)
+            source = InstanceSource(
+                "Presheva",
+                "realistic",
+                root / "data/input/realistic_instances/Presheva/instance.txt",
+            )
+            # A legacy result with the same file name must not be picked up.
+            legacy = root / "data/output/greedy"
+            legacy.mkdir(parents=True)
+            (legacy / "Presheva_instance_solution.txt").write_text(
+                VALID_SOLUTION, encoding="utf-8"
+            )
+            directory = root / "data/output/realistic_instances/dp_memo"
+            directory.mkdir(parents=True)
+            (directory / "Presheva_instance_solution.txt").write_text(
+                VALID_SOLUTION, encoding="utf-8"
+            )
+
+            scan = scan_shared_algorithm_results(root, ((source, instance),))
+
+        self.assertEqual(scan.discovered_algorithms, ("dp_memo",))
+        self.assertEqual(scan.complete_algorithms, ("dp_memo",))
+        self.assertEqual(scan.failures, ())
+
     def test_excludes_incomplete_discovered_algorithm(self):
         instance = parse_instance(REPOSITORY_LAYOUT, source="instance_A.txt")
         with TemporaryDirectory(dir=Path.cwd()) as folder:

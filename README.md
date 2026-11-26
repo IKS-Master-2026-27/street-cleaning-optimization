@@ -85,6 +85,23 @@ Rules:
 - If your algorithm cannot produce a valid solution for an instance, report it
   to the team instead of committing a partial set.
 
+### Realistic instances (main comparison)
+
+The main comparison uses `data/input/realistic_instances/` (the same ten cities with
+a workload-scaled fleet and time limit). Their file names are the same as those of
+`real_instances`, so publish them in a separate folder with:
+
+```powershell
+python scripts/run_realistic.py --algorithm <algorithm-name>
+python scripts/validate_solution.py --algorithm <algorithm_name> --realistic
+```
+
+This validates every solution and writes it to
+`data/output/realistic_instances/<algorithm_name>/<City>_instance_solution.txt`,
+and appends score and run time to `data/output/realistic_instances/results.csv`.
+Commit all 10 files. The old 15-instance set above stays available as an
+optional view in InstanceLab.
+
 ## InstanceLab
 
 InstanceLab is an analysis dashboard for the CLIPP instances and the published
