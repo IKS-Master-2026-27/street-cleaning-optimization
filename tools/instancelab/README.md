@@ -36,6 +36,17 @@ $env:CLIPP_SHARED_REPO = "C:\path\to\street-cleaning-optimization"
 streamlit run app.py
 ```
 
+The sidebar **Instance set** selects what is analysed and compared:
+
+- **Realistic instances** (default, the main comparison):
+  `data/input/realistic_instances/`, with results from
+  `data/output/realistic_instances/<algorithm>/`.
+- **Old instances** (optional): the 5 synthetic instances and
+  `data/input/real_instances/`, with results from `data/output/<algorithm>/`.
+
+Execution times are kept per set: `results/timing_realistic/results.csv` and
+`results/timing/results.csv` (`python -m instancelab.timing --dataset realistic|legacy`).
+
 Use the sidebar Reload button after changing recognized instance or solution
 files. The shared repository is treated as an input source; InstanceLab does not
 write analysis data there.

@@ -23,8 +23,10 @@ from instancelab import (
     validate_instance,
 )
 from instancelab.adapters import (
+    DATASET_LABELS,
     SharedRepositoryError,
     find_shared_repository_root,
+    resolve_dataset,
     scan_shared_instances,
     scan_shared_algorithm_results,
     shared_repository_fingerprint,
@@ -35,6 +37,10 @@ from instancelab.timing import attach_execution_times, read_timing_csv, stale_ti
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 DEFAULT_TIMING_CSV = PROJECT_ROOT / "results" / "timing" / "results.csv"
+DEFAULT_TIMING_CSVS = {
+    "realistic": PROJECT_ROOT / "results" / "timing_realistic" / "results.csv",
+    "legacy": DEFAULT_TIMING_CSV,
+}
 
 
 def file_fingerprint(paths) -> tuple[tuple[str, int, int], ...]:
@@ -76,6 +82,7 @@ def analyze_repository(
     repository_revision: tuple[tuple[str, int, int], ...],
     timing_path: str,
     local_revision: tuple[tuple[str, int, int], ...],
+    dataset: str = "auto",
 ):
     """Load read-only class data and return compact analysis artifacts.
 
@@ -86,7 +93,7 @@ def analyze_repository(
     # The revision arguments are part of the cache key only. They change when
     # a recognized instance, published result or timing file changes.
     del repository_revision, local_revision
-    scan = scan_shared_instances(repository_path)
+    scan = scan_shared_instances(repository_path, dataset)
     loaded = scan.loaded
     if not loaded:
         raise SharedRepositoryError(
@@ -160,9 +167,22 @@ repository_path = st.sidebar.text_input(
     placeholder=r"C:\path\to\street-cleaning-optimization",
 )
 st.sidebar.caption("The shared repository is read only; InstanceLab writes no data there.")
+dataset_choice = st.sidebar.radio(
+    "Instance set",
+    options=("realistic", "legacy"),
+    format_func=lambda key: DATASET_LABELS[key]
+    + (" - main comparison" if key == "realistic" else " - optional"),
+    help="The realistic whole-city instances are the main comparison. The old "
+    "synthetic + real_instances set can still be inspected.",
+)
+try:
+    dataset = resolve_dataset(repository_path, dataset_choice) if repository_path else dataset_choice
+except (OSError, ValueError):
+    dataset = dataset_choice
 timing_path = st.sidebar.text_input(
     "Execution-time file",
-    value=str(DEFAULT_TIMING_CSV),
+    value=str(DEFAULT_TIMING_CSVS[dataset]),
+    key=f"timing_path_{dataset}",
     help="Written by `python -m instancelab.timing` for published pairs only.",
 )
 if st.sidebar.button("Reload repository instances", width="stretch"):
@@ -186,7 +206,7 @@ if not repository_path:
 
 try:
     with st.spinner("Reading, validating and analysing instances…"):
-        repository_revision = shared_repository_fingerprint(repository_path)
+        repository_revision = shared_repository_fingerprint(repository_path, dataset)
         local_revision = file_fingerprint(
             (Path(timing_path),) if timing_path else ()
         )
@@ -208,6 +228,7 @@ try:
             repository_revision,
             timing_path,
             local_revision,
+            dataset,
         )
 except (OSError, ValueError) as error:
     st.error(f"Analysis stopped: {error}")

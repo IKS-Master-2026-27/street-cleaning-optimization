@@ -20,7 +20,12 @@ repository; bytecode caching is disabled for workers.
 Usage::
 
     python -m instancelab.timing --shared-repo C:\\path\\to\\street-cleaning-optimization
-        [--output results/timing] [--timeout 1800] [--workers 1] [--only Presheva]
+        [--dataset auto|realistic|legacy] [--output DIR] [--timeout 1800]
+        [--workers 1] [--only Presheva]
+
+``--dataset auto`` (default) times the realistic instances when they exist and
+writes to ``results/timing_realistic``; ``--dataset legacy`` times the old
+synthetic + real_instances set and writes to ``results/timing``.
 """
 
 import argparse
@@ -38,7 +43,13 @@ from datetime import datetime, timezone
 from math import isclose
 from pathlib import Path
 
-from .adapters.shared_repository import InstanceSource, scan_shared_instances
+from .adapters.shared_repository import (
+    InstanceSource,
+    resolve_dataset,
+    results_root,
+    scan_shared_instances,
+    solution_path,
+)
 from .adapters.shared_results import (
     SolutionResultError,
     _solution_name,
@@ -101,8 +112,13 @@ def load_shared_algorithm_table(shared_repo: str | Path) -> dict:
     return dict(module.ALGORITHMS)
 
 
-def published_algorithm_folders(shared_repo: str | Path) -> tuple[str, ...]:
-    output_root = Path(shared_repo) / "data" / "output"
+DEFAULT_TIMING_DIRS = {"realistic": "results/timing_realistic", "legacy": "results/timing"}
+
+
+def published_algorithm_folders(
+    shared_repo: str | Path, dataset: str = "auto"
+) -> tuple[str, ...]:
+    output_root = results_root(shared_repo, resolve_dataset(shared_repo, dataset))
     if not output_root.is_dir():
         return ()
     return tuple(
@@ -118,17 +134,19 @@ def plan_timing(
     shared_repo: str | Path,
     algorithm_keys: tuple[str, ...],
     only: tuple[str, ...] = (),
+    dataset: str = "auto",
 ) -> TimingPlan:
     """List published pairs whose folder maps to a runnable algorithm."""
 
     repository = Path(shared_repo).resolve()
+    dataset = resolve_dataset(repository, dataset)
     by_folder = {key.replace("-", "_"): key for key in algorithm_keys}
-    loaded = scan_shared_instances(repository).loaded
+    loaded = scan_shared_instances(repository, dataset).loaded
     if only:
         loaded = tuple(pair for pair in loaded if pair[0].name in set(only))
     jobs = []
     not_timeable = []
-    for folder in published_algorithm_folders(repository):
+    for folder in published_algorithm_folders(repository, dataset):
         key = by_folder.get(folder)
         if key is None:
             not_timeable.append(
@@ -136,8 +154,7 @@ def plan_timing(
             )
             continue
         for source, instance in loaded:
-            published = repository / "data" / "output" / folder / _solution_name(source)
-            if published.is_file():
+            if solution_path(repository, folder, source).is_file():
                 jobs.append((source, instance, folder, key))
     return TimingPlan(tuple(jobs), tuple(not_timeable))
 
@@ -176,7 +193,7 @@ def time_one(
 
     published = score_solution_file(
         instance,
-        shared_repo / "data" / "output" / folder / _solution_name(source),
+        solution_path(shared_repo, folder, source),
         instance_name=source.name,
         algorithm=folder,
     ).score
@@ -186,12 +203,12 @@ def time_one(
         "algorithm": folder,
         "published_score": published,
     }
-    solution_path = output_dir / "solutions" / folder / _solution_name(source)
-    if solution_path.exists():
-        solution_path.unlink()
+    run_path = output_dir / "solutions" / folder / _solution_name(source)
+    if run_path.exists():
+        run_path.unlink()
     command = [
         sys.executable, "-m", "instancelab.timing", "--worker",
-        str(shared_repo), key, str(source.path), str(solution_path),
+        str(shared_repo), key, str(source.path), str(run_path),
     ]
     environment = {**os.environ, "PYTHONDONTWRITEBYTECODE": "1", "PYTHONIOENCODING": "utf-8"}
     try:
@@ -220,7 +237,7 @@ def time_one(
         return TimingRecord(**base, status="failed", reason=outcome.get("reason", ""))
     try:
         run_score = score_solution_file(
-            instance, solution_path, instance_name=source.name, algorithm=folder
+            instance, run_path, instance_name=source.name, algorithm=folder
         ).score
     except (OSError, SolutionResultError) as error:
         return TimingRecord(
@@ -362,13 +379,17 @@ def run_timing(
     workers: int = 1,
     resume: bool = False,
     log=print,
+    dataset: str = "auto",
 ) -> tuple[TimingRecord, ...]:
     """Time every published runnable pair and write ``results.csv`` + ``metadata.json``."""
 
     repository = Path(shared_repo).resolve()
     directory = Path(output_dir).resolve()
     directory.mkdir(parents=True, exist_ok=True)
-    plan = plan_timing(repository, tuple(load_shared_algorithm_table(repository)), only)
+    dataset = resolve_dataset(repository, dataset)
+    plan = plan_timing(
+        repository, tuple(load_shared_algorithm_table(repository)), only, dataset
+    )
     for folder, reason in plan.not_timeable:
         log(f"Not timed: {folder} ({reason})")
 
@@ -378,7 +399,7 @@ def run_timing(
         published = {
             (source.name, folder): score_solution_file(
                 instance,
-                repository / "data" / "output" / folder / _solution_name(source),
+                solution_path(repository, folder, source),
                 instance_name=source.name,
                 algorithm=folder,
             ).score
@@ -420,6 +441,7 @@ def run_timing(
     metadata = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "shared_repository_revision": _git_revision(repository),
+        "instance_set": dataset,
         "timed_algorithms": sorted({job[2] for job in plan.jobs}),
         "not_timeable": [{"folder": f, "reason": r} for f, r in plan.not_timeable],
         "timeout_seconds": timeout,
@@ -443,7 +465,9 @@ def main(argv: list[str] | None = None) -> int:
         description="Time published shared-repository algorithm results."
     )
     parser.add_argument("--shared-repo", default=os.environ.get("CLIPP_SHARED_REPO"))
-    parser.add_argument("--output", default="results/timing")
+    parser.add_argument("--dataset", choices=("auto", "realistic", "legacy"), default="auto")
+    parser.add_argument("--output", default=None, help="default: results/timing_realistic "
+                        "for realistic instances, results/timing for the old set")
     parser.add_argument("--only", nargs="*", default=())
     parser.add_argument("--timeout", type=float, default=1800.0)
     parser.add_argument("--workers", type=int, default=1)
@@ -453,14 +477,16 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--shared-repo or CLIPP_SHARED_REPO is required")
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
+    dataset = resolve_dataset(args.shared_repo, args.dataset)
     run_timing(
         args.shared_repo,
-        args.output,
+        args.output or DEFAULT_TIMING_DIRS[dataset],
         only=tuple(args.only),
         timeout=args.timeout,
         workers=args.workers,
         resume=args.resume,
         log=lambda message: print(message, flush=True),
+        dataset=dataset,
     )
     return 0
 
